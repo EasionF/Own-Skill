@@ -1,0 +1,14 @@
+# 运行时产物，不提交
+.trae/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 临时文件
+*.tmp
+*.log

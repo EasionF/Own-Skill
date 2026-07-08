@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>心鳴 · 中式古典宣言</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #F5F0E8;
+    color: #1A1A1A;
+    font-family: 'Songti SC', 'STSong', 'SimSun', 'Noto Serif SC', serif;
+    overflow-x: hidden;
+    /* 宣纸纹理：极淡的渐变模拟纸色不均 */
+    background-image:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(160, 57, 46, 0.015), transparent 60%),
+      radial-gradient(ellipse 70% 50% at 80% 90%, rgba(120, 90, 60, 0.02), transparent 60%),
+      radial-gradient(ellipse 50% 40% at 50% 50%, rgba(245, 240, 232, 0.6), transparent 70%);
+  }
+
+  /* ============ 页面通用 ============ */
+  .page {
+    width: 100vw;
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 60px;
+    scroll-snap-align: start;
+    overflow: hidden;
+  }
+
+  /* 乌丝栏：极淡的竖线，模拟古籍栏线 */
+  .page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      to right,
+      transparent,
+      transparent 98px,
+      rgba(26, 26, 26, 0.045) 98px,
+      rgba(26, 26, 26, 0.045) 99px
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* 页面边框：古籍版框意象 */
+  .page::after {
+    content: '';
+    position: absolute;
+    inset: 36px;
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* 竖排容器 */
+  .vertical {
+    writing-mode: vertical-rl;
+    -webkit-writing-mode: vertical-rl;
+    text-orientation: upright;
+    -webkit-text-orientation: upright;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ============ 朱红句读 ============ */
+  .punct {
+    color: #A0392E;
+  }
+
+  /* ============ 印章 ============ */
+  .seal {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #A0392E;
+    color: #F5F0E8;
+    font-family: 'Songti SC', 'STSong', 'SimSun', serif;
+    font-weight: 700;
+    line-height: 1;
+    border-radius: 3px;
+    box-shadow:
+      inset 0 0 0 3px #F5F0E8,
+      inset 0 0 0 4.5px #A0392E,
+      2px 2px 4px rgba(80, 20, 15, 0.18);
+    z-index: 3;
+    /* 印泥的不均感 */
+    background-image:
+      radial-gradient(circle at 30% 25%, rgba(255, 240, 230, 0.12), transparent 40%),
+      radial-gradient(circle at 70% 75%, rgba(80, 20, 15, 0.15), transparent 50%);
+  }
+
+  .seal-large {
+    width: 96px;
+    height: 96px;
+    font-size: 38px;
+    letter-spacing: 0;
+    gap: 4px;
+  }
+
+  .seal-medium {
+    width: 64px;
+    height: 64px;
+    font-size: 30px;
+  }
+
+  /* 内联印章（用于三纲条目） */
+  .seal-inline {
+    display: inline-block;
+    background: #A0392E;
+    color: #F5F0E8;
+    font-family: 'Songti SC', 'STSong', 'SimSun', serif;
+    font-weight: 700;
+    text-align: center;
+    width: 1.6em;
+    height: 1.6em;
+    line-height: 1.6em;
+    font-size: 1.1em;
+    border-radius: 2px;
+    box-shadow:
+      inset 0 0 0 2px #F5F0E8,
+      inset 0 0 0 2.5px #A0392E;
+    margin-left: 0.4em;
+    margin-right: 0.4em;
+    background-image:
+      radial-gradient(circle at 30% 25%, rgba(255, 240, 230, 0.1), transparent 40%);
+  }
+
+  /* ============ 页码（古籍式） ============ */
+  .page-mark {
+    position: absolute;
+    bottom: 50px;
+    right: 60px;
+    font-family: 'Songti SC', 'STSong', 'SimSun', serif;
+    font-size: 14px;
+    color: rgba(26, 26, 26, 0.35);
+    letter-spacing: 4px;
+    z-index: 3;
+    writing-mode: horizontal-tb;
+  }
+
+  .page-mark .red-mark {
+    color: #A0392E;
+    font-size: 16px;
+    margin-right: 6px;
+  }
+
+  /* ============ 封面 ============ */
+  .cover-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    z-index: 2;
+    position: relative;
+  }
+
+  .cover-title-col {
+    writing-mode: vertical-rl;
+    -webkit-writing-mode: vertical-rl;
+    text-orientation: upright;
+    -webkit-text-orientation: upright;
+  }
+
+  .cover-title {
+    font-family: 'KaiTi', 'STKaiti', 'Kaiti SC', 'Songti SC', 'STSong', serif;
+    font-size: 200px;
+    font-weight: 900;
+    letter-spacing: 50px;
+    line-height: 1;
+    color: #1A1A1A;
+    padding-top: 20px;
+  }
+
+  .cover-subtitle-col {
+    writing-mode: vertical-rl;
+    -webkit-writing-mode: vertical-rl;
+    text-orientation: upright;
+    -webkit-text-orientation: upright;
+    margin-right: 60px;
+    padding-top: 40px;
+  }
+
+  .cover-subtitle {
+    font-family: 'Songti SC', 'STSong', 'SimSun', serif;
+    font-size: 26px;
+    letter-spacing: 14px;
+    color: #1A1A1A;
+    line-height: 2.2;
+  }
+
+  .cover-seal {
+    bottom: 100px;
+    left: 110px;
+  }
+
+  .cover-meta {
+    position: absolute;
+    top: 70px;
+    left: 70px;
+    font-family: 'Songti SC', 'STSong', 'SimSun', serif;
+    font-size: 13px;
+    color: rgba(26, 26, 26, 0.4);
+    letter-spacing: 3px;
+    line-height: 2;
+    z-index: 3;
+  }
+
+  .cover-meta .meta-label {
+    color: #A0392E;
+  }
+
+  /* ============ 理念页 ============ */
+  .section-title {
+    font-family: 'KaiTi', 'STKaiti', 'Kaiti SC', 'Songti SC', 'STSong', serif;
+    font-size: 64px;
+    font-weight: 700;
+    letter-spacing: 24px;
+    line-height: 1.5;
+    color: #1A1A1A;
+    margin-bottom: 0;
+    padding-top: 20px;
+  }
+
+  .section-text {
+    font-family: 'Songti SC', 'STSong', 'SimSun', serif;
+    font-size: 25px;
+    line-height: 2.4;
+    letter-spacing: 10px;
+    color: #1A1A1A;
+    padding-top: 40px;
+  }
+
+  .section-text-en {
+    font-family: 'Songti SC', 'STSong', 'SimSun', serif;
+    font-size: 22px;
+    line-height: 2.4;
+    letter-spacing: 6px;
+    color: #1A1A1A;
+    padding-top: 30px;
+  }
+
+  /* ============ 三纲页 ============ */
+  .principles-container {
+    display: block;
+  }
+
+  .principle-item {
+    margin-left: 70px;
+    padding-top: 30px;
+  }
+
+  .principle-item:first-of-type {
+    padding-top: 60px;
+  }
+
+  .principle-text {
+    font-family: 'Songti SC', 'STSong', 'SimSun', serif;
+    font-size: 26px;
+    line-height: 2.4;
+    letter-spacing: 10px;
+    color: #1A1A1A;
+    display: inline;
+  }
+
+  /* ============ 结语页 ============ */
+  .golden-sentence {
+    font-family: 'KaiTi', 'STKaiti', 'Kaiti SC', 'Songti SC', 'STSong', serif;
+    font-size: 88px;
+    font-weight: 700;
+    letter-spacing: 36px;
+    line-height: 1.6;
+    color: #1A1A1A;
+    padding-top: 40px;
+  }
+
+  .conclusion-seal {
+    bottom: 110px;
+    left: 140px;
+  }
+
+  .cta {
+    position: absolute;
+    bottom: 90px;
+    right: 90px;
+    z-index: 3;
+    font-family: 'Songti SC', 'STSong', 'SimSun', serif;
+    font-size: 20px;
+    letter-spacing: 8px;
+    color: #A0392E;
+    border: 1.5px solid #A0392E;
+    padding: 18px 28px;
+    background: rgba(245, 240, 232, 0.6);
+    line-height: 1.6;
+  }
+
+  .cta-label {
+    font-size: 12px;
+    color: rgba(26, 26, 26, 0.4);
+    letter-spacing: 4px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* ============ 导航点 ============ */
+  .nav-dots {
+    position: fixed;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    z-index: 100;
+  }
+
+  .nav-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(26, 26, 26, 0.15);
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+    padding: 0;
+  }
+
+  .nav-dot:hover {
+    background: #A0392E;
+    transform: scale(1.3);
+  }
+
+  /* ============ 响应式 ============ */
+  @media (max-width: 768px) {
+    .cover-title { font-size: 120px; letter-spacing: 30px; }
+    .cover-subtitle { font-size: 20px; letter-spacing: 10px; }
+    .section-title { font-size: 44px; letter-spacing: 16px; }
+    .section-text { font-size: 20px; letter-spacing: 7px; line-height: 2.2; }
+    .principle-text { font-size: 21px; letter-spacing: 7px; line-height: 2.2; }
+    .golden-sentence { font-size: 56px; letter-spacing: 24px; }
+    .seal-large { width: 72px; height: 72px; font-size: 30px; }
+    .page { padding: 60px 30px; }
+    .principle-item { margin-left: 40px; }
+    .cta { font-size: 16px; padding: 14px 20px; right: 30px; bottom: 50px; }
+    .cover-seal { bottom: 60px; left: 40px; }
+    .conclusion-seal { bottom: 70px; left: 50px; }
+    .page::after { inset: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 导航点 -->
+<nav class="nav-dots" aria-label="页面导航">
+  <button class="nav-dot" onclick="document.getElementById('cover').scrollIntoView()" aria-label="封面"></button>
+  <button class="nav-dot" onclick="document.getElementById('page1').scrollIntoView()" aria-label="理念"></button>
+  <button class="nav-dot" onclick="document.getElementById('page2').scrollIntoView()" aria-label="三纲"></button>
+  <button class="nav-dot" onclick="document.getElementById('page3').scrollIntoView()" aria-label="结语"></button>
+</nav>
+
+<!-- ============ 封面 ============ -->
+<section class="page" id="cover">
+  <div class="cover-meta">
+    <div><span class="meta-label">卷</span> 壹</div>
+    <div><span class="meta-label">題</span> 心鳴</div>
+    <div><span class="meta-label">旨</span> 心性修養</div>
+  </div>
+
+  <div class="cover-content">
+    <div class="cover-subtitle-col">
+      <p class="cover-subtitle">人工智能輔助心性修養之器</p>
+    </div>
+    <div class="cover-title-col">
+      <h1 class="cover-title">心鳴</h1>
+    </div>
+  </div>
+
+  <div class="seal seal-large cover-seal">
+    <span>心</span>
+    <span>鳴</span>
+  </div>
+
+  <div class="page-mark"><span class="red-mark">一</span>心鳴 · 卷首</div>
+</section>
+
+<!-- ============ 理念 ============ -->
+<section class="page" id="page1">
+  <div class="vertical">
+    <h2 class="section-title">聽見內心的回聲</h2>
+    <p class="section-text">
+      心者<span class="punct">，</span>身之主也<span class="punct">，</span>神之明也<span class="punct">。</span>然塵世喧嚣<span class="punct">，</span>物欲紛擾<span class="punct">，</span>心之明漸蔽<span class="punct">，</span>神之清漸濁<span class="punct">。</span>
+    </p>
+    <p class="section-text">
+      吾輩造此器<span class="punct">，</span>名曰心鳴<span class="punct">，</span>所以靜聽汝心之回聲<span class="punct">，</span>察汝情之起伏<span class="punct">，</span>使汝復得本心<span class="punct">。</span>
+    </p>
+    <p class="section-text">
+      非以機巧代汝思慮<span class="punct">，</span>乃以鏡鑑照汝本真<span class="punct">。</span>日省一刻<span class="punct">，</span>勝讀萬卷<span class="punct">。</span>
+    </p>
+  </div>
+
+  <div class="seal seal-medium" style="bottom: 90px; left: 90px;">壹</div>
+
+  <div class="page-mark"><span class="red-mark">二</span>心鳴 · 理念</div>
+</section>
+
+<!-- ============ 三纲 ============ -->
+<section class="page" id="page2">
+  <div class="vertical principles-container">
+    <h2 class="section-title">心鳴三綱</h2>
+
+    <div class="principle-item">
+      <p class="principle-text">
+        <span class="seal-inline">壹</span>一曰情緒追蹤<span class="punct">·</span>日省三分钟<span class="punct">，</span>智算辨汝喜怒<span class="punct">，</span>記汝心境之晴雨<span class="punct">。</span>
+      </p>
+    </div>
+
+    <div class="principle-item">
+      <p class="principle-text">
+        <span class="seal-inline">貳</span>二曰認知重塑<span class="punct">·</span>據認知行為之療法<span class="punct">，</span>正汝心念<span class="punct">，</span>破汝執障<span class="punct">。</span>
+      </p>
+    </div>
+
+    <div class="principle-item">
+      <p class="principle-text">
+        <span class="seal-inline">叁</span>三曰匿名樹洞<span class="punct">·</span>端到端加密<span class="punct">，</span>汝之密語<span class="punct">，</span>唯汝可知<span class="punct">。</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="page-mark"><span class="red-mark">三</span>心鳴 · 三綱</div>
+</section>
+
+<!-- ============ 结语 ============ -->
+<section class="page" id="page3">
+  <div class="vertical">
+    <h2 class="golden-sentence">心如止水<br>方聞回聲<br>日省其身<br>本心自明</h2>
+  </div>
+
+  <div class="seal seal-large conclusion-seal">
+    <span>心</span>
+    <span>鳴</span>
+  </div>
+
+  <div class="cta">
+    <span class="cta-label">— 試之 —</span>
+    始七日免費體驗
+  </div>
+
+  <div class="page-mark"><span class="red-mark">四</span>心鳴 · 終卷</div>
+</section>
+
+</body>
+</html>

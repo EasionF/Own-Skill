@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cc-design — Product Overview</title>
+<style>
+  /* =========================================================
+     cc-design · Quiet Authority Deck
+     Consulting report style. 8 slides, 1280×720, 16:9.
+     Palette: deep navy / warm white / restrained gold.
+     ========================================================= */
+
+  :root {
+    --primary-bg:    #1A2B4A;   /* deep navy — cover & headings */
+    --canvas-bg:     #FAFAF8;   /* warm white — body slides */
+    --accent-gold:   #B8860B;   /* gold — key numbers only */
+    --text-primary:  #1A1A1A;
+    --text-secondary:#555555;
+    --text-tertiary: #888888;
+    --hairline:      #E5E5E5;
+    --table-line:    #1A2B4A;
+    --serif: 'Source Serif Pro', 'Georgia', 'Times New Roman', serif;
+    --sans:  'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    --mono:  'JetBrains Mono', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #ECECE8;
+    font-family: var(--sans);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Deck container — vertical stack of centered slides */
+  .deck {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    padding: 40px 0;
+  }
+
+  /* ── Slide base ─────────────────────────────────────────── */
+  .slide {
+    position: relative;
+    width: 1280px;
+    height: 720px;
+    background: var(--canvas-bg);
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 10px 40px rgba(0,0,0,0.12);
+  }
+
+  .slide--navy {
+    background: var(--primary-bg);
+    color: #FFFFFF;
+  }
+
+  /* Content frame for body slides */
+  .frame {
+    position: absolute;
+    inset: 0;
+    padding: 64px 88px 72px 88px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Typography ─────────────────────────────────────────── */
+  .slide-eyebrow {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+    margin: 0 0 18px 0;
+  }
+
+  .slide-title {
+    font-family: var(--serif);
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--primary-bg);
+    margin: 0 0 22px 0;
+  }
+
+  .lead {
+    font-family: var(--serif);
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+    margin: 0 0 40px 0;
+    max-width: 940px;
+    font-weight: 400;
+  }
+
+  .lead em { color: var(--text-primary); font-style: italic; }
+
+  /* Gold accent for key numbers — used sparingly */
+  .gold { color: var(--accent-gold); font-variant-numeric: tabular-nums; }
+
+  /* ── Footer (chapter left / page right) ─────────────────── */
+  .footer {
+    position: absolute;
+    left: 88px;
+    right: 88px;
+    bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 14px;
+    border-top: 1px solid var(--hairline);
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+
+  .footer .page {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .slide--navy .footer {
+    border-top-color: rgba(255,255,255,0.18);
+    color: rgba(255,255,255,0.55);
+  }
+
+  /* =========================================================
+     COVER (Slide 1)
+     ========================================================= */
+  .cover {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 120px;
+  }
+
+  .cover-wordmark {
+    font-family: var(--serif);
+    font-size: 132px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: #FFFFFF;
+    margin: 0;
+  }
+
+  .cover-subtitle {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: rgba(255,255,255,0.70);
+    margin: 28px 0 0 0;
+    max-width: 760px;
+  }
+
+  .cover-foot {
+    position: absolute;
+    left: 88px;
+    right: 88px;
+    bottom: 48px;
+  }
+
+  .cover-foot .rule {
+    width: 100%;
+    height: 1px;
+    background: rgba(255,255,255,0.28);
+    margin-bottom: 18px;
+  }
+
+  .cover-foot .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.62);
+  }
+
+  .cover-foot .doc-no {
+    font-family: var(--mono);
+    letter-spacing: 0.1em;
+  }
+
+  .cover-corner {
+    position: absolute;
+    right: 88px;
+    bottom: 26px;
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.42);
+  }
+
+  /* thin top mark on cover */
+  .cover-mark {
+    position: absolute;
+    top: 64px;
+    left: 88px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* =========================================================
+     NUMBERED COLUMNS (editorial, not cards)
+     ========================================================= */
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    margin-top: 4px;
+  }
+
+  .col {
+    padding: 0 36px;
+    border-left: 1px solid var(--hairline);
+  }
+  .col:first-child { border-left: none; padding-left: 0; }
+  .col:last-child  { padding-right: 0; }
+
+  .col-num {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: var(--accent-gold);
+    margin: 0 0 14px 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .col-title {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--primary-bg);
+    margin: 0 0 12px 0;
+  }
+
+  .col-body {
+    font-family: var(--sans);
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  /* =========================================================
+     THREE-LINE TABLE
+     top 2px navy / header bottom 1px hairline / bottom 2px navy
+     ========================================================= */
+  .tltable {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-top: 4px;
+  }
+
+  .tltable thead tr {
+    border-top: 2px solid var(--table-line);
+  }
+  .tltable thead th {
+    border-bottom: 1px solid var(--hairline);
+    text-align: left;
+    padding: 16px 18px 12px 18px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--primary-bg);
+    vertical-align: bottom;
+  }
+  .tltable thead th:first-child { padding-left: 0; }
+  .tltable thead th:last-child  { padding-right: 0; }
+
+  .tltable tbody td {
+    padding: 15px 18px;
+    border: none;
+    color: var(--text-primary);
+    vertical-align: top;
+  }
+  .tltable tbody td:first-child { padding-left: 0; }
+  .tltable tbody td:last-child  { padding-right: 0; }
+
+  .tltable tbody tr:last-child td {
+    border-bottom: 2px solid var(--table-line);
+    padding-bottom: 16px;
+  }
+
+  .tltable .rule-cell {
+    font-family: var(--serif);
+    font-weight: 600;
+    color: var(--primary-bg);
+    font-size: 14.5px;
+    white-space: nowrap;
+  }
+  .tltable .why-cell { color: var(--text-secondary); }
+  .tltable .ex-cell {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--text-secondary);
+  }
+  .tltable .ref-cell { color: var(--text-secondary); }
+
+  /* footnote under tables */
+  .footnote {
+    margin-top: 22px;
+    font-family: var(--sans);
+    font-size: 11.5px;
+    line-height: 1.6;
+    color: var(--text-tertiary);
+  }
+  .footnote sup { font-size: 9px; vertical-align: super; }
+
+  /* =========================================================
+     STYLE LIBRARY — bottom key figure
+     ========================================================= */
+  .key-figure {
+    margin-top: auto;
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    padding-top: 24px;
+  }
+  .key-figure .num {
+    font-family: var(--serif);
+    font-size: 64px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--accent-gold);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+  .key-figure .label {
+    font-family: var(--sans);
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  /* =========================================================
+     WORKFLOW — CSS geometric icons (no SVG illustration)
+     ========================================================= */
+  .flow {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    margin-top: 8px;
+    flex: 1;
+    align-content: start;
+  }
+  .flow .col { padding: 0 40px; }
+
+  .geo {
+    width: 56px;
+    height: 56px;
+    margin: 0 0 22px 0;
+    position: relative;
+  }
+  /* 01 — hollow circle (trigger / input) */
+  .geo--circle {
+    border: 1.5px solid var(--primary-bg);
+    border-radius: 50%;
+  }
+  .geo--circle::after {
+    content: "";
+    position: absolute;
+    inset: 14px;
+    border: 1.5px solid var(--primary-bg);
+    border-radius: 50%;
+  }
+  /* 02 — hollow square with inner cross (design / process) */
+  .geo--square {
+    border: 1.5px solid var(--primary-bg);
+  }
+  .geo--square::before,
+  .geo--square::after {
+    content: "";
+    position: absolute;
+    background: var(--primary-bg);
+  }
+  .geo--square::before { /* vertical */
+    left: 50%; top: 12px; bottom: 12px; width: 1.5px; transform: translateX(-50%);
+  }
+  .geo--square::after { /* horizontal */
+    top: 50%; left: 12px; right: 12px; height: 1.5px; transform: translateY(-50%);
+  }
+  /* 03 — triangle pointing right (export / output) */
+  .geo--tri {
+    width: 0; height: 0; border: none;
+    border-top: 28px solid transparent;
+    border-bottom: 28px solid transparent;
+    border-left: 44px solid var(--primary-bg);
+    margin-top: 0;
+  }
+  .geo--tri-wrap { width: 56px; height: 56px; display: flex; align-items: center; }
+
+  .flow .step-tag {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    color: var(--accent-gold);
+    margin: 0 0 10px 0;
+    font-variant-numeric: tabular-nums;
+  }
+  .flow .step-name {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--primary-bg);
+    margin: 0 0 12px 0;
+    letter-spacing: 0.02em;
+  }
+  .flow .step-desc {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+  .flow .step-desc code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--primary-bg);
+    background: transparent;
+  }
+
+  /* =========================================================
+     CTA (Slide 8)
+     ========================================================= */
+  .cta {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 120px;
+  }
+  .cta-headline {
+    font-family: var(--serif);
+    font-size: 72px;
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    color: #FFFFFF;
+    margin: 0;
+    max-width: 980px;
+  }
+  .cta-sub {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 22px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.70);
+    margin: 26px 0 0 0;
+  }
+  .cta-foot {
+    position: absolute;
+    left: 88px;
+    right: 88px;
+    bottom: 80px;
+  }
+  .cta-foot .rule {
+    width: 100%;
+    height: 1px;
+    background: rgba(255,255,255,0.24);
+    margin-bottom: 16px;
+  }
+  .cta-foot .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+  }
+
+  /* utility: muted mono token */
+  .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ============================================================
+       SLIDE 1 — COVER
+       ============================================================ -->
+  <section class="slide slide--navy">
+    <div class="cover-mark">cc-design / v3.1</div>
+    <div class="cover">
+      <h1 class="cover-wordmark">cc-design</h1>
+      <p class="cover-subtitle">The AI design skill that thinks like a designer</p>
+    </div>
+    <div class="cover-foot">
+      <div class="rule"></div>
+      <div class="row">
+        <span>Confidential &middot; Product Overview &middot; 2026</span>
+        <span class="doc-no">DOC-CCD-2026-001</span>
+      </div>
+    </div>
+    <div class="cover-corner">Built on trae &middot; Open Source</div>
+  </section>
+
+
+  <!-- ============================================================
+       SLIDE 2 — THE PROBLEM
+       ============================================================ -->
+  <section class="slide">
+    <div class="frame">
+      <p class="slide-eyebrow">02 &middot; Problem</p>
+      <h2 class="slide-title">The AI Design Problem</h2>
+      <p class="lead">
+        AI-generated designs all look the same. Purple gradients, rounded cards,
+        emoji icons, generic SaaS templates. This is <em>&ldquo;AI slop&rdquo;</em>
+        &mdash; and it is getting worse.
+      </p>
+
+      <div class="columns">
+        <div class="col">
+          <p class="col-num">01</p>
+          <h3 class="col-title">Generic Aesthetics</h3>
+          <p class="col-body">
+            Most AI tools default to the same visual language. Every output
+            converges on the average of training data, carrying no brand signal
+            at all.
+          </p>
+        </div>
+        <div class="col">
+          <p class="col-num">02</p>
+          <h3 class="col-title">No Conceptual Root</h3>
+          <p class="col-body">
+            Designs do not come from content, they come from templates. Without a
+            conceptual root, pages are decorated containers, not decisions.
+          </p>
+        </div>
+        <div class="col">
+          <p class="col-num">03</p>
+          <h3 class="col-title">Unstable Output</h3>
+          <p class="col-body">
+            Same prompt, different results, no quality floor. There is no
+            predictable baseline &mdash; every run is a lottery on taste.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Problem</span>
+      <span class="page">02 / 08</span>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       SLIDE 3 — THE SOLUTION
+       ============================================================ -->
+  <section class="slide">
+    <div class="frame">
+      <p class="slide-eyebrow">03 &middot; Solution</p>
+      <h2 class="slide-title">The cc-design Approach</h2>
+      <p class="lead">
+        cc-design makes AI in trae IDE behave like a designer who happens to write
+        code &mdash; not a code generator that happens to make pages.
+      </p>
+
+      <div class="columns">
+        <div class="col">
+          <p class="col-num">01</p>
+          <h3 class="col-title">Designer, Not Generator</h3>
+          <p class="col-body">
+            Asks <em>&ldquo;what is this page for?&rdquo;</em> before writing code.
+            Form follows content; every element earns its place or is removed.
+          </p>
+        </div>
+        <div class="col">
+          <p class="col-num">02</p>
+          <h3 class="col-title">Anti-Slop Engine</h3>
+          <p class="col-body">
+            <span class="gold">15+</span> explicit rules to avoid AI default
+            aesthetics &mdash; purple gradients, rounded cards, emoji decoration,
+            uncanny SVG imagery.
+          </p>
+        </div>
+        <div class="col">
+          <p class="col-num">03</p>
+          <h3 class="col-title">Style Library</h3>
+          <p class="col-body">
+            <span class="gold">50+</span> curated styles with real design
+            references. Each style carries provenance, not invented aesthetics.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Solution</span>
+      <span class="page">03 / 08</span>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       SLIDE 4 — ANTI-SLOP ENGINE
+       ============================================================ -->
+  <section class="slide">
+    <div class="frame">
+      <p class="slide-eyebrow">04 &middot; Anti-Slop</p>
+      <h2 class="slide-title">Anti-Slop Engine</h2>
+      <p class="lead">
+        <span class="gold">15+</span> rules to keep AI output from looking like
+        AI output.
+      </p>
+
+      <table class="tltable">
+        <thead>
+          <tr>
+            <th style="width:24%">Rule</th>
+            <th style="width:26%">Blocks</th>
+            <th style="width:24%">Why</th>
+            <th style="width:26%">Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="rule-cell">No Purple Gradients</td>
+            <td>Mesh / rainbow gradients</td>
+            <td class="why-cell">AI default signature</td>
+            <td class="ex-cell">Use oklch from brand color</td>
+          </tr>
+          <tr>
+            <td class="rule-cell">No Rounded Cards + Left Border</td>
+            <td>Generic dashboard look</td>
+            <td class="why-cell">AI Dashboard signature</td>
+            <td class="ex-cell">Use real layout decisions</td>
+          </tr>
+          <tr>
+            <td class="rule-cell">No Emoji Decoration</td>
+            <td>Emoji as icons</td>
+            <td class="why-cell">Lazy decoration</td>
+            <td class="ex-cell">Use CSS geometric shapes</td>
+          </tr>
+          <tr>
+            <td class="rule-cell">No SVG Imagery</td>
+            <td>Drawn people / scenes</td>
+            <td class="why-cell">Uncanny valley</td>
+            <td class="ex-cell">Use placeholder + label</td>
+          </tr>
+          <tr>
+            <td class="rule-cell">No Default Aesthetic</td>
+            <td>Self-style defaults</td>
+            <td class="why-cell">Unconscious slop</td>
+            <td class="ex-cell">Five-question test</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="footnote">
+        <sup>1</sup>&nbsp;Based on Claude Design methodology (MIT).&nbsp;&nbsp;
+        <sup>2</sup>&nbsp;cc-design v3.1 <span class="mono">content-guidelines.md</span>.
+      </p>
+    </div>
+    <div class="footer">
+      <span>Anti-Slop</span>
+      <span class="page">04 / 08</span>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       SLIDE 5 — STYLE LIBRARY
+       ============================================================ -->
+  <section class="slide">
+    <div class="frame">
+      <p class="slide-eyebrow">05 &middot; Style Library</p>
+      <h2 class="slide-title"><span class="gold">50+</span> Curated Styles</h2>
+      <p class="lead">
+        From Swiss International to Japanese Ma, from Bloomberg Terminal to Ink
+        Wash Contemporary. Each style has real design references, not invented
+        aesthetics.
+      </p>
+
+      <table class="tltable">
+        <thead>
+          <tr>
+            <th style="width:20%">Category</th>
+            <th style="width:46%">Styles</th>
+            <th style="width:34%">Reference</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="rule-cell">Quiet</td>
+            <td>Swiss Editorial, Japanese Ma, Quiet Authority</td>
+            <td class="ref-cell">Vignelli, Kenya Hara, McKinsey</td>
+          </tr>
+          <tr>
+            <td class="rule-cell">Chinese Context</td>
+            <td>Modern Chinese Editorial, Ink Wash, Classical Manifesto</td>
+            <td class="ref-cell">单读, 王澍, 中华书局</td>
+          </tr>
+          <tr>
+            <td class="rule-cell">Data Viz</td>
+            <td>Bloomberg Terminal, Scientific Publication</td>
+            <td class="ref-cell">Bloomberg, Nature</td>
+          </tr>
+          <tr>
+            <td class="rule-cell">Mobile</td>
+            <td>iOS Native, Android Material 3</td>
+            <td class="ref-cell">Apple HIG, Material Design 3</td>
+          </tr>
+          <tr>
+            <td class="rule-cell">Tech</td>
+            <td>Linear-Inspired, Stripe-Inspired, Notion-Inspired</td>
+            <td class="ref-cell">Linear, Stripe, Notion</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="key-figure">
+        <span class="num">50+</span>
+        <span class="label">curated HTML-native styles</span>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Style Library</span>
+      <span class="page">05 / 08</span>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       SLIDE 6 — HOW IT WORKS
+       ============================================================ -->
+  <section class="slide">
+    <div class="frame">
+      <p class="slide-eyebrow">06 &middot; Workflow</p>
+      <h2 class="slide-title">How It Works</h2>
+      <p class="lead">
+        Three steps, from intent to export &mdash; no sign-up, no configuration,
+        runs inside trae IDE.
+      </p>
+
+      <div class="flow">
+        <div class="col">
+          <div class="geo geo--circle"></div>
+          <p class="step-tag">01 &middot; TRIGGER</p>
+          <h3 class="step-name">Trigger</h3>
+          <p class="step-desc">
+            In trae IDE, say
+            <code>&ldquo;做个原型&rdquo;</code>,
+            <code>&ldquo;做个PPT&rdquo;</code>,
+            <code>&ldquo;做个HTML页面&rdquo;</code>.
+            cc-design picks up the intent.
+          </p>
+        </div>
+        <div class="col">
+          <div class="geo geo--square"></div>
+          <p class="step-tag">02 &middot; DESIGN</p>
+          <h3 class="step-name">Design</h3>
+          <p class="step-desc">
+            cc-design selects a style, applies the anti-slop engine, and
+            generates <span class="gold">3+</span> variants for side-by-side
+            comparison.
+          </p>
+        </div>
+        <div class="col">
+          <div class="geo--tri-wrap"><div class="geo geo--tri"></div></div>
+          <p class="step-tag">03 &middot; EXPORT</p>
+          <h3 class="step-name">Export</h3>
+          <p class="step-desc">
+            HTML &middot; PPT &middot; MP4 &middot; GIF &middot; PDF.
+            Single-file output, no external dependencies.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Workflow</span>
+      <span class="page">06 / 08</span>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       SLIDE 7 — STANDING ON GIANTS
+       ============================================================ -->
+  <section class="slide">
+    <div class="frame">
+      <p class="slide-eyebrow">07 &middot; Acknowledgments</p>
+      <h2 class="slide-title">Standing on the Shoulders of Giants</h2>
+      <p class="lead">
+        cc-design is built on the work of open-source pioneers. We gratefully
+        acknowledge:
+      </p>
+
+      <div class="columns">
+        <div class="col">
+          <p class="col-num">01</p>
+          <h3 class="col-title">huashu-design</h3>
+          <p class="col-body">
+            By 花叔 &middot; MIT. The original project. cc-design is built on its
+            foundation &mdash; methodology, references, and starter components.
+          </p>
+        </div>
+        <div class="col">
+          <p class="col-num">02</p>
+          <h3 class="col-title">Claude Design</h3>
+          <p class="col-body">
+            MIT. Methodology reference. Self-reflection rules, the five-question
+            test, and the variant philosophy that underpins anti-slop.
+          </p>
+        </div>
+        <div class="col">
+          <p class="col-num">03</p>
+          <h3 class="col-title">Open Design</h3>
+          <p class="col-body">
+            Apache 2.0. The 9-section design system structure. Brand design
+            system library used as structural reference.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Acknowledgments</span>
+      <span class="page">07 / 08</span>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       SLIDE 8 — CTA / Q&A
+       ============================================================ -->
+  <section class="slide slide--navy">
+    <div class="cta">
+      <h2 class="cta-headline">Ready to design like a designer?</h2>
+      <p class="cta-sub">Try cc-design in trae IDE today</p>
+    </div>
+    <div class="cta-foot">
+      <div class="rule"></div>
+      <div class="row">
+        <span>Free &middot; Open Source &middot; No sign-up required</span>
+        <span>End of Deck &middot; Q&amp;A</span>
+      </div>
+    </div>
+    <div class="footer">
+      <span>End</span>
+      <span class="page">08 / 08</span>
+    </div>
+  </section>
+
+</div>
+
+</body>
+</html>

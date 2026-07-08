@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MindEcho · 听见内心的回声</title>
+<style>
+  /* ---------- Reset ---------- */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --paper:     #F5F0E8;   /* 宣纸暖白 */
+    --ink:       #1A1A1A;   /* 墨黑 */
+    --vermilion: #A0392E;   /* 朱红（仅章节标记 / 重点）*/
+    --gray-1:    #6b6358;   /* 次要文字 */
+    --gray-2:    #9a9286;   /* 辅助文字 */
+    --gray-3:    #d4cdbf;   /* 分隔线 */
+    --serif: 'Songti SC', 'STSong', 'SimSun', 'Noto Serif SC', 'Source Han Serif SC', serif;
+    --sans:  'PingFang SC', 'Hiragino Sans GB', 'Noto Sans SC', 'Source Han Sans SC', 'Microsoft YaHei', sans-serif;
+  }
+
+  html {
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.85;
+    /* 标点挤压 —— 即使浏览器支持有限也按要求写入 */
+    text-spacing-trim: space-all;
+    hanging-punctuation: first last;
+    /* 极淡的宣纸暖意，不喧宾夺主 */
+    background-image:
+      radial-gradient(circle at 12% 18%, rgba(160, 120, 80, 0.028) 0%, transparent 42%),
+      radial-gradient(circle at 88% 82%, rgba(160, 120, 80, 0.022) 0%, transparent 42%);
+  }
+
+  .page {
+    max-width: 68em;
+    margin: 0 auto;
+    padding: 0 2em;
+  }
+
+  .column {
+    max-width: 38em;
+    margin: 0 auto;
+    padding: 5em 0 6em;
+    position: relative;
+  }
+
+  /* ---------- Masthead ---------- */
+  .masthead {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 1.6em;
+    margin-bottom: 5em;
+    border-bottom: 1px solid var(--gray-3);
+    font-family: var(--serif);
+    font-size: 0.9em;
+    color: var(--gray-1);
+  }
+  .masthead .brand {
+    font-size: 1.18em;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+  }
+  .masthead .meta {
+    font-size: 0.82em;
+    letter-spacing: 0.12em;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero { margin-bottom: 6.5em; }
+
+  .kicker {
+    font-family: var(--sans);
+    font-size: 0.76em;
+    letter-spacing: 0.32em;
+    color: var(--vermilion);
+    text-transform: uppercase;
+    margin-bottom: 2.2em;
+  }
+
+  .hero h1 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 3.4em;
+    line-height: 1.22;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.7em;
+  }
+
+  .hero .subtitle {
+    font-family: var(--sans);
+    font-size: 1.12em;
+    line-height: 1.7;
+    color: var(--gray-1);
+    max-width: 26em;
+    letter-spacing: 0.02em;
+  }
+
+  /* ---------- Chapter ---------- */
+  .chapter { margin-bottom: 4.8em; }
+
+  .chapter-head {
+    display: flex;
+    align-items: center;
+    gap: 0.75em;
+    margin-bottom: 1.5em;
+  }
+
+  /* 朱红印章式章节标记 */
+  .seal {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.7em;
+    height: 1.7em;
+    background: var(--vermilion);
+    color: var(--paper);
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 0.82em;
+    line-height: 1;
+    flex-shrink: 0;
+    box-shadow: inset 0 0 0 1px rgba(245, 240, 232, 0.28);
+  }
+
+  .chapter h2 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 1.55em;
+    letter-spacing: 0.03em;
+    line-height: 1.3;
+  }
+
+  .chapter-body { position: relative; }
+
+  .lede {
+    font-family: var(--sans);
+    font-size: 1em;
+    line-height: 1.95;
+    color: var(--ink);
+    text-align: justify;
+    letter-spacing: 0.01em;
+  }
+
+  /* 首字下沉 */
+  .lede::first-letter {
+    font-family: var(--serif);
+    font-size: 3em;
+    font-weight: 600;
+    float: left;
+    line-height: 0.88;
+    margin: 0.06em 0.14em -0.08em 0;
+    color: var(--ink);
+  }
+
+  /* 文中上标脚注引用 */
+  .fnref {
+    font-family: var(--serif);
+    font-size: 0.62em;
+    vertical-align: super;
+    line-height: 0;
+    color: var(--gray-1);
+    margin: 0 0.05em;
+  }
+
+  /* ---------- Sidenote 侧栏脚注 ---------- */
+  .sidenote {
+    font-size: 0.78em;
+    line-height: 1.7;
+    color: var(--gray-1);
+    font-family: var(--sans);
+    margin: 1.4em 0 0;
+    padding-left: 1em;
+    border-left: 1px solid var(--gray-3);
+  }
+  .sidenote .fnnum {
+    font-family: var(--serif);
+    color: var(--gray-1);
+    margin-right: 0.35em;
+    font-weight: 600;
+  }
+
+  /* 宽屏：脚注浮入右侧栏 */
+  @media (min-width: 68em) {
+    .sidenote {
+      position: absolute;
+      right: -13em;
+      top: 0.35em;
+      width: 11em;
+      margin: 0;
+      padding-left: 0.85em;
+      border-left: 1px solid var(--gray-3);
+    }
+  }
+
+  /* ---------- Closing ---------- */
+  .closing {
+    margin-top: 6.5em;
+    padding-top: 3em;
+    border-top: 1px solid var(--gray-3);
+    text-align: center;
+  }
+  .closing .pull {
+    font-family: var(--serif);
+    font-size: 1.18em;
+    line-height: 1.7;
+    color: var(--ink);
+    margin-bottom: 2.6em;
+    letter-spacing: 0.04em;
+  }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75em;
+    font-family: var(--serif);
+    font-size: 1.05em;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    border: 1px solid var(--ink);
+    padding: 1em 2.6em;
+    text-decoration: none;
+    transition: background 0.25s ease, color 0.25s ease;
+  }
+  .cta-mark {
+    display: inline-block;
+    width: 0.7em;
+    height: 0.7em;
+    background: var(--vermilion);
+    transition: background 0.25s ease;
+  }
+  .cta:hover { background: var(--ink); color: var(--paper); }
+  .cta:hover .cta-mark { background: var(--paper); }
+
+  /* ---------- Colophon ---------- */
+  .colophon {
+    margin-top: 5em;
+    padding-top: 1.8em;
+    border-top: 1px solid var(--gray-3);
+    font-size: 0.78em;
+    color: var(--gray-2);
+    letter-spacing: 0.08em;
+    text-align: center;
+    font-family: var(--serif);
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 40em) {
+    html { font-size: 16px; }
+    .page { padding: 0 1.25em; }
+    .column { padding: 3.5em 0 4.5em; }
+    .hero h1 { font-size: 2.5em; }
+    .hero { margin-bottom: 5em; }
+    .chapter { margin-bottom: 4em; }
+    .masthead { margin-bottom: 4em; }
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <main class="column">
+
+      <header class="masthead">
+        <span class="brand">MindEcho</span>
+        <span class="meta">No. 01 · 心灵的回声</span>
+      </header>
+
+      <section class="hero">
+        <div class="kicker">产品 · 心理学应用</div>
+        <h1>听见内心的回声</h1>
+        <p class="subtitle">用 AI 理解你的情绪，用科学重塑你的认知。</p>
+      </section>
+
+      <article>
+
+        <section class="chapter">
+          <div class="chapter-head">
+            <span class="seal">一</span>
+            <h2>AI 情绪追踪</h2>
+          </div>
+          <div class="chapter-body">
+            <p class="lede">每天清晨，花三分钟与 MindEcho 对话。它会从你的语调、措辞与停顿中，辨认出那些你未曾察觉的情绪暗流——你以为已经过去的事，其实仍在身体里轻轻回响<span class="fnref">①</span>。一周之后，你将拿到一张属于自己的情绪地图，看见起伏，也看见盲点。</p>
+            <aside class="sidenote"><span class="fnnum">①</span>情绪识别基于多模态情感计算模型，涵盖效价、唤醒度与主导性三个维度。</aside>
+          </div>
+        </section>
+
+        <section class="chapter">
+          <div class="chapter-head">
+            <span class="seal">二</span>
+            <h2>认知重塑</h2>
+          </div>
+          <div class="chapter-body">
+            <p class="lede">情绪并非来自事件本身，而来自我们对事件的解释——这是认知行为疗法半个世纪以来的核心命题<span class="fnref">②</span>。MindEcho 根据你的情绪记录，定制思维练习：当你写下"我又搞砸了"，它会温柔地反问，是"全部搞砸"，还是"这一件没做好"。</p>
+            <aside class="sidenote"><span class="fnnum">②</span>CBT 由 Aaron T. Beck 于 1960 年代提出，是当前实证基础最充分的心理干预之一。</aside>
+          </div>
+        </section>
+
+        <section class="chapter">
+          <div class="chapter-head">
+            <span class="seal">三</span>
+            <h2>匿名树洞</h2>
+          </div>
+          <div class="chapter-body">
+            <p class="lede">有些话，连最亲密的人也不能讲。MindEcho 的树洞采用端到端加密，连我们也无法读取你写下的内容<span class="fnref">③</span>。你的秘密只属于你——这是技术能给予一个人，最沉默也最坚定的承诺。</p>
+            <aside class="sidenote"><span class="fnnum">③</span>端到端加密（E2EE）下，服务器仅存储密文，解密密钥仅留存于本地设备。</aside>
+          </div>
+        </section>
+
+      </article>
+
+      <section class="closing">
+        <p class="pull">内心的回声，值得被认真听见。</p>
+        <a href="#" class="cta"><span class="cta-mark"></span>开始 7 天免费体验</a>
+      </section>
+
+      <footer class="colophon">
+        MindEcho · 以科学之名，善待每一颗心
+      </footer>
+
+    </main>
+  </div>
+</body>
+</html>

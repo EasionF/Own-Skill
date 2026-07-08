@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MindEcho — A Report on AI-Powered Mental Wellness · 2026</title>
+<style>
+  /* ============================================================
+     SWISS EDITORIAL RESTRAINT — cc-design v3.1 style demo
+     12-col grid · 8pt type scale · hairline rules · single accent
+     References: Vignelli (Knoll catalog) · Müller-Brockmann · NYT 1980s masthead
+     ============================================================ */
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --paper:        #FAFAF8;   /* warm white */
+    --paper-pure:   #FFFFFF;
+    --ink:          #0A0A0A;   /* near-black */
+    --accent:       #8B0000;   /* deep red — structural only */
+    --gray-1:       #888888;
+    --gray-2:       #CCCCCC;
+    --hairline:     #E5E5E5;
+    --rule-strong:  #0A0A0A;
+    --serif: 'Source Serif Pro', 'Source Serif', 'Times New Roman', Times, serif;
+    --sans:  'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  }
+
+  html { font-size: 16px; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;        /* 8pt scale: 2×8 */
+    line-height: 24px;      /* baseline 24px */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    text-wrap: pretty;
+  }
+
+  /* ---------- Page frame ---------- */
+  .page {
+    position: relative;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 64px 64px 96px;   /* whitespace ≥ 64px */
+    background: var(--paper);
+  }
+
+  /* ---------- Visible 12-col grid (design element, alpha 0.04) ---------- */
+  .grid-overlay {
+    position: absolute;
+    top: 0;
+    left: 64px;
+    right: 64px;
+    bottom: 0;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 24px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .grid-overlay > span {
+    border-right: 1px solid rgba(10, 10, 10, 0.04);
+  }
+  .grid-overlay > span:first-child {
+    border-left: 1px solid rgba(10, 10, 10, 0.04);
+  }
+
+  /* ---------- Content grid ---------- */
+  .grid12 {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 24px;
+  }
+
+  /* ---------- Hairline rule ---------- */
+  .hr {
+    border: 0;
+    border-top: 1px solid var(--hairline);
+    height: 0;
+    margin: 0;
+  }
+  .hr-strong { border-top: 1px solid var(--ink); }
+  .hr-double {
+    border: 0;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    height: 3px;
+  }
+
+  /* ============================================================
+     MASTHEAD
+     ============================================================ */
+  .masthead { position: relative; z-index: 1; }
+
+  .masthead-top {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 24px;
+    align-items: end;
+    padding-bottom: 16px;
+  }
+
+  .mh-left   { grid-column: 1 / span 4; }
+  .mh-center { grid-column: 5 / span 5; }
+  .mh-right  { grid-column: 10 / span 3; text-align: right; }
+
+  .mh-kicker {
+    font-family: var(--sans);
+    font-size: 8px;            /* 8pt scale: 1×8 */
+    line-height: 16px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .mh-title {
+    font-family: var(--serif);
+    font-size: 64px;           /* 8pt scale: 8×8 */
+    line-height: 64px;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+
+  .mh-sub {
+    font-family: var(--sans);
+    font-size: 8px;
+    line-height: 16px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .masthead-rule {
+    margin-top: 16px;
+    border-top: 3px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    height: 4px;
+  }
+
+  .masthead-foot {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 24px;
+    padding-top: 12px;
+    font-size: 8px;
+    line-height: 16px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .masthead-foot .a { grid-column: 1 / span 6; }
+  .masthead-foot .b { grid-column: 7 / span 3; }
+  .masthead-foot .c { grid-column: 10 / span 3; text-align: right; }
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  .hero { padding-top: 96px; padding-bottom: 96px; }
+
+  .hero-label {
+    grid-column: 1 / span 3;
+    font-family: var(--sans);
+    font-size: 8px;
+    line-height: 16px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .hero-label .num { color: var(--accent); }
+
+  .hero-meta {
+    grid-column: 1 / span 3;
+    margin-top: 32px;
+    font-family: var(--sans);
+    font-size: 8px;
+    line-height: 16px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gray-1);
+    font-weight: 500;
+  }
+
+  .hero-headline {
+    grid-column: 4 / span 9;
+    font-family: var(--serif);
+    font-size: 96px;           /* 8pt scale: 12×8 */
+    line-height: 96px;
+    letter-spacing: -0.025em;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .hero-lead {
+    grid-column: 4 / span 7;
+    margin-top: 48px;
+    font-family: var(--serif);
+    font-size: 24px;           /* 8pt scale: 3×8 */
+    line-height: 32px;
+    color: var(--ink);
+    font-weight: 400;
+  }
+
+  .hero-lead .num { color: var(--accent); font-weight: 600; }
+  .hero-lead sup { color: var(--accent); font-size: 0.6em; font-weight: 600; }
+
+  .hero-byline {
+    grid-column: 4 / span 7;
+    margin-top: 32px;
+    font-family: var(--sans);
+    font-size: 8px;
+    line-height: 16px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gray-1);
+    font-weight: 500;
+  }
+
+  /* ============================================================
+     FEATURES — editorial columns, hairline separated (NOT cards)
+     ============================================================ */
+  .section-head {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 24px;
+    align-items: baseline;
+    padding-bottom: 24px;
+  }
+  .section-head .label {
+    grid-column: 1 / span 3;
+    font-family: var(--sans);
+    font-size: 8px;
+    line-height: 16px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .section-head .label .num { color: var(--accent); }
+  .section-head .title {
+    grid-column: 4 / span 9;
+    font-family: var(--serif);
+    font-size: 32px;          /* 8pt scale: 4×8 */
+    line-height: 32px;
+    letter-spacing: -0.01em;
+    font-weight: 700;
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 24px;
+    padding-top: 32px;
+    border-top: 1px solid var(--ink);
+  }
+
+  .feature {
+    grid-column: span 4;
+    padding-top: 32px;
+    padding-right: 24px;
+    border-top: 0;
+    position: relative;
+  }
+  .feature + .feature {
+    border-left: 1px solid var(--hairline);
+    padding-left: 24px;
+  }
+
+  .feature-num {
+    font-family: var(--sans);
+    font-size: 8px;
+    line-height: 16px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 24px;
+  }
+
+  .feature-title {
+    font-family: var(--serif);
+    font-size: 32px;          /* 4×8 */
+    line-height: 32px;
+    letter-spacing: -0.01em;
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+
+  .feature-body {
+    font-family: var(--sans);
+    font-size: 16px;          /* 2×8 */
+    line-height: 24px;
+    color: var(--ink);
+    font-weight: 400;
+  }
+  .feature-body .num { color: var(--accent); font-weight: 600; }
+  .feature-body sup { color: var(--accent); font-size: 0.7em; font-weight: 600; }
+  .feature-body p + p { margin-top: 16px; }
+
+  .feature-tag {
+    margin-top: 24px;
+    font-family: var(--sans);
+    font-size: 8px;
+    line-height: 16px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gray-1);
+    font-weight: 500;
+    padding-top: 16px;
+    border-top: 1px solid var(--hairline);
+  }
+
+  /* ============================================================
+     DATA — three-line table (only top/bottom rules, no verticals)
+     ============================================================ */
+  .data-wrap { padding-top: 96px; }
+
+  .data-table {
+    grid-column: 1 / span 12;
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 24px;
+    margin-top: 32px;
+  }
+
+  .data-table thead tr {
+    border-top: 2px solid var(--ink);     /* top rule */
+    border-bottom: 1px solid var(--ink);  /* header rule */
+  }
+  .data-table tbody tr {
+    border-bottom: 1px solid var(--hairline);
+  }
+  .data-table tbody tr:last-child {
+    border-bottom: 2px solid var(--ink);  /* bottom rule */
+  }
+
+  .data-table th {
+    text-align: left;
+    font-size: 8px;
+    line-height: 16px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ink);
+    padding: 16px 16px 16px 0;
+    vertical-align: bottom;
+  }
+  .data-table th.r, .data-table td.r { text-align: right; }
+  .data-table th.c, .data-table td.c { text-align: center; }
+
+  .data-table td {
+    padding: 24px 16px 24px 0;
+    vertical-align: baseline;
+    font-weight: 400;
+    color: var(--ink);
+  }
+
+  .data-table .metric {
+    font-family: var(--serif);
+    font-size: 24px;          /* 3×8 */
+    line-height: 24px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .data-table .val {
+    font-family: var(--serif);
+    font-size: 24px;
+    line-height: 24px;
+    font-weight: 700;
+  }
+  .data-table .val-accent { color: var(--accent); }
+  .data-table .delta { color: var(--accent); font-weight: 600; }
+  .data-table .muted { color: var(--gray-1); }
+
+  .data-note {
+    grid-column: 1 / span 12;
+    margin-top: 24px;
+    font-family: var(--sans);
+    font-size: 8px;
+    line-height: 16px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gray-1);
+    font-weight: 500;
+  }
+
+  /* ============================================================
+     FOOTNOTES
+     ============================================================ */
+  .footnotes {
+    margin-top: 96px;
+    padding-top: 32px;
+    border-top: 1px solid var(--ink);
+  }
+
+  .footnotes-head {
+    font-family: var(--sans);
+    font-size: 8px;
+    line-height: 16px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+
+  .footnotes-list {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 24px;
+  }
+
+  .fn {
+    grid-column: span 4;
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--ink);
+  }
+  .fn .n {
+    color: var(--accent);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ============================================================
+     COLOPHON
+     ============================================================ */
+  .colophon {
+    margin-top: 96px;
+    padding-top: 24px;
+    border-top: 1px solid var(--hairline);
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 24px;
+    font-family: var(--sans);
+    font-size: 8px;
+    line-height: 16px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gray-1);
+    font-weight: 500;
+  }
+  .colophon .a { grid-column: 1 / span 5; }
+  .colophon .b { grid-column: 6 / span 4; text-align: center; }
+  .colophon .c { grid-column: 10 / span 3; text-align: right; }
+  .colophon .accent { color: var(--accent); }
+
+  /* ---------- responsive safety ---------- */
+  @media (max-width: 1024px) {
+    .page { padding: 48px 32px 64px; }
+    .hero-headline { font-size: 64px; line-height: 64px; }
+    .grid-overlay { left: 32px; right: 32px; }
+  }
+  @media (max-width: 720px) {
+    .page { padding: 40px 24px 56px; }
+    .grid-overlay { left: 24px; right: 24px; }
+    .hero-headline { font-size: 48px; line-height: 48px; }
+    .hero-lead { font-size: 20px; line-height: 28px; }
+    .mh-title { font-size: 40px; line-height: 40px; }
+    .features, .footnotes-list { display: block; }
+    .feature + .feature { border-left: 0; border-top: 1px solid var(--hairline); padding-left: 0; margin-top: 48px; }
+    .fn + .fn { margin-top: 16px; }
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Visible 12-column grid as design element -->
+    <div class="grid-overlay" aria-hidden="true">
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+    </div>
+
+    <!-- ============== MASTHEAD ============== -->
+    <header class="masthead">
+      <div class="masthead-top">
+        <div class="mh-left">
+          <div class="mh-kicker">Founded MMXXV</div>
+        </div>
+        <div class="mh-center">
+          <div class="mh-sub" style="text-align:center;">A Report on AI-Powered Mental Wellness</div>
+        </div>
+        <div class="mh-right">
+          <div class="mh-kicker">VOL. I &middot; NO. 1 &middot; MMXXVI</div>
+        </div>
+      </div>
+
+      <h1 class="mh-title" style="text-align:center; margin-top:8px;">MINDECHO</h1>
+
+      <div class="masthead-rule"></div>
+
+      <div class="masthead-foot">
+        <div class="a">Issued July 2026 &middot; San Francisco</div>
+        <div class="b">Editorial &middot; Research &middot; Field Notes</div>
+        <div class="c">Price &mdash; Complimentary</div>
+      </div>
+    </header>
+
+    <!-- ============== HERO ============== -->
+    <section class="hero grid12">
+      <div class="hero-label">§ <span class="num">00</span> &mdash; Overview</div>
+      <div class="hero-meta">An editorial report<br>on conversational care</div>
+
+      <h2 class="hero-headline">
+        Therapy that<br>
+        listens before<br>
+        it speaks.
+      </h2>
+
+      <p class="hero-lead">
+        MindEcho is a conversational mental-wellness companion built on a single
+        premise: the space between words is as meaningful as the words themselves.
+        Across <span class="num">1.2&nbsp;million</span> sessions and
+        <span class="num">47,000</span> unique users, the system has held silence,
+        parsed prosody, and replied only when silence had finished saying its
+        piece.<sup>1</sup>
+      </p>
+
+      <div class="hero-byline">
+        By the MindEcho Research Desk &middot; Reported from San Francisco
+      </div>
+    </section>
+
+    <hr class="hr-strong">
+
+    <!-- ============== FEATURES (editorial columns) ============== -->
+    <section style="padding-top:96px;">
+      <div class="section-head">
+        <div class="label">§ <span class="num">I</span> &mdash; The Method</div>
+        <div class="title">Three commitments, in order of operation.</div>
+      </div>
+
+      <div class="features">
+
+        <article class="feature">
+          <div class="feature-num">§ 01 &mdash; Active Listening</div>
+          <h3 class="feature-title">It holds the silence.</h3>
+          <div class="feature-body">
+            <p>
+              Before a single suggestion is made, MindEcho waits. The model reads
+              prosody, pause, and the architecture of a sigh &mdash; signals most
+              chatbots discard as noise. A 2026 internal study of
+              <span class="num">4,200</span> users found that
+              <span class="num">78%</span> reported feeling &ldquo;heard&rdquo;
+              within the first <span class="num">90</span> seconds of a session.<sup>1</sup>
+            </p>
+            <p>
+              Silence is not absence. It is the medium in which the user decides
+              what is safe to say next.
+            </p>
+          </div>
+          <div class="feature-tag">Field note &middot; Listening layer</div>
+        </article>
+
+        <article class="feature">
+          <div class="feature-num">§ 02 &mdash; Adaptive Response</div>
+          <h3 class="feature-title">It matches the weather.</h3>
+          <div class="feature-body">
+            <p>
+              Therapeutic tone is not a setting; it is a negotiation. MindEcho
+              calibrates its register to the user&rsquo;s emotional climate &mdash;
+              formal in crisis, plain in reflection, warm in recovery. The system
+              draws on <span class="num">14</span> validated modalities, from
+              cognitive-behavioural therapy to motivational interviewing.<sup>2</sup>
+            </p>
+            <p>
+              No two conversations share a voice, because no two days do.
+            </p>
+          </div>
+          <div class="feature-tag">Field note &middot; Response layer</div>
+        </article>
+
+        <article class="feature">
+          <div class="feature-num">§ 03 &mdash; Continuous Care</div>
+          <h3 class="feature-title">It remembers the week.</h3>
+          <div class="feature-body">
+            <p>
+              Wellness is not a session. MindEcho maintains a longitudinal thread
+              across weeks and months, surfacing patterns the user could not see
+              alone: the Tuesday slumps, the sleep-correlated anxiety, the slow
+              brightening that follows a new habit.<sup>3</sup>
+            </p>
+            <p>
+              Over a <span class="num">12-week</span> cohort, retention held at
+              <span class="num">64%</span> &mdash; nearly triple the category
+              baseline of <span class="num">22%</span>.
+            </p>
+          </div>
+          <div class="feature-tag">Field note &middot; Memory layer</div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ============== DATA TABLE ============== -->
+    <section class="data-wrap grid12">
+      <div class="section-head" style="grid-column:1 / span 12;">
+        <div class="label">§ <span class="num">II</span> &mdash; The Record</div>
+        <div class="title">Measured against the category, January&ndash;May 2026.</div>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:34%;">Metric</th>
+            <th class="r" style="width:18%;">MindEcho</th>
+            <th class="r" style="width:18%;">Category Avg.</th>
+            <th class="r" style="width:14%;">Delta</th>
+            <th class="c" style="width:16%;">Cohort</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="metric">Average session length</td>
+            <td class="val r val-accent">23 min</td>
+            <td class="val r muted">11 min</td>
+            <td class="r delta">+109%</td>
+            <td class="c muted">4,200</td>
+          </tr>
+          <tr>
+            <td class="metric">User-reported empathy</td>
+            <td class="val r val-accent">78%</td>
+            <td class="val r muted">34%</td>
+            <td class="r delta">+44 pts</td>
+            <td class="c muted">4,200</td>
+          </tr>
+          <tr>
+            <td class="metric">30-day retention</td>
+            <td class="val r val-accent">64%</td>
+            <td class="val r muted">22%</td>
+            <td class="r delta">+42 pts</td>
+            <td class="c muted">47,000</td>
+          </tr>
+          <tr>
+            <td class="metric">Crisis-escalation accuracy</td>
+            <td class="val r val-accent">99.2%</td>
+            <td class="val r muted">87.0%</td>
+            <td class="r delta">+12.2 pts</td>
+            <td class="c muted">1,860</td>
+          </tr>
+          <tr>
+            <td class="metric">Median time to first insight</td>
+            <td class="val r val-accent">3.4 min</td>
+            <td class="val r muted">9.1 min</td>
+            <td class="r delta">&minus;63%</td>
+            <td class="c muted">4,200</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="data-note">
+        Source: MindEcho internal study, Jan&ndash;May 2026 &middot; Category benchmark: Woebot, Wysa, Replika public disclosures<sup>2</sup>
+      </div>
+    </section>
+
+    <!-- ============== FOOTNOTES ============== -->
+    <footer class="footnotes">
+      <div class="footnotes-head">Notes &amp; Sources</div>
+      <div class="footnotes-list">
+        <div class="fn"><span class="n">1.</span> MindEcho Listening Study, n=4,200, conducted Jan&ndash;May 2026. Self-reported empathy measured on a 7-point Likert scale; &ldquo;heard&rdquo; defined as score &ge; 5 within first 90 seconds.</div>
+        <div class="fn"><span class="n">2.</span> Category benchmarks compiled from Woebot Health (2025 transparency report), Wysa Q1 2026 release, and Replika public usage disclosures. Figures unaudited.</div>
+        <div class="fn"><span class="n">3.</span> Longitudinal cohort, n=1,860, 12-week observation window. Retention defined as &ge; 1 session per week. Crisis-escalation accuracy validated against licensed clinician review.</div>
+      </div>
+    </footer>
+
+    <!-- ============== COLOPHON ============== -->
+    <div class="colophon">
+      <div class="a">Set in <span class="accent">Source Serif</span> &amp; Inter &middot; 12-column grid, 8pt baseline</div>
+      <div class="b">MindEcho &middot; A Report &middot; MMXXVI</div>
+      <div class="c">End of document &middot; §</div>
+    </div>
+
+  </div>
+</body>
+</html>

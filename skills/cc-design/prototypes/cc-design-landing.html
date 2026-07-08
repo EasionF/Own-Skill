@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>cc-design — The AI design skill that thinks like a designer</title>
+<meta name="description" content="cc-design makes AI in trae IDE behave like a designer who happens to write code. 50+ curated styles, anti-slop rules, expert critique." />
+<style>
+  /* ============================================================
+     cc-design landing — Linear-inspired dark, single file, no deps
+     ============================================================ */
+
+  :root {
+    /* Color tokens (strict) */
+    --bg-canvas: #08090A;
+    --bg-subtle: #0F1011;
+    --bg-elevated: #18191A;
+    --border-subtle: rgba(255,255,255,0.06);
+    --border-default: rgba(255,255,255,0.09);
+    --border-strong: rgba(255,255,255,0.14);
+    --text-primary: #F7F8F8;
+    --text-secondary: #8A8F98;
+    --text-tertiary: #62666D;
+    --accent: #5E6AD2;
+    --accent-hover: #7A82F0;
+    --accent-subtle: rgba(94,106,210,0.12);
+    --success: #26DC6E;
+
+    /* Typography */
+    --font-display: 'Inter Display', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'SF Mono', 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+
+    /* Layout */
+    --maxw: 1200px;
+    --nav-h: 56px;
+
+    /* Motion */
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --dur: 150ms;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg-canvas);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.5;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  /* Subtle ambient grid in the far background — geometric, not gradient slop */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.018) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.018) 1px, transparent 1px);
+    background-size: 64px 64px;
+    pointer-events: none;
+    z-index: 0;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 80%);
+  }
+
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
+
+  /* ============================================================
+     Typography utilities
+     ============================================================ */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.02;
+  }
+  .display-md { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+  .mono { font-family: var(--font-mono); font-feature-settings: "tnum" 1; }
+  .tnum { font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
+  .muted { color: var(--text-secondary); }
+  .faint { color: var(--text-tertiary); }
+
+  /* ============================================================
+     Buttons
+     ============================================================ */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 36px; padding: 0 14px;
+    border-radius: 7px;
+    font-size: 13.5px; font-weight: 500;
+    border: 1px solid transparent;
+    transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease), transform var(--dur) var(--ease);
+    white-space: nowrap;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.08) inset, 0 1px 2px rgba(0,0,0,0.3);
+  }
+  .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
+  .btn-secondary {
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+    border-color: var(--border-default);
+  }
+  .btn-secondary:hover { border-color: var(--border-strong); transform: translateY(-1px); }
+  .btn-ghost { color: var(--text-secondary); }
+  .btn-ghost:hover { color: var(--text-primary); }
+  .btn-lg { height: 44px; padding: 0 20px; font-size: 14.5px; border-radius: 8px; }
+
+  /* ============================================================
+     Nav
+     ============================================================ */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    height: var(--nav-h);
+    background: rgba(8,9,10,0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 100%; }
+  .nav-brand {
+    font-family: var(--font-display); font-weight: 600; font-size: 15px;
+    letter-spacing: -0.02em; display: inline-flex; align-items: center; gap: 9px;
+  }
+  .brand-mark {
+    width: 18px; height: 18px; border-radius: 5px;
+    background: var(--accent);
+    position: relative;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.06) inset;
+  }
+  .brand-mark::after {
+    content: ""; position: absolute; inset: 4px;
+    border: 1.5px solid #fff; border-right: none; border-bottom: none;
+    border-radius: 2px 0 0 0;
+  }
+  .nav-links { display: flex; align-items: center; gap: 4px; }
+  .nav-links a {
+    padding: 7px 12px; border-radius: 6px; font-size: 13.5px; color: var(--text-secondary);
+    transition: color var(--dur) var(--ease), background var(--dur) var(--ease);
+  }
+  .nav-links a:hover { color: var(--text-primary); background: var(--bg-elevated); }
+  .nav-cta { display: flex; align-items: center; gap: 8px; }
+
+  /* ============================================================
+     Hero
+     ============================================================ */
+  .hero { padding: 96px 0 72px; text-align: center; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 28px; padding: 0 12px;
+    border: 1px solid var(--border-default); border-radius: 999px;
+    background: var(--bg-subtle);
+    font-size: 12px; color: var(--text-secondary); font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+  .chip .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); box-shadow: 0 0 8px rgba(38,220,110,0.6); }
+  .hero h1 {
+    margin: 24px auto 0; max-width: 880px;
+    font-size: clamp(40px, 6vw, 64px);
+  }
+  .hero .sub {
+    margin: 22px auto 0; max-width: 680px;
+    color: var(--text-secondary); font-size: 17px; line-height: 1.55;
+  }
+  .hero-cta { margin-top: 32px; display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .hero-fine { margin-top: 16px; font-size: 12.5px; color: var(--text-tertiary); font-family: var(--font-mono); letter-spacing: 0.02em; }
+
+  /* ============================================================
+     Trusted by
+     ============================================================ */
+  .trusted { padding: 24px 0 8px; border-top: 1px solid var(--border-subtle); margin-top: 56px; }
+  .trusted-label {
+    text-align: center; font-size: 11px; letter-spacing: 0.18em;
+    color: var(--text-tertiary); font-weight: 500; text-transform: uppercase;
+  }
+  .trusted-row {
+    display: flex; align-items: center; justify-content: center; gap: 56px;
+    margin-top: 22px; flex-wrap: wrap;
+  }
+  .trusted-row span {
+    font-family: var(--font-display); font-weight: 600; font-size: 16px;
+    letter-spacing: 0.06em; color: var(--text-tertiary); opacity: 0.7;
+    transition: opacity var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+  .trusted-row span:hover { opacity: 1; color: var(--text-secondary); }
+
+  /* ============================================================
+     Section heading
+     ============================================================ */
+  .section { padding: 96px 0; }
+  .section-head { margin-bottom: 48px; }
+  .section-eyebrow {
+    font-family: var(--font-mono); font-size: 12px; color: var(--accent);
+    letter-spacing: 0.04em; text-transform: uppercase; font-weight: 500;
+  }
+  .section-title {
+    font-family: var(--font-display); font-weight: 600; letter-spacing: -0.025em;
+    font-size: clamp(28px, 3.4vw, 40px); line-height: 1.1; margin: 12px 0 0;
+  }
+  .section-sub { margin-top: 14px; color: var(--text-secondary); font-size: 16px; max-width: 620px; }
+
+  /* ============================================================
+     Bento
+     ============================================================ */
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .card {
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 28px;
+    transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease), background var(--dur) var(--ease);
+    position: relative; overflow: hidden;
+  }
+  .card:hover { border-color: var(--border-strong); }
+  .card-anti-slop { grid-column: span 2; grid-row: span 2; padding: 32px; }
+  .card-styles { grid-column: span 1; }
+  .card-critique { grid-column: span 1; }
+  .card-formats { grid-column: span 3; }
+
+  .card-kicker {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+    color: var(--text-tertiary); text-transform: uppercase; font-weight: 500;
+  }
+  .card-title {
+    font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em;
+    font-size: 22px; line-height: 1.2; margin: 10px 0 0;
+  }
+  .card-anti-slop .card-title { font-size: 26px; }
+  .card-desc { color: var(--text-secondary); font-size: 14px; line-height: 1.55; margin-top: 10px; }
+
+  /* Anti-Slop comparison — the centerpiece */
+  .slop-compare {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    margin-top: 24px;
+  }
+  .slop-pane {
+    border: 1px solid var(--border-subtle); border-radius: 10px;
+    padding: 16px; min-height: 188px; position: relative;
+    background: var(--bg-canvas);
+  }
+  .slop-label {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.04em; margin-bottom: 12px;
+  }
+  .slop-bad { border-color: rgba(220,80,120,0.18); }
+  .slop-bad .slop-label { color: #DC5078; }
+  .slop-good { border-color: rgba(38,220,110,0.18); }
+  .slop-good .slop-label { color: var(--success); }
+
+  /* The "AI slop" mock — purple gradient, rounded cards, emoji, left accent border */
+  .slop-mock-bad {
+    height: 120px; border-radius: 10px; padding: 14px;
+    background: linear-gradient(135deg, #7C3AED 0%, #C026D3 55%, #EC4899 100%);
+    position: relative; overflow: hidden;
+  }
+  .slop-mock-bad .pill {
+    display: inline-block; font-size: 9px; padding: 3px 7px; border-radius: 999px;
+    background: rgba(255,255,255,0.22); color: #fff; backdrop-filter: blur(2px);
+    font-weight: 600; letter-spacing: 0.04em;
+  }
+  .slop-mock-bad .emojis { margin-top: 10px; font-size: 14px; letter-spacing: 4px; }
+  .slop-mock-bad .accent-card {
+    margin-top: 10px; height: 38px; border-radius: 8px;
+    background: rgba(255,255,255,0.16); border-left: 3px solid #FACC15;
+    padding: 8px 10px; display: flex; align-items: center; gap: 6px;
+  }
+  .slop-mock-bad .accent-card .bar { width: 30px; height: 5px; background: rgba(255,255,255,0.7); border-radius: 999px; }
+  .slop-mock-bad .accent-card .bar.short { width: 16px; }
+  .slop-bad-note { margin-top: 10px; font-size: 11px; color: var(--text-tertiary); font-family: var(--font-mono); line-height: 1.5; }
+
+  /* The "cc-design" mock — restrained */
+  .slop-mock-good {
+    height: 120px; border-radius: 10px; padding: 14px;
+    background: var(--bg-subtle); border: 1px solid var(--border-default);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .slop-mock-good .g-eyebrow { font-family: var(--font-mono); font-size: 8.5px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; }
+  .slop-mock-good .g-title { font-family: var(--font-display); font-weight: 600; font-size: 13px; letter-spacing: -0.02em; }
+  .slop-mock-good .g-line { height: 4px; border-radius: 2px; background: var(--border-default); }
+  .slop-mock-good .g-line.w70 { width: 70%; }
+  .slop-mock-good .g-line.w50 { width: 50%; }
+  .slop-mock-good .g-chip {
+    align-self: flex-start; font-size: 8px; padding: 2px 6px; border-radius: 4px;
+    background: var(--accent-subtle); color: var(--accent); font-weight: 600;
+    letter-spacing: 0.04em; margin-top: auto;
+  }
+  .slop-good-note { margin-top: 10px; font-size: 11px; color: var(--text-tertiary); font-family: var(--font-mono); line-height: 1.5; }
+
+  .anti-slop-list {
+    margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .anti-slop-list .tag {
+    font-family: var(--font-mono); font-size: 11px; padding: 5px 9px; border-radius: 6px;
+    background: var(--bg-elevated); border: 1px solid var(--border-subtle); color: var(--text-secondary);
+    text-decoration: line-through; text-decoration-color: rgba(220,80,120,0.5);
+  }
+
+  /* Style chips inside 50+ card */
+  .big-num {
+    font-family: var(--font-display); font-weight: 700; font-size: 56px;
+    letter-spacing: -0.04em; line-height: 1; margin-top: 14px;
+  }
+  .big-num .plus { color: var(--accent); }
+  .style-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; }
+  .style-chips .sc {
+    font-size: 11px; padding: 4px 8px; border-radius: 5px;
+    background: var(--bg-elevated); border: 1px solid var(--border-subtle);
+    color: var(--text-secondary); font-family: var(--font-mono); letter-spacing: 0.01em;
+    transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+  .style-chips .sc:hover { border-color: var(--border-strong); color: var(--text-primary); }
+
+  /* Critique checklist */
+  .checklist { margin-top: 18px; display: flex; flex-direction: column; gap: 9px; }
+  .check {
+    display: flex; align-items: flex-start; gap: 10px; font-size: 13px; line-height: 1.45;
+  }
+  .check .box {
+    flex: none; width: 15px; height: 15px; border-radius: 4px; margin-top: 1px;
+    border: 1px solid var(--border-strong); position: relative;
+    background: var(--bg-elevated);
+  }
+  .check.on .box { background: var(--success); border-color: var(--success); }
+  .check.on .box::after {
+    content: ""; position: absolute; left: 4px; top: 1px; width: 4px; height: 8px;
+    border: solid #06080A; border-width: 0 2px 2px 0; transform: rotate(45deg);
+  }
+  .check .txt { color: var(--text-secondary); }
+  .check.on .txt { color: var(--text-primary); }
+
+  /* Formats card */
+  .formats-row {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 24px;
+  }
+  .fmt {
+    border: 1px solid var(--border-subtle); border-radius: 10px;
+    padding: 18px 16px; background: var(--bg-canvas);
+    display: flex; flex-direction: column; gap: 12px;
+    transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+  }
+  .fmt:hover { border-color: var(--border-strong); transform: translateY(-1px); }
+  .fmt-icon { width: 28px; height: 28px; position: relative; }
+  .fmt-name { font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); letter-spacing: 0.04em; font-weight: 500; }
+  .fmt-desc { font-size: 11px; color: var(--text-tertiary); line-height: 1.4; }
+
+  /* CSS-only format icons */
+  .ic-html { border: 1.5px solid var(--text-secondary); border-radius: 4px; position: relative; }
+  .ic-html::before, .ic-html::after {
+    content: ""; position: absolute; top: 50%; width: 5px; height: 5px;
+    border: 1.5px solid var(--text-secondary); transform: translateY(-50%);
+  }
+  .ic-html::before { left: 4px; border-right: none; border-bottom: none; transform: translateY(-50%) rotate(-45deg); border-top-left-radius: 1px; }
+  .ic-html::after { right: 4px; border-left: none; border-top: none; transform: translateY(-50%) rotate(45deg); border-bottom-right-radius: 1px; }
+
+  .ic-ppt { width: 26px; height: 22px; border: 1.5px solid var(--text-secondary); border-radius: 3px; position: relative; }
+  .ic-ppt::before { content: ""; position: absolute; left: 4px; bottom: 4px; width: 10px; height: 8px; background: var(--accent); border-radius: 1px; }
+
+  .ic-mp4 { width: 28px; height: 28px; border: 1.5px solid var(--text-secondary); border-radius: 50%; position: relative; }
+  .ic-mp4::after { content: ""; position: absolute; left: 50%; top: 50%; transform: translate(-40%,-50%);
+    border-left: 7px solid var(--text-secondary); border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
+
+  .ic-gif { width: 26px; height: 26px; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 2px; }
+  .ic-gif span { background: var(--text-secondary); border-radius: 1px; }
+  .ic-gif span:nth-child(2) { background: var(--accent); }
+
+  .ic-pdf { width: 24px; height: 30px; border: 1.5px solid var(--text-secondary); border-radius: 2px; position: relative; background: var(--bg-canvas); }
+  .ic-pdf::before { content: ""; position: absolute; top: 0; right: 0; width: 8px; height: 8px;
+    background: var(--bg-canvas); border-left: 1.5px solid var(--text-secondary); border-bottom: 1.5px solid var(--text-secondary); }
+  .ic-pdf::after { content: ""; position: absolute; left: 4px; bottom: 5px; width: 12px; height: 2px; background: var(--accent); border-radius: 1px;
+    box-shadow: 0 -4px 0 var(--text-tertiary); }
+
+  /* ============================================================
+     How it works
+     ============================================================ */
+  .steps {
+    display: grid; grid-template-columns: 1.1fr 1.5fr 1.2fr; gap: 16px; align-items: start;
+  }
+  .step {
+    border: 1px solid var(--border-subtle); border-radius: 12px; padding: 28px;
+    background: var(--bg-subtle); transition: border-color var(--dur) var(--ease);
+  }
+  .step:hover { border-color: var(--border-strong); }
+  .step-num {
+    font-family: var(--font-mono); font-size: 12px; color: var(--accent);
+    letter-spacing: 0.08em; font-weight: 500;
+  }
+  .step-title { font-family: var(--font-display); font-weight: 600; font-size: 19px; letter-spacing: -0.02em; margin: 10px 0 8px; }
+  .step-body { color: var(--text-secondary); font-size: 14px; line-height: 1.55; }
+  .step-tall { padding-bottom: 36px; }
+  .step-tall .step-body { min-height: 90px; }
+  .step .cmd {
+    margin-top: 16px; font-family: var(--font-mono); font-size: 12px;
+    background: var(--bg-canvas); border: 1px solid var(--border-default); border-radius: 7px;
+    padding: 10px 12px; color: var(--text-secondary);
+  }
+  .step .cmd .prompt { color: var(--accent); }
+  .step .out-tags { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .step .out-tags span {
+    font-family: var(--font-mono); font-size: 11px; padding: 4px 8px; border-radius: 5px;
+    background: var(--accent-subtle); color: var(--accent); font-weight: 500; letter-spacing: 0.02em;
+  }
+
+  /* ============================================================
+     Style showcase
+     ============================================================ */
+  .showcase-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+  }
+  .style-card {
+    border: 1px solid var(--border-subtle); border-radius: 10px; overflow: hidden;
+    background: var(--bg-subtle); transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+  }
+  .style-card:hover { border-color: var(--border-strong); transform: translateY(-1px); }
+  .style-preview { height: 92px; position: relative; overflow: hidden; }
+  .style-meta { padding: 12px 14px; }
+  .style-name { font-family: var(--font-display); font-weight: 600; font-size: 13px; letter-spacing: -0.01em; }
+  .style-temp { margin-top: 4px; font-family: var(--font-mono); font-size: 10.5px; color: var(--text-tertiary); letter-spacing: 0.04em; text-transform: uppercase; }
+  .temp-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+  .temp-quiet .temp-dot { background: var(--success); }
+  .temp-neutral .temp-dot { background: var(--accent); }
+
+  /* Style preview swatches — abstract, CSS-painted, no illustration */
+  .pv-swiss { background: #F4F2EC; }
+  .pv-swiss::before { content: ""; position: absolute; left: 14px; top: 14px; width: 18px; height: 18px; background: #D4341C; }
+  .pv-swiss::after { content: ""; position: absolute; left: 14px; bottom: 14px; right: 14px; height: 2px; background: #1A1A1A; }
+
+  .pv-ma { background: #FAFAF7; }
+  .pv-ma::before { content: ""; position: absolute; right: 18px; top: 18px; width: 24px; height: 24px; border: 1px solid #1A1A1A; border-radius: 50%; }
+  .pv-ma::after { content: ""; position: absolute; left: 18px; bottom: 18px; width: 6px; height: 6px; background: #1A1A1A; }
+
+  .pv-ink { background: #EFE9E0; }
+  .pv-ink::before { content: ""; position: absolute; left: 20px; top: 18px; width: 28px; height: 36px;
+    background: #1A1A1A; border-radius: 60% 40% 50% 50% / 70% 60% 40% 30%; filter: blur(0.4px); opacity: 0.85; }
+  .pv-ink::after { content: ""; position: absolute; right: 16px; bottom: 14px; width: 14px; height: 14px; border: 1px solid #6B4423; border-radius: 50%; opacity: 0.4; }
+
+  .pv-bloomberg { background: #000; }
+  .pv-bloomberg::before { content: ""; position: absolute; left: 10px; top: 12px; right: 10px; height: 4px; background: #FB8B1E; }
+  .pv-bloomberg::after { content: ""; position: absolute; left: 10px; top: 22px; width: 60%; height: 3px; background: #26DC6E; box-shadow: 0 6px 0 #FB8B1E, 0 12px 0 #8A8F98; }
+
+  .pv-ios { background: #F2F2F7; }
+  .pv-ios::before { content: ""; position: absolute; left: 16px; top: 16px; width: 60px; height: 60px; border-radius: 14px; background: #fff; border: 0.5px solid rgba(0,0,0,0.08); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+  .pv-ios::after { content: ""; position: absolute; left: 24px; top: 28px; width: 28px; height: 4px; background: #007AFF; border-radius: 2px; box-shadow: 0 8px 0 #E5E5EA, 0 16px 0 #E5E5EA; }
+
+  .pv-linear { background: #08090A; }
+  .pv-linear::before { content: ""; position: absolute; left: 14px; top: 16px; width: 14px; height: 14px; border-radius: 4px; background: #5E6AD2; }
+  .pv-linear::after { content: ""; position: absolute; left: 14px; bottom: 16px; right: 14px; height: 2px; background: rgba(255,255,255,0.14); box-shadow: 0 -6px 0 rgba(255,255,255,0.09); }
+
+  .pv-authority { background: #14110D; }
+  .pv-authority::before { content: ""; position: absolute; left: 16px; top: 18px; width: 4px; height: 28px; background: #C9A66B; }
+  .pv-authority::after { content: ""; position: absolute; left: 26px; top: 20px; width: 40px; height: 3px; background: #E8DCC4; box-shadow: 0 7px 0 #6B5E45; }
+
+  .pv-classical { background: #ECE6D8; }
+  .pv-classical::before { content: ""; position: absolute; left: 0; top: 0; right: 0; height: 6px; background: #1A1A1A; }
+  .pv-classical::after {
+    content: "墨"; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+    font-family: serif; font-size: 28px; color: #1A1A1A; font-weight: 700; letter-spacing: 0;
+  }
+
+  /* ============================================================
+     Stats
+     ============================================================ */
+  .stats {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);
+    padding: 48px 0;
+  }
+  .stat { text-align: left; }
+  .stat-num { font-family: var(--font-display); font-weight: 700; font-size: 56px; letter-spacing: -0.04em; line-height: 1; }
+  .stat-num .unit { color: var(--accent); }
+  .stat-label { margin-top: 10px; color: var(--text-secondary); font-size: 14px; }
+
+  /* ============================================================
+     Acknowledgments
+     ============================================================ */
+  .acks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .ack {
+    border: 1px solid var(--border-subtle); border-radius: 12px; padding: 24px;
+    background: var(--bg-subtle); transition: border-color var(--dur) var(--ease);
+  }
+  .ack:hover { border-color: var(--border-strong); }
+  .ack-name { font-family: var(--font-display); font-weight: 600; font-size: 16px; letter-spacing: -0.015em; }
+  .ack-by { margin-top: 4px; font-size: 13px; color: var(--text-secondary); }
+  .ack-license {
+    display: inline-block; margin-top: 12px; font-family: var(--font-mono); font-size: 11px;
+    padding: 3px 7px; border-radius: 5px; background: var(--bg-elevated); border: 1px solid var(--border-subtle);
+    color: var(--text-secondary); letter-spacing: 0.02em;
+  }
+  .ack-desc { margin-top: 14px; font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
+
+  /* ============================================================
+     Bottom CTA
+     ============================================================ */
+  .cta-final { text-align: center; padding: 96px 0 64px; }
+  .cta-final h2 {
+    font-family: var(--font-display); font-weight: 700; letter-spacing: -0.03em;
+    font-size: clamp(32px, 4.4vw, 52px); line-height: 1.05; max-width: 760px; margin: 0 auto;
+  }
+  .cta-final .cta-row { margin-top: 28px; display: inline-flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .cta-final .cta-fine { margin-top: 16px; font-size: 12.5px; color: var(--text-tertiary); font-family: var(--font-mono); }
+
+  /* ============================================================
+     Footer
+     ============================================================ */
+  footer { border-top: 1px solid var(--border-subtle); padding: 28px 0; }
+  .foot-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .foot-left { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-tertiary); }
+  .foot-mid { display: flex; gap: 22px; }
+  .foot-mid a { font-size: 13px; color: var(--text-secondary); transition: color var(--dur) var(--ease); }
+  .foot-mid a:hover { color: var(--text-primary); }
+  .foot-right { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); letter-spacing: 0.02em; }
+
+  /* ============================================================
+     Page-load motion (one orchestrated pass, respects reduced motion)
+     ============================================================ */
+  .reveal { opacity: 0; transform: translateY(8px); }
+  .reveal.in { opacity: 1; transform: none; transition: opacity 520ms var(--ease), transform 520ms var(--ease); }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    html { scroll-behavior: auto; }
+    * { transition-duration: 1ms !important; animation-duration: 1ms !important; }
+  }
+
+  /* ============================================================
+     Responsive
+     ============================================================ */
+  @media (max-width: 960px) {
+    .bento { grid-template-columns: repeat(2, 1fr); }
+    .card-anti-slop { grid-column: span 2; grid-row: auto; }
+    .card-styles, .card-critique { grid-column: span 1; }
+    .card-formats { grid-column: span 2; }
+    .formats-row { grid-template-columns: repeat(3, 1fr); }
+    .steps { grid-template-columns: 1fr; }
+    .showcase-grid { grid-template-columns: repeat(2, 1fr); }
+    .acks { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: repeat(3, 1fr); }
+    .nav-links { display: none; }
+  }
+  @media (max-width: 640px) {
+    .wrap { padding: 0 20px; }
+    .hero { padding: 64px 0 48px; }
+    .section { padding: 64px 0; }
+    .bento { grid-template-columns: 1fr; }
+    .card-anti-slop, .card-styles, .card-critique, .card-formats { grid-column: span 1; }
+    .slop-compare { grid-template-columns: 1fr; }
+    .formats-row { grid-template-columns: repeat(2, 1fr); }
+    .showcase-grid { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: 1fr; gap: 24px; }
+    .foot-inner { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .nav-cta .btn-ghost { display: none; }
+    .hero h1 { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAV
+     ============================================================ -->
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a class="nav-brand" href="#top">
+      <span class="brand-mark" aria-hidden="true"></span>
+      cc-design
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#styles">Styles</a>
+      <a href="#showcase">Showcase</a>
+      <a href="#docs">Docs</a>
+    </div>
+    <div class="nav-cta">
+      <a class="btn btn-ghost" href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn btn-primary" href="#try">Try in trae</a>
+    </div>
+  </div>
+</nav>
+
+<a id="top"></a>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<header class="hero">
+  <div class="wrap">
+    <span class="chip reveal"><span class="dot"></span>Open Source · Built on trae</span>
+    <h1 class="display reveal">The AI design skill that thinks like a designer.</h1>
+    <p class="sub reveal">cc-design makes AI in trae IDE behave like a designer who happens to write code — not a code generator that happens to make pages. 50+ curated styles, anti-slop rules, expert critique.</p>
+    <div class="hero-cta reveal">
+      <a class="btn btn-primary btn-lg" href="#try">Try in trae</a>
+      <a class="btn btn-secondary btn-lg" href="#showcase">View Showcase</a>
+    </div>
+    <div class="hero-fine reveal">Free · Open Source · No sign-up required</div>
+  </div>
+
+  <div class="wrap">
+    <div class="trusted reveal">
+      <div class="trusted-label">Powering design at</div>
+      <div class="trusted-row">
+        <span>NORTHWIND</span>
+        <span>MERIDIAN</span>
+        <span>CIRCUIT</span>
+        <span>ATLAS&nbsp;FORGE</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     FEATURE BENTO
+     ============================================================ -->
+<section class="section" id="features">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Features</div>
+      <h2 class="section-title">Designed to behave like design — not like a template.</h2>
+      <p class="section-sub">Every capability exists to push AI output away from the visual average of its training data and back toward something a real designer would sign.</p>
+    </div>
+
+    <div class="bento">
+
+      <!-- Anti-Slop Engine (large, span 2 × 2) -->
+      <article class="card card-anti-slop reveal">
+        <div class="card-kicker">Core engine</div>
+        <h3 class="card-title">Anti-Slop Engine</h3>
+        <p class="card-desc">AI defaults are the visual average of every SaaS landing page ever shipped. cc-design refuses the purple gradient, the rounded card with a left accent border, the emoji-as-icon, the SVG face with five crooked features — and replaces them with decisions a designer would defend.</p>
+
+        <div class="slop-compare">
+          <!-- BAD -->
+          <div class="slop-pane slop-bad">
+            <div class="slop-label">✕ AI slop</div>
+            <div class="slop-mock-bad">
+              <span class="pill">AI-POWERED</span>
+              <div class="emojis">🚀 ⚡ ✨</div>
+              <div class="accent-card"><span class="bar"></span><span class="bar short"></span></div>
+            </div>
+            <div class="slop-bad-note">purple gradient · emoji icons · left-accent card — recognizable as «some AI page», not as any brand.</div>
+          </div>
+          <!-- GOOD -->
+          <div class="slop-pane slop-good">
+            <div class="slop-label">✓ cc-design</div>
+            <div class="slop-mock-good">
+              <div class="g-eyebrow">Editorial · 03</div>
+              <div class="g-title">Quarterly Report</div>
+              <div class="g-line w70"></div>
+              <div class="g-line w50"></div>
+              <div class="g-chip">RESTRAINED</div>
+            </div>
+            <div class="slop-good-note">one accent · honest type hierarchy · every element earns its place.</div>
+          </div>
+        </div>
+
+        <div class="anti-slop-list">
+          <span class="tag">purple gradient</span>
+          <span class="tag">mesh gradient</span>
+          <span class="tag">emoji-as-icon</span>
+          <span class="tag">rounded card + left border</span>
+          <span class="tag">SVG face</span>
+          <span class="tag">3 equal-height cards</span>
+        </div>
+      </article>
+
+      <!-- 50+ Style Library -->
+      <article class="card card-styles reveal">
+        <div class="card-kicker">Style library</div>
+        <h3 class="card-title">50+ Style Library</h3>
+        <div class="big-num tnum">50<span class="plus">+</span></div>
+        <p class="card-desc" style="margin-top:14px">Curated HTML-native styles for web and deck — Swiss editorial restraint, Japanese <em>ma</em> whitespace, ink-wash contemporary, Bloomberg terminal density, and beyond.</p>
+        <div class="style-chips">
+          <span class="sc">Swiss</span>
+          <span class="sc">Japanese Ma</span>
+          <span class="sc">Ink Wash</span>
+          <span class="sc">Bloomberg</span>
+          <span class="sc">iOS Native</span>
+          <span class="sc">Linear</span>
+          <span class="sc">+44 more</span>
+        </div>
+      </article>
+
+      <!-- Expert Critique -->
+      <article class="card card-critique reveal">
+        <div class="card-kicker">Expert critique</div>
+        <h3 class="card-title">Five-Question Test</h3>
+        <p class="card-desc">Every element is audited against five questions borrowed from senior design review — if one fails, it does not ship.</p>
+        <div class="checklist">
+          <div class="check on"><span class="box"></span><span class="txt">Cover the text — is the subject still recognizable?</span></div>
+          <div class="check on"><span class="box"></span><span class="txt">Swap the client name — does it still hold?</span></div>
+          <div class="check on"><span class="box"></span><span class="txt">Does every element earn its place?</span></div>
+          <div class="check"><span class="box"></span><span class="txt">Is there a more concise way?</span></div>
+          <div class="check"><span class="box"></span><span class="txt">Does it serve the user, or the designer?</span></div>
+        </div>
+      </article>
+
+      <!-- Multi-Format Output (span 3) -->
+      <article class="card card-formats reveal">
+        <div class="card-kicker">Multi-format output</div>
+        <h3 class="card-title">One design system, five export targets.</h3>
+        <p class="card-desc" style="max-width:640px">The same anti-slop grammar ships across formats — so a prototype, a deck, and a shareable clip all read as one product, not three unrelated artifacts.</p>
+
+        <div class="formats-row">
+          <div class="fmt">
+            <div class="fmt-icon ic-html"></div>
+            <div class="fmt-name">HTML</div>
+            <div class="fmt-desc">High-fidelity interactive prototype, single file, no build step.</div>
+          </div>
+          <div class="fmt">
+            <div class="fmt-icon ic-ppt"></div>
+            <div class="fmt-name">PPT</div>
+            <div class="fmt-desc">1920×1080 deck with overview wall and printable PDF.</div>
+          </div>
+          <div class="fmt">
+            <div class="fmt-icon ic-mp4"></div>
+            <div class="fmt-name">MP4</div>
+            <div class="fmt-desc">Timeline-driven motion design with BGM + SFX.</div>
+          </div>
+          <div class="fmt">
+            <div class="fmt-icon ic-gif"><span></span><span></span><span></span><span></span></div>
+            <div class="fmt-name">GIF</div>
+            <div class="fmt-desc">Palette-optimized loop for docs and chat.</div>
+          </div>
+          <div class="fmt">
+            <div class="fmt-icon ic-pdf"></div>
+            <div class="fmt-name">PDF</div>
+            <div class="fmt-desc">Vector, searchable — for print and review.</div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     HOW IT WORKS
+     ============================================================ -->
+<section class="section" id="how" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">How it works</div>
+      <h2 class="section-title">Three steps. No prompt engineering required.</h2>
+    </div>
+
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">01 · TRIGGER</div>
+        <h3 class="step-title">Say it like a person.</h3>
+        <p class="step-body">In trae, just say「做个原型」「做个PPT」「做个好看的」. No magic incantation, no role-play preamble.</p>
+        <div class="cmd"><span class="prompt">&gt;</span> 做个原型，咖啡品牌落地页</div>
+      </div>
+
+      <div class="step step-tall reveal">
+        <div class="step-num">02 · DESIGN</div>
+        <h3 class="step-title">cc-design picks a style, applies anti-slop, generates variants.</h3>
+        <p class="step-body">A fallback advisor surfaces three differentiated directions — random-roulette, real-world reference, and a top designer's philosophy — so you choose from real visuals, not from a text list. The anti-slop engine runs on every element. Variants are produced across color, type, and layout for you to mix.</p>
+        <div class="out-tags">
+          <span>Style match</span>
+          <span>Anti-slop audit</span>
+          <span>3 variants</span>
+          <span>Five-question test</span>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-num">03 · EXPORT</div>
+        <h3 class="step-title">Ship in the format the moment needs.</h3>
+        <p class="step-body">HTML prototype for review, PPT for the meeting, MP4 with audio for the launch, GIF for the PR description, PDF for the record.</p>
+        <div class="out-tags">
+          <span>HTML</span><span>PPT</span><span>MP4</span><span>GIF</span><span>PDF</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     STYLE SHOWCASE
+     ============================================================ -->
+<section class="section" id="showcase" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Style showcase</div>
+      <h2 class="section-title">50+ curated styles, not a vibes list.</h2>
+      <p class="section-sub">Each style carries its own visual DNA, temperature, and an HTML implementation — not a mood board. A small sample below.</p>
+    </div>
+
+    <div class="showcase-grid">
+      <div class="style-card reveal">
+        <div class="style-preview pv-swiss"></div>
+        <div class="style-meta">
+          <div class="style-name">Swiss Editorial Restraint</div>
+          <div class="style-temp temp-quiet"><span class="temp-dot"></span>Quiet</div>
+        </div>
+      </div>
+      <div class="style-card reveal">
+        <div class="style-preview pv-ma"></div>
+        <div class="style-meta">
+          <div class="style-name">Japanese Ma Whitespace</div>
+          <div class="style-temp temp-quiet"><span class="temp-dot"></span>Quiet</div>
+        </div>
+      </div>
+      <div class="style-card reveal">
+        <div class="style-preview pv-ink"></div>
+        <div class="style-meta">
+          <div class="style-name">Ink Wash Contemporary</div>
+          <div class="style-temp temp-quiet"><span class="temp-dot"></span>Quiet</div>
+        </div>
+      </div>
+      <div class="style-card reveal">
+        <div class="style-preview pv-bloomberg"></div>
+        <div class="style-meta">
+          <div class="style-name">Bloomberg Terminal Density</div>
+          <div class="style-temp temp-neutral"><span class="temp-dot"></span>Neutral</div>
+        </div>
+      </div>
+      <div class="style-card reveal">
+        <div class="style-preview pv-ios"></div>
+        <div class="style-meta">
+          <div class="style-name">iOS Native Authenticity</div>
+          <div class="style-temp temp-neutral"><span class="temp-dot"></span>Neutral</div>
+        </div>
+      </div>
+      <div class="style-card reveal">
+        <div class="style-preview pv-linear"></div>
+        <div class="style-meta">
+          <div class="style-name">Linear-Inspired</div>
+          <div class="style-temp temp-neutral"><span class="temp-dot"></span>Neutral</div>
+        </div>
+      </div>
+      <div class="style-card reveal">
+        <div class="style-preview pv-authority"></div>
+        <div class="style-meta">
+          <div class="style-name">Quiet Authority Deck</div>
+          <div class="style-temp temp-quiet"><span class="temp-dot"></span>Quiet</div>
+        </div>
+      </div>
+      <div class="style-card reveal">
+        <div class="style-preview pv-classical"></div>
+        <div class="style-meta">
+          <div class="style-name">Classical Chinese Manifesto</div>
+          <div class="style-temp temp-quiet"><span class="temp-dot"></span>Quiet</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     STATS
+     ============================================================ -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="stats reveal">
+      <div class="stat">
+        <div class="stat-num tnum">50<span class="unit">+</span></div>
+        <div class="stat-label">Curated HTML-native styles, web + deck + mobile + viz</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num tnum">15<span class="unit">+</span></div>
+        <div class="stat-label">Anti-slop rules enforced before any element ships</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num tnum">100<span class="unit">%</span></div>
+        <div class="stat-label">Open source — read it, fork it, bend it to your taste</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ACKNOWLEDGMENTS
+     ============================================================ -->
+<section class="section" id="about" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Acknowledgments</div>
+      <h2 class="section-title">Standing on the shoulders of giants.</h2>
+      <p class="section-sub">cc-design is a learning fork. The work below shaped its methodology, its structure, and its conscience — and deserves the credit.</p>
+    </div>
+
+    <div class="acks">
+      <article class="ack reveal">
+        <div class="ack-name">huashu-design</div>
+        <div class="ack-by">by 花叔 · original project</div>
+        <span class="ack-license">MIT</span>
+        <p class="ack-desc">The base this skill is built on — references, starter components, scripts, and the design philosophy that AI should behave like a designer, not a coder. cc-design is a study fork with gratitude.</p>
+      </article>
+      <article class="ack reveal">
+        <div class="ack-name">Claude Design</div>
+        <div class="ack-by">methodology reference</div>
+        <span class="ack-license">Methodology</span>
+        <p class="ack-desc">Self-reflection rules, the five-question test, and the variant philosophy — three ideas that turned «generate one answer» into «defend one answer among three.»</p>
+      </article>
+      <article class="ack reveal">
+        <div class="ack-name">Open Design</div>
+        <div class="ack-by">system structure reference</div>
+        <span class="ack-license">Apache 2.0</span>
+        <p class="ack-desc">The nine-section design system structure — the bones that keep a style from collapsing into vibes when the page gets long.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     BOTTOM CTA
+     ============================================================ -->
+<section class="cta-final" id="try">
+  <div class="wrap">
+    <h2 class="reveal">Ready to make AI design like a designer?</h2>
+    <div class="cta-row reveal">
+      <a class="btn btn-primary btn-lg" href="#">Try in trae</a>
+      <a class="btn btn-secondary btn-lg" href="#docs" id="docs">Read Docs</a>
+    </div>
+    <div class="cta-fine reveal">Free · Open Source · Built with love</div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  <div class="wrap foot-inner">
+    <div class="foot-left">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>cc-design · © 2026 · MIT License</span>
+    </div>
+    <div class="foot-mid">
+      <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+      <a href="#docs">Docs</a>
+      <a href="#showcase">Showcase</a>
+      <a href="#about">About</a>
+    </div>
+    <div class="foot-right">Made with trae</div>
+  </div>
+</footer>
+
+<script>
+  /* One orchestrated reveal pass — IntersectionObserver, no libraries. */
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var nodes = document.querySelectorAll('.reveal');
+    if (reduce || !('IntersectionObserver' in window)) {
+      nodes.forEach(function (n) { n.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    // Stagger hero siblings on first paint
+    var hero = document.querySelectorAll('.hero .reveal');
+    hero.forEach(function (n, i) { setTimeout(function () { n.classList.add('in'); }, 60 + i * 70); });
+    // Observe the rest
+    nodes.forEach(function (n) { if (!n.classList.contains('in')) io.observe(n); });
+  })();
+</script>
+
+</body>
+</html>

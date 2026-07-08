@@ -1,0 +1,34 @@
+feat: cc-design 能力提升 v3.1（风格库扩展 + 反 slop 补强）
+
+能力提升阶段（基于 Claude Design 逆向工程方法论启发）：
+
+1. content-guidelines.md 补强规则（v3.1）
+   - 避免自己的默认审美（学 Claude Design 自省）
+   - 纯白配纯黑太生硬，至少加 2% 色温
+   - 间距非 4/8 倍数（除非有明确意图）
+   - placeholder 优于垃圾实现（强化表格）
+   - 五问测试（每个元素过审）
+   - 变体哲学（3+ 变体 mix and match）
+   - 决策速查补强版
+
+2. design-styles.md 风格库扩展（v3.0 → v3.1，40 → 50 种）
+   - A. 安静派补强（3 种）：Swiss Editorial Restraint / Japanese Ma Whitespace / Quiet Authority Deck
+   - B. 中文语境补强（3 种）：Modern Chinese Editorial / Ink Wash Contemporary / Classical Chinese Manifesto
+   - C. 数据可视化补强（2 种）：Bloomberg Terminal Density / Scientific Publication Restraint
+   - D. 移动端原生补强（2 种）：iOS Native Authenticity / Android Material 3 Expressive
+   - 每种新风格含：真实参考案例 + HTML 还原度 + 开源字体 + 「为什么适合」论证
+   - 补充变体探索维度表 + 风格选择决策树
+
+3. SKILL.md 微调
+   - 反 AI slop 章节补充：五问测试（6.5）+ 避免默认审美（6.6）
+   - 风格库引用 40 → 50 种（v3.1）
+   - 秒数轮盘补强风格作为补充池
+   - references 表更新
+
+边界（用户确认）：
+- 只增量增强现有文件，不加新文件
+- 不引入新依赖
+- 不重写现有风格条目，只增量补充
+- 不改 critique-guide.md / video-export.md（留待下一阶段）
+
+参考来源：Claude Design 官方系统提示词逆向工程（CL4R1T4S 仓库，MIT 协议）方法论启发。

@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MindEcho · Android Material 3 Expressive</title>
+<style>
+  /* ============ Material 3 Design Tokens ============ */
+  :root{
+    --primary:#6750A4;
+    --on-primary:#FFFFFF;
+    --primary-container:#EADDFF;
+    --on-primary-container:#21005D;
+    --secondary-container:#E8DEF8;
+    --on-secondary-container:#1D192B;
+    --surface:#FFFBFE;
+    --surface-variant:#F3DED3;
+    --on-surface:#1D1B20;
+    --on-surface-variant:#49454F;
+    --outline:#79747E;
+    --outline-variant:#CAC4D0;
+    --error:#B3261E;
+    --background:#FFFBFE;
+    --m3-sys-shape-large:16px;
+    --m3-sys-shape-extra-large:28px;
+    --m3-sys-shape-full:9999px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{
+    background:#E7E0E9;
+    font-family:'Roboto Flex','Roboto','Google Sans',sans-serif;
+    color:var(--on-surface);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+
+  /* ============ Android Device Frame ============ */
+  .device{
+    position:relative;
+    width:396px;            /* 360 screen + 18px bezel each side */
+    height:836px;           /* 800 screen + 18px bezel top/bottom */
+    background:#0A0A0A;
+    border-radius:42px;
+    padding:18px;
+    box-shadow:
+      0 0 0 2px #2A2A2A,
+      0 30px 60px -20px rgba(0,0,0,.45),
+      0 18px 40px -15px rgba(103,80,164,.25);
+  }
+  .device::before{           /* side button */
+    content:"";
+    position:absolute;
+    right:-3px;top:160px;
+    width:3px;height:70px;
+    background:#1c1c1c;
+    border-radius:0 2px 2px 0;
+  }
+  .device::after{            /* volume rocker */
+    content:"";
+    position:absolute;
+    left:-3px;top:140px;
+    width:3px;height:110px;
+    background:#1c1c1c;
+    border-radius:2px 0 0 2px;
+  }
+
+  .screen{
+    position:relative;
+    width:360px;
+    height:800px;
+    background:var(--background);
+    border-radius:28px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* Punch-hole front camera */
+  .punch-hole{
+    position:absolute;
+    top:10px;left:50%;
+    transform:translateX(-50%);
+    width:9px;height:9px;
+    background:#0A0A0A;
+    border-radius:50%;
+    z-index:50;
+  }
+
+  /* ============ Status Bar ============ */
+  .status-bar{
+    height:28px;
+    padding:0 18px 0 22px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    font-size:13px;
+    font-weight:600;
+    color:var(--on-surface);
+    letter-spacing:.3px;
+    flex-shrink:0;
+    padding-top:4px;
+  }
+  .status-right{display:flex;align-items:center;gap:6px;}
+  /* signal */
+  .ic-signal{
+    display:inline-flex;align-items:flex-end;gap:1.5px;height:11px;
+  }
+  .ic-signal span{
+    width:2.5px;background:var(--on-surface);border-radius:1px;
+  }
+  .ic-signal span:nth-child(1){height:4px;}
+  .ic-signal span:nth-child(2){height:6px;}
+  .ic-signal span:nth-child(3){height:8px;}
+  .ic-signal span:nth-child(4){height:11px;}
+  /* wifi */
+  .ic-wifi{
+    width:14px;height:11px;position:relative;
+  }
+  .ic-wifi::before{
+    content:"";position:absolute;inset:0;
+    border:2px solid var(--on-surface);
+    border-bottom:none;
+    border-radius:14px 14px 0 0;
+    clip-path:polygon(0 100%, 0 35%, 50% 0, 100% 35%, 100% 100%);
+    background:transparent;
+  }
+  .ic-wifi::after{
+    content:"";position:absolute;
+    left:50%;bottom:0;
+    transform:translateX(-50%);
+    width:3px;height:3px;
+    background:var(--on-surface);
+    border-radius:50%;
+  }
+  /* battery */
+  .ic-battery{
+    position:relative;
+    width:22px;height:11px;
+    border:1.5px solid var(--on-surface);
+    border-radius:3px;
+    display:flex;align-items:center;
+    padding:1px;
+  }
+  .ic-battery::after{
+    content:"";position:absolute;
+    right:-3px;top:50%;transform:translateY(-50%);
+    width:2px;height:5px;
+    background:var(--on-surface);
+    border-radius:0 1px 1px 0;
+  }
+  .ic-battery span{
+    display:block;width:75%;height:100%;
+    background:var(--on-surface);
+    border-radius:1px;
+  }
+
+  /* ============ Top App Bar ============ */
+  .top-app-bar{
+    height:56px;
+    padding:0 4px 0 16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:var(--surface);
+    color:var(--on-surface);
+    flex-shrink:0;
+  }
+  .app-bar-title{
+    font-size:22px;
+    font-weight:500;
+    letter-spacing:.2px;
+    line-height:1.2;
+  }
+  .app-bar-title b{font-weight:700;}
+  .app-bar-actions{display:flex;align-items:center;gap:2px;}
+  .icon-btn{
+    width:40px;height:40px;
+    border-radius:50%;
+    border:none;background:transparent;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    color:var(--on-surface-variant);
+    position:relative;
+  }
+  .icon-btn:active{background:rgba(103,80,164,.08);}
+  /* search icon */
+  .ic-search{
+    width:20px;height:20px;
+    border:2.2px solid currentColor;
+    border-radius:50%;
+    position:relative;
+  }
+  .ic-search::after{
+    content:"";position:absolute;
+    right:-5px;bottom:-3px;
+    width:7px;height:2.2px;
+    background:currentColor;
+    border-radius:1px;
+    transform:rotate(45deg);
+    transform-origin:left center;
+  }
+  /* more icon (3 dots vertical) */
+  .ic-more{
+    width:18px;height:18px;
+    display:flex;flex-direction:column;
+    justify-content:space-between;align-items:center;
+  }
+  .ic-more span{
+    width:4px;height:4px;
+    background:currentColor;
+    border-radius:50%;
+  }
+
+  /* ============ Scrollable Content ============ */
+  .content{
+    flex:1;
+    overflow-y:auto;
+    padding:4px 16px 96px;
+    scrollbar-width:none;
+  }
+  .content::-webkit-scrollbar{display:none;}
+
+  /* ============ Hero Card ============ */
+  .hero-card{
+    background:var(--primary-container);
+    color:var(--on-primary-container);
+    border-radius:var(--m3-sys-shape-extra-large);
+    padding:24px 22px 22px;
+    margin-bottom:18px;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 1px 2px rgba(0,0,0,.04);
+  }
+  .hero-card::before{                /* decorative M3 blob */
+    content:"";
+    position:absolute;
+    right:-40px;top:-40px;
+    width:140px;height:140px;
+    border-radius:50%;
+    background:rgba(103,80,164,.10);
+  }
+  .hero-card::after{
+    content:"";
+    position:absolute;
+    right:24px;top:22px;
+    width:42px;height:42px;
+    border-radius:50%;
+    background:var(--primary);
+    opacity:.85;
+  }
+  .hero-eyebrow{
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:1.2px;
+    text-transform:uppercase;
+    color:var(--primary);
+    margin-bottom:8px;
+    position:relative;z-index:1;
+  }
+  .hero-title{
+    font-size:26px;
+    line-height:1.18;
+    font-weight:500;
+    letter-spacing:-.2px;
+    margin-bottom:6px;
+    max-width:220px;
+    position:relative;z-index:1;
+  }
+  .hero-subtitle{
+    font-size:13px;
+    line-height:1.5;
+    color:var(--on-surface-variant);
+    margin-bottom:18px;
+    max-width:230px;
+    position:relative;z-index:1;
+  }
+  .hero-btn{
+    background:var(--primary);
+    color:var(--on-primary);
+    border:none;
+    border-radius:20px;
+    padding:10px 22px;
+    font-size:14px;
+    font-weight:600;
+    font-family:inherit;
+    letter-spacing:.3px;
+    cursor:pointer;
+    position:relative;z-index:1;
+    box-shadow:0 1px 3px rgba(103,80,164,.3);
+  }
+  .hero-btn:active{transform:translateY(1px);}
+
+  /* ============ Section Header ============ */
+  .section-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin:18px 4px 12px;
+  }
+  .section-title{
+    font-size:15px;
+    font-weight:600;
+    color:var(--on-surface);
+    letter-spacing:.1px;
+  }
+  .section-link{
+    font-size:12px;
+    font-weight:600;
+    color:var(--primary);
+    letter-spacing:.3px;
+    text-transform:uppercase;
+    cursor:pointer;
+  }
+
+  /* ============ Feature Cards (Filled) ============ */
+  .feature-card{
+    background:var(--surface-variant);
+    border-radius:var(--m3-sys-shape-large);
+    padding:16px;
+    margin-bottom:10px;
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+    color:var(--on-surface-variant);
+    box-shadow:0 1px 2px rgba(0,0,0,.03);
+  }
+  .feature-icon{
+    width:44px;height:44px;
+    flex-shrink:0;
+    border-radius:12px;
+    background:var(--primary-container);
+    color:var(--on-primary-container);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+  }
+  /* icon: emotion = smiley circle */
+  .ic-emotion{
+    width:22px;height:22px;
+    border:2.4px solid currentColor;
+    border-radius:50%;
+    position:relative;
+  }
+  .ic-emotion::before{       /* eyes */
+    content:"";
+    position:absolute;
+    top:6px;left:50%;
+    transform:translateX(-50%);
+    width:9px;height:2.4px;
+    background:transparent;
+    box-shadow:
+      -4px 0 0 currentColor,
+      4px 0 0 currentColor;
+    border-radius:50%;
+  }
+  .ic-emotion::after{        /* smile */
+    content:"";
+    position:absolute;
+    bottom:4px;left:50%;
+    transform:translateX(-50%);
+    width:9px;height:5px;
+    border:2.4px solid currentColor;
+    border-top:none;
+    border-radius:0 0 9px 9px;
+  }
+  /* icon: cognitive = stacked layers */
+  .ic-cognitive{
+    width:22px;height:22px;
+    position:relative;
+  }
+  .ic-cognitive::before,
+  .ic-cognitive::after,
+  .ic-cognitive span{
+    content:"";
+    position:absolute;
+    left:50%;transform:translateX(-50%);
+    width:18px;height:5px;
+    background:currentColor;
+    border-radius:1.5px;
+  }
+  .ic-cognitive::before{top:2px;}
+  .ic-cognitive span{top:9px;opacity:.7;}
+  .ic-cognitive::after{top:16px;opacity:.45;}
+
+  /* icon: vault = shield + lock */
+  .ic-vault{
+    width:20px;height:22px;
+    position:relative;
+  }
+  .ic-vault::before{             /* shield body */
+    content:"";
+    position:absolute;inset:0;
+    background:currentColor;
+    clip-path:polygon(50% 0, 100% 22%, 100% 65%, 50% 100%, 0 65%, 0 22%);
+    border-radius:2px;
+  }
+  .ic-vault::after{              /* keyhole */
+    content:"";
+    position:absolute;
+    top:7px;left:50%;
+    transform:translateX(-50%);
+    width:4px;height:4px;
+    background:var(--primary-container);
+    border-radius:50%;
+    box-shadow:0 5px 0 0 var(--primary-container);
+  }
+
+  .feature-body{flex:1;min-width:0;}
+  .feature-title{
+    font-size:14px;
+    font-weight:600;
+    color:var(--on-surface);
+    margin-bottom:3px;
+    letter-spacing:.1px;
+  }
+  .feature-desc{
+    font-size:12px;
+    line-height:1.45;
+    color:var(--on-surface-variant);
+    margin-bottom:9px;
+  }
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    background:var(--secondary-container);
+    color:var(--on-secondary-container);
+    border-radius:var(--m3-sys-shape-full);
+    padding:5px 11px;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.2px;
+    line-height:1;
+  }
+  .chip-dot{
+    width:5px;height:5px;
+    border-radius:50%;
+    background:var(--primary);
+  }
+
+  /* ============ Stats Cards (tonal elevation) ============ */
+  .stats-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-bottom:10px;
+  }
+  .stat-card{
+    background:var(--primary-container);
+    color:var(--on-primary-container);
+    border-radius:var(--m3-sys-shape-large);
+    padding:14px 10px 12px;
+    text-align:center;
+    box-shadow:0 1px 3px rgba(103,80,164,.12);
+  }
+  .stat-value{
+    font-size:20px;
+    font-weight:700;
+    line-height:1.1;
+    letter-spacing:-.3px;
+    margin-bottom:3px;
+  }
+  .stat-value small{
+    font-size:12px;font-weight:600;opacity:.7;
+  }
+  .stat-label{
+    font-size:10px;
+    font-weight:500;
+    color:var(--on-surface-variant);
+    letter-spacing:.2px;
+    text-transform:capitalize;
+  }
+
+  /* ============ FAB ============ */
+  .fab{
+    position:absolute;
+    right:16px;
+    bottom:80px;            /* sit above nav bar */
+    width:56px;height:56px;
+    border-radius:18px;     /* M3 FAB = 16dp */
+    background:var(--primary);
+    color:var(--on-primary);
+    border:none;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    box-shadow:
+      0 6px 12px rgba(103,80,164,.32),
+      0 2px 6px rgba(0,0,0,.12);
+    z-index:30;
+  }
+  .fab:active{transform:translateY(2px);}
+  .ic-plus{
+    width:22px;height:22px;
+    position:relative;
+  }
+  .ic-plus::before,
+  .ic-plus::after{
+    content:"";
+    position:absolute;
+    background:currentColor;
+    border-radius:1.5px;
+  }
+  .ic-plus::before{
+    left:50%;top:0;
+    transform:translateX(-50%);
+    width:3px;height:22px;
+  }
+  .ic-plus::after{
+    top:50%;left:0;
+    transform:translateY(-50%);
+    width:22px;height:3px;
+  }
+
+  /* ============ Navigation Bar ============ */
+  .nav-bar{
+    height:72px;
+    background:var(--surface);
+    border-top:1px solid var(--outline-variant);
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-around;
+    padding:8px 0 0;
+    flex-shrink:0;
+  }
+  .nav-item{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    padding:6px 4px;
+    cursor:pointer;
+    color:var(--on-surface-variant);
+    position:relative;
+  }
+  .nav-item.active{color:var(--on-surface);}
+  .nav-icon-wrap{
+    width:56px;height:30px;
+    border-radius:15px;
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+    transition:background .2s;
+  }
+  .nav-item.active .nav-icon-wrap{
+    background:var(--secondary-container);
+    color:var(--on-secondary-container);
+  }
+  .nav-label{
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.2px;
+  }
+
+  /* nav icon: home */
+  .ic-home{
+    width:20px;height:20px;
+    position:relative;
+  }
+  .ic-home::before{
+    content:"";
+    position:absolute;
+    top:0;left:50%;
+    transform:translateX(-50%);
+    width:0;height:0;
+    border-left:11px solid transparent;
+    border-right:11px solid transparent;
+    border-bottom:11px solid currentColor;
+  }
+  .ic-home::after{
+    content:"";
+    position:absolute;
+    bottom:0;left:50%;
+    transform:translateX(-50%);
+    width:14px;height:11px;
+    background:currentColor;
+    border-radius:1px;
+  }
+  .ic-home span{              /* door */
+    position:absolute;
+    bottom:0;left:50%;
+    transform:translateX(-50%);
+    width:5px;height:7px;
+    background:var(--surface);
+    border-radius:1px 1px 0 0;
+    z-index:1;
+  }
+
+  /* nav icon: records (list) */
+  .ic-records{
+    width:20px;height:20px;
+    display:flex;flex-direction:column;
+    justify-content:space-between;
+  }
+  .ic-records span{
+    height:3px;
+    background:currentColor;
+    border-radius:1.5px;
+  }
+  .ic-records span:nth-child(1){width:20px;}
+  .ic-records span:nth-child(2){width:14px;}
+  .ic-records span:nth-child(3){width:18px;}
+  .ic-records span:nth-child(4){width:10px;}
+
+  /* nav icon: profile (person) */
+  .ic-profile{
+    width:20px;height:20px;
+    position:relative;
+  }
+  .ic-profile::before{       /* head */
+    content:"";
+    position:absolute;
+    top:0;left:50%;
+    transform:translateX(-50%);
+    width:9px;height:9px;
+    background:currentColor;
+    border-radius:50%;
+  }
+  .ic-profile::after{        /* body */
+    content:"";
+    position:absolute;
+    bottom:0;left:50%;
+    transform:translateX(-50%);
+    width:18px;height:11px;
+    background:currentColor;
+    border-radius:9px 9px 3px 3px;
+  }
+
+  /* ============ Caption ============ */
+  .caption{
+    position:absolute;
+    left:50%;bottom:-44px;
+    transform:translateX(-50%);
+    color:#49454F;
+    font-size:12px;
+    font-weight:500;
+    letter-spacing:.4px;
+    white-space:nowrap;
+  }
+  .caption b{color:var(--primary);font-weight:700;}
+</style>
+</head>
+<body>
+
+<div class="device">
+  <div class="screen">
+    <div class="punch-hole"></div>
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <span>9:41</span>
+      <div class="status-right">
+        <div class="ic-signal"><span></span><span></span><span></span><span></span></div>
+        <div class="ic-wifi"></div>
+        <div class="ic-battery"><span></span></div>
+      </div>
+    </div>
+
+    <!-- Top App Bar -->
+    <div class="top-app-bar">
+      <div class="app-bar-title">Mind<b>Echo</b></div>
+      <div class="app-bar-actions">
+        <button class="icon-btn" aria-label="Search"><div class="ic-search"></div></button>
+        <button class="icon-btn" aria-label="More"><div class="ic-more"><span></span><span></span><span></span></div></button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- Hero Card -->
+      <div class="hero-card">
+        <div class="hero-eyebrow">Welcome back</div>
+        <div class="hero-title">Therapy that listens.</div>
+        <div class="hero-subtitle">AI-powered emotional support, designed around your rhythm and privacy.</div>
+        <button class="hero-btn">Start trial</button>
+      </div>
+
+      <!-- Features section -->
+      <div class="section-head">
+        <div class="section-title">For you today</div>
+        <div class="section-link">See all</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon"><div class="ic-emotion"></div></div>
+        <div class="feature-body">
+          <div class="feature-title">AI Emotion Tracking</div>
+          <div class="feature-desc">Real-time sentiment analysis from voice & journal entries.</div>
+          <span class="chip"><span class="chip-dot"></span>Daily 3 min</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon"><div class="ic-cognitive"><span></span></div></div>
+        <div class="feature-body">
+          <div class="feature-title">Cognitive Reshaping</div>
+          <div class="feature-desc">Restructure unhelpful thought patterns step by step.</div>
+          <span class="chip"><span class="chip-dot"></span>CBT-based</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon"><div class="ic-vault"></div></div>
+        <div class="feature-body">
+          <div class="feature-title">Anonymous Vault</div>
+          <div class="feature-desc">Store reflections privately — only you hold the key.</div>
+          <span class="chip"><span class="chip-dot"></span>E2E Encrypted</span>
+        </div>
+      </div>
+
+      <!-- Stats section -->
+      <div class="section-head">
+        <div class="section-title">Your week</div>
+        <div class="section-link">Details</div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value">7.2</div>
+          <div class="stat-label">Mood today</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">12<small>d</small></div>
+          <div class="stat-label">Streak</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">2<small>h</small>34<small>m</small></div>
+          <div class="stat-label">Total time</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FAB -->
+    <button class="fab" aria-label="New entry"><div class="ic-plus"></div></button>
+
+    <!-- Navigation Bar -->
+    <div class="nav-bar">
+      <div class="nav-item active">
+        <div class="nav-icon-wrap"><div class="ic-home"><span></span></div></div>
+        <div class="nav-label">Home</div>
+      </div>
+      <div class="nav-item">
+        <div class="nav-icon-wrap"><div class="ic-records"><span></span><span></span><span></span><span></span></div></div>
+        <div class="nav-label">Records</div>
+      </div>
+      <div class="nav-item">
+        <div class="nav-icon-wrap"><div class="ic-profile"></div></div>
+        <div class="nav-label">Profile</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="caption">cc-design v3.1 · <b>Android Material 3 Expressive</b> · MindEcho</div>
+</div>
+
+</body>
+</html>

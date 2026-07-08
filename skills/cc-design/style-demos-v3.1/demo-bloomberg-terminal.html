@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>MINDECHO TERMINAL v3.1.0</title>
+<style>
+  :root{
+    --bg:#0A0A0A;
+    --amber:#FFA500;
+    --green:#00FF00;
+    --red:#FF413D;
+    --g1:#888;
+    --g2:#444;
+    --g3:#222;
+    --g4:#1a1a1a;
+    --line:#222;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:var(--bg);color:var(--g1);}
+  body{
+    font-family:'JetBrains Mono','Geist Mono','Cascadia Code','Consolas','Courier New',monospace;
+    font-size:12px;
+    line-height:1.4;
+    font-variant-numeric:tabular-nums;
+    -webkit-font-smoothing:none;
+    letter-spacing:.2px;
+  }
+  .sans{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-variant-numeric:normal;}
+  .num{font-variant-numeric:tabular-nums;}
+  .amber{color:var(--amber);}
+  .green{color:var(--green);}
+  .red{color:var(--red);}
+  .g1{color:var(--g1);}
+  .g2{color:var(--g2);}
+  .g3{color:#555;}
+  .bg-amber{background:var(--amber);color:#000;}
+  .bg-green{background:var(--green);color:#000;}
+  .bg-red{background:var(--red);color:#000;}
+  .bg-g4{background:var(--g4);}
+  .b{font-weight:700;}
+  .up::after{content:" ▲";color:var(--green);}
+  .down::after{content:" ▼";color:var(--red);}
+  .flat::after{content:" ►";color:var(--g1);}
+
+  /* === STATUS BAR === */
+  .statusbar{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    padding:6px 14px;
+    border-bottom:1px solid var(--line);
+    background:#050505;
+    font-size:11px;
+    white-space:nowrap;
+    overflow:hidden;
+  }
+  .statusbar .brand{color:var(--amber);font-weight:700;letter-spacing:1px;}
+  .statusbar .sep{color:var(--g3);}
+  .statusbar .dot{display:inline-block;width:7px;height:7px;background:var(--green);margin-right:5px;vertical-align:middle;}
+  .statusbar .dot.amber{background:var(--amber);}
+  .statusbar .dot.red{background:var(--red);}
+  .statusbar .spacer{flex:1;}
+  .blink{animation:blink 1.1s steps(2) infinite;}
+  @keyframes blink{50%{opacity:0;}}
+
+  /* === TICKER === */
+  .ticker{
+    border-bottom:1px solid var(--line);
+    background:#070707;
+    overflow:hidden;
+    white-space:nowrap;
+    height:22px;
+    line-height:22px;
+    font-size:11px;
+  }
+  .ticker-track{
+    display:inline-block;
+    padding-left:100%;
+    animation:scroll 38s linear infinite;
+  }
+  .ticker-track span{margin-right:36px;}
+  .ticker .tag{color:var(--g3);margin-right:6px;}
+  @keyframes scroll{to{transform:translateX(-100%);}}
+
+  /* === HERO === */
+  .hero{
+    border-bottom:1px solid var(--line);
+    padding:18px 14px 14px;
+    display:grid;
+    grid-template-columns:1.4fr 1fr;
+    gap:18px;
+  }
+  .ascii{
+    color:var(--amber);
+    font-size:10px;
+    line-height:1.1;
+    white-space:pre;
+    text-shadow:0 0 6px rgba(255,165,0,.35);
+  }
+  .hero-title{
+    font-size:26px;
+    font-weight:700;
+    color:var(--amber);
+    letter-spacing:2px;
+    margin-bottom:6px;
+    text-shadow:0 0 8px rgba(255,165,0,.3);
+  }
+  .hero-sub{color:var(--g1);font-size:12px;margin-bottom:10px;}
+  .hero-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:10px;}
+  .hero-meta div{background:var(--bg);padding:6px 8px;}
+  .hero-meta .k{color:var(--g3);font-size:10px;letter-spacing:1px;}
+  .hero-meta .v{color:var(--amber);font-size:14px;font-weight:700;}
+
+  /* hero right: key stats block */
+  .statblock{border:1px solid var(--line);}
+  .statblock .hd{
+    background:var(--g4);
+    padding:4px 8px;
+    border-bottom:1px solid var(--line);
+    color:var(--amber);
+    font-size:10px;
+    letter-spacing:1.5px;
+    display:flex;justify-content:space-between;
+  }
+  .statblock .hd .r{color:var(--g3);}
+  .statblock table{width:100%;border-collapse:collapse;}
+  .statblock td{padding:4px 8px;border-bottom:1px solid var(--g4);font-size:11px;}
+  .statblock td:last-child{text-align:right;}
+  .statblock tr:last-child td{border-bottom:none;}
+
+  /* === PANELS GRID === */
+  .panels{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:0;
+    border-bottom:1px solid var(--line);
+  }
+  .panel{border-right:1px solid var(--line);padding:0;}
+  .panel:last-child{border-right:none;}
+  .panel-hd{
+    background:var(--g4);
+    padding:5px 10px;
+    border-bottom:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .panel-hd .title{color:var(--amber);font-weight:700;letter-spacing:1.5px;font-size:11px;}
+  .panel-hd .id{color:var(--g3);font-size:10px;}
+  .panel-bd{padding:10px;}
+
+  .metric-row{
+    display:flex;justify-content:space-between;align-items:baseline;
+    padding:4px 0;border-bottom:1px dashed var(--g4);
+  }
+  .metric-row:last-child{border-bottom:none;}
+  .metric-row .label{color:var(--g3);font-size:10px;letter-spacing:1px;}
+  .metric-row .val{font-size:18px;font-weight:700;}
+  .metric-row .delta{font-size:10px;margin-left:6px;}
+
+  .section-label{
+    color:var(--g2);
+    font-size:10px;
+    letter-spacing:1.5px;
+    padding:8px 0 4px;
+    border-top:1px solid var(--g4);
+    margin-top:8px;
+    display:flex;justify-content:space-between;
+  }
+  .section-label .more{color:var(--amber);}
+
+  /* mini bar chart */
+  .barchart{
+    display:flex;align-items:flex-end;gap:2px;
+    height:54px;padding:6px 0 2px;
+    border-bottom:1px solid var(--g4);
+  }
+  .barchart .bar{flex:1;background:var(--amber);opacity:.85;}
+  .barchart .bar.green{background:var(--green);}
+  .barchart .bar.red{background:var(--red);}
+  .barchart .bar.dim{background:var(--g2);}
+  .barchart-axis{
+    display:flex;justify-content:space-between;
+    color:var(--g3);font-size:9px;padding-top:2px;
+  }
+
+  /* data table inside panel */
+  .dtable{width:100%;border-collapse:collapse;font-size:10.5px;}
+  .dtable th{
+    text-align:left;color:var(--g3);font-weight:400;letter-spacing:1px;
+    padding:3px 4px;border-bottom:1px solid var(--g4);font-size:9.5px;
+  }
+  .dtable td{padding:3px 4px;border-bottom:1px solid var(--g4);}
+  .dtable td.r{text-align:right;}
+  .dtable tr:hover td{background:#0f0f0f;}
+
+  /* progress bar */
+  .progress{
+    height:8px;background:var(--g4);border:1px solid var(--line);position:relative;
+  }
+  .progress > i{display:block;height:100%;background:var(--amber);}
+  .progress-label{display:flex;justify-content:space-between;font-size:10px;color:var(--g3);margin-bottom:3px;}
+
+  /* tag */
+  .tag{
+    display:inline-block;padding:1px 5px;font-size:9.5px;letter-spacing:1px;
+    border:1px solid var(--g2);color:var(--g1);
+  }
+  .tag.amber{border-color:var(--amber);color:var(--amber);}
+  .tag.green{border-color:var(--green);color:var(--green);}
+  .tag.red{border-color:var(--red);color:var(--red);}
+
+  /* === CTA === */
+  .cta-zone{
+    padding:22px 14px;
+    border-bottom:1px solid var(--line);
+    display:grid;
+    grid-template-columns:1.2fr 1fr;
+    gap:18px;
+    align-items:center;
+  }
+  .cta-text .k{color:var(--g3);font-size:10px;letter-spacing:1.5px;}
+  .cta-text .v{color:var(--g1);font-size:13px;margin-top:4px;}
+  .cta-text .v b{color:var(--amber);}
+  .cta-btn{
+    display:inline-block;
+    padding:12px 22px;
+    border:1px solid var(--amber);
+    color:var(--amber);
+    background:rgba(255,165,0,.06);
+    font-family:inherit;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:2px;
+    cursor:pointer;
+    text-decoration:none;
+    white-space:nowrap;
+  }
+  .cta-btn:hover{background:var(--amber);color:#000;}
+  .cta-btn::before{content:"[ ";}
+  .cta-btn::after{content:" ]";}
+  .cta-meta{color:var(--g3);font-size:10px;margin-top:8px;letter-spacing:1px;}
+  .cta-meta .green{color:var(--green);}
+
+  /* === FOOTER === */
+  .footer{
+    display:flex;justify-content:space-between;
+    padding:6px 14px;font-size:10px;color:var(--g3);
+    border-top:1px solid var(--line);
+    background:#050505;
+  }
+
+  /* === BOTTOM MULTI-PANEL === */
+  .bottom-panels{
+    display:grid;
+    grid-template-columns:1.4fr 1fr 1fr;
+    gap:0;
+    border-bottom:1px solid var(--line);
+  }
+  .log{
+    font-size:10.5px;line-height:1.55;
+    max-height:160px;overflow:hidden;
+  }
+  .log .row{display:grid;grid-template-columns:60px 50px 1fr;gap:6px;padding:2px 0;border-bottom:1px solid var(--g4);}
+  .log .t{color:var(--g3);}
+  .log .lvl{color:var(--amber);}
+  .log .lvl.ok{color:var(--green);}
+  .log .lvl.warn{color:var(--red);}
+  .log .msg{color:var(--g1);}
+
+  /* scrollbars (subtle) */
+  ::-webkit-scrollbar{height:6px;width:6px;}
+  ::-webkit-scrollbar-thumb{background:var(--g2);}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+
+  /* responsive fallback */
+  @media (max-width:900px){
+    .panels{grid-template-columns:1fr;}
+    .panel{border-right:none;border-bottom:1px solid var(--line);}
+    .hero,.cta-zone,.bottom-panels{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ STATUS BAR ============ -->
+<div class="statusbar">
+  <span class="brand">MINDECHO TERMINAL</span>
+  <span class="g3">v3.1.0</span>
+  <span class="sep">|</span>
+  <span><span class="dot"></span>SESSION: <span class="amber">ACTIVE</span></span>
+  <span class="sep">|</span>
+  <span>LATENCY: <span class="green">12ms</span></span>
+  <span class="sep">|</span>
+  <span>UID: <span class="g1">ANON-7741-A2F</span></span>
+  <span class="sep">|</span>
+  <span>FEED: <span class="green">LIVE</span></span>
+  <span class="spacer"></span>
+  <span>REGION: CN-SHA</span>
+  <span class="sep">|</span>
+  <span>UPTIME: 14d 06:22:11</span>
+  <span class="sep">|</span>
+  <span class="amber" id="clock">2026-07-07 14:33:07 CST<span class="blink">_</span></span>
+</div>
+
+<!-- ============ TICKER ============ -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span><span class="tag">EMOTION_IDX</span> <span class="amber b">7.2</span> <span class="green">+0.3</span></span>
+    <span><span class="tag">STRESS</span> <span class="g1">3.8</span> <span class="red">-0.2</span></span>
+    <span><span class="tag">SLEEP_QUAL</span> <span class="amber b">82%</span> <span class="green">+4%</span></span>
+    <span><span class="tag">CBT_DONE</span> <span class="amber b">68%</span> <span class="green">+12%</span></span>
+    <span><span class="tag">DISTORT</span> <span class="g1">142</span> <span class="green">+7</span></span>
+    <span><span class="tag">MSG_CNT</span> <span class="amber b">1,247</span> <span class="green">+38</span></span>
+    <span><span class="tag">AES256</span> <span class="green">OK</span></span>
+    <span><span class="tag">HRV</span> <span class="g1">58ms</span> <span class="green">+2</span></span>
+    <span><span class="tag">FOCUS</span> <span class="amber b">6.9</span> <span class="red">-0.1</span></span>
+    <span><span class="tag">MOOD_VAR</span> <span class="g1">σ=0.41</span> <span class="green">-0.03</span></span>
+    <span><span class="tag">JOURNAL</span> <span class="g1">23 entries</span></span>
+    <span><span class="tag">RISK</span> <span class="green">LOW</span></span>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<div class="hero">
+  <div>
+    <pre class="ascii">  ███╗   ███╗██╗███╗   ███╗███████╗██████╗  ██████╗ ███╗   ███╗██████╗
+  ████╗ ████╝██║████╗ ████║██╔════╝██╔══██╗██╔═══██╗████╗ ████║██╔══██╗
+  ██╔████╔██ ██║██╔████╔██║█████╗  ██████╔╝██║   ██║██╔████╔██║██║  ██║
+  ██║╚██╔╝██║ ██║██║╚██╔╝██║██╔══╝  ██╔══██╗██║   ██║██║╚██╔╝██║██║  ██║
+  ██║ ╚═╝ ██║ ██║██║ ╚═╝ ██║███████╗██║  ██║╚██████╔╝██║ ╚═╝ ██║██████╔╝
+  ╚═╝     ╚═╝ ╚═╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝╚═════╝ </pre>
+    <div class="hero-title">听见内心的回声</div>
+    <div class="hero-sub">用 AI 理解你的情绪 &nbsp;//&nbsp; 用科学重塑你的认知</div>
+    <div class="hero-meta">
+      <div><div class="k">MODULES</div><div class="v num">03</div></div>
+      <div><div class="k">ENGINE</div><div class="v">NEURO-V4</div></div>
+      <div><div class="k">ENCRYPTION</div><div class="v">AES-256</div></div>
+    </div>
+  </div>
+
+  <div class="statblock">
+    <div class="hd"><span>USER_OVERVIEW</span><span class="r">REFRESH 1s</span></div>
+    <table>
+      <tr><td class="g2">EMOTION_INDEX</td><td class="amber b num">7.2 / 10</td></tr>
+      <tr><td class="g2">WEEKLY_TREND</td><td class="green num">+0.3</td></tr>
+      <tr><td class="g2">CBT_PROGRESS</td><td class="amber b num">68%</td></tr>
+      <tr><td class="g2">DISTORTIONS_TAGGED</td><td class="g1 num">142</td></tr>
+      <tr><td class="g2">ANON_MESSAGES</td><td class="amber b num">1,247</td></tr>
+      <tr><td class="g2">SESSION_COUNT</td><td class="g1 num">86</td></tr>
+      <tr><td class="g2">RISK_LEVEL</td><td><span class="tag green">LOW</span></td></tr>
+      <tr><td class="g2">LAST_SYNC</td><td class="g1 num">14:33:06</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ============ THREE FEATURE PANELS ============ -->
+<div class="panels">
+
+  <!-- PANEL 1: EMOTION TRACKER -->
+  <div class="panel">
+    <div class="panel-hd">
+      <span class="title">EMOTION_TRACKER</span>
+      <span class="id">MOD.01 // LIVE</span>
+    </div>
+    <div class="panel-bd">
+      <div class="metric-row">
+        <span class="label">EMOTION_INDEX [TODAY]</span>
+        <span>
+          <span class="val amber num">7.2</span><span class="g3">/10</span>
+          <span class="delta green">↑0.3</span>
+        </span>
+      </div>
+      <div class="metric-row">
+        <span class="label">VS YESTERDAY</span>
+        <span class="green num">+4.3%</span>
+      </div>
+      <div class="metric-row">
+        <span class="label">7D VARIANCE</span>
+        <span class="g1 num">σ = 0.41</span>
+      </div>
+
+      <div class="section-label"><span>7D_EMOTION_CURVE</span><span class="more">EXPAND ▸</span></div>
+      <div class="barchart">
+        <div class="bar dim" style="height:42%"></div>
+        <div class="bar red" style="height:30%"></div>
+        <div class="bar dim" style="height:48%"></div>
+        <div class="bar" style="height:55%"></div>
+        <div class="bar green" style="height:62%"></div>
+        <div class="bar" style="height:68%"></div>
+        <div class="bar green" style="height:78%"></div>
+      </div>
+      <div class="barchart-axis">
+        <span>07-01</span><span>07-02</span><span>07-03</span><span>07-04</span><span>07-05</span><span>07-06</span><span>07-07</span>
+      </div>
+
+      <div class="section-label"><span>SUB_INDICES</span><span class="more">DETAIL ▸</span></div>
+      <table class="dtable">
+        <tr><th>METRIC</th><th class="r">VAL</th><th class="r">Δ</th></tr>
+        <tr><td>JOY</td><td class="r amber num">7.8</td><td class="r green">+0.5</td></tr>
+        <tr><td>CALM</td><td class="r amber num">6.9</td><td class="r green">+0.2</td></tr>
+        <tr><td>FOCUS</td><td class="r g1 num">6.9</td><td class="r red">-0.1</td></tr>
+        <tr><td>ENERGY</td><td class="r g1 num">5.4</td><td class="r green">+0.1</td></tr>
+        <tr><td>ANXIETY</td><td class="r g1 num">3.1</td><td class="r green">-0.4</td></tr>
+      </table>
+
+      <div class="section-label"><span>AI_ANALYSIS</span><span class="tag green">DAILY 3MIN</span></div>
+      <div class="g1" style="font-size:10.5px;line-height:1.5;">
+        &gt; 情绪较昨日回升，JOY 与 CALM 同步上行。<br>
+        &gt; ANXIETY 下降 0.4，建议维持当前 CBT 节奏。<br>
+        &gt; FOCUS 微跌，注意午后注意力管理。
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 2: COGNITION RESHAPE -->
+  <div class="panel">
+    <div class="panel-hd">
+      <span class="title">COGNITION_RESHAPE</span>
+      <span class="id">MOD.02 // CBT</span>
+    </div>
+    <div class="panel-bd">
+      <div class="metric-row">
+        <span class="label">CBT_COMPLETION</span>
+        <span class="val amber num">68%</span>
+      </div>
+      <div class="progress-label">
+        <span class="g3">0%</span><span class="amber">68 / 100</span><span class="g3">100%</span>
+      </div>
+      <div class="progress"><i style="width:68%"></i></div>
+
+      <div class="metric-row" style="margin-top:8px;">
+        <span class="label">DISTORTIONS_IDENTIFIED</span>
+        <span class="val amber num">142</span>
+      </div>
+      <div class="metric-row">
+        <span class="label">THIS_WEEK</span>
+        <span class="green num">+7</span>
+      </div>
+
+      <div class="section-label"><span>COGNITIVE_DISTORTIONS</span><span class="more">TOP 5 ▸</span></div>
+      <table class="dtable">
+        <tr><th>TYPE</th><th class="r">CNT</th><th class="r">TREND</th></tr>
+        <tr><td class="g1">灾难化 CATASTROPHIZING</td><td class="r amber num">38</td><td class="r green">▼</td></tr>
+        <tr><td class="g1">非黑即白 ALL-OR-NOTHING</td><td class="r amber num">31</td><td class="r green">▼</td></tr>
+        <tr><td class="g1">过度概括 OVER-GENERALIZE</td><td class="r amber num">27</td><td class="r red">▲</td></tr>
+        <tr><td class="g1">读心术 MIND-READING</td><td class="r g1 num">24</td><td class="r green">▼</td></tr>
+        <tr><td class="g1">应该陈述 SHOULD-STATE</td><td class="r g1 num">22</td><td class="r green">▼</td></tr>
+      </table>
+
+      <div class="section-label"><span>PERSONALIZED_DRILLS</span><span class="tag amber">CBT-BASED</span></div>
+      <table class="dtable">
+        <tr><th>DRILL</th><th class="r">PROG</th><th class="r">STATUS</th></tr>
+        <tr><td class="g1">认知重构 #07</td><td class="r amber num">82%</td><td class="r"><span class="tag green">DONE</span></td></tr>
+        <tr><td class="g1">行为激活 #03</td><td class="r amber num">45%</td><td class="r"><span class="tag amber">IN-PROG</span></td></tr>
+        <tr><td class="g1">暴露练习 #02</td><td class="r g1 num">12%</td><td class="r"><span class="tag red">QUEUED</span></td></tr>
+      </table>
+      <div class="g3" style="font-size:10px;margin-top:6px;">&gt; 基于 CBT 的个性化练习 // 自动校准中</div>
+    </div>
+  </div>
+
+  <!-- PANEL 3: ANON VAULT -->
+  <div class="panel">
+    <div class="panel-hd">
+      <span class="title">ANON_VAULT</span>
+      <span class="id">MOD.03 // E2EE</span>
+    </div>
+    <div class="panel-bd">
+      <div class="metric-row">
+        <span class="label">ENCRYPTION</span>
+        <span><span class="val amber">AES-256</span></span>
+      </div>
+      <div class="metric-row">
+        <span class="label">KEY_EXCHANGE</span>
+        <span class="green">X25519</span>
+      </div>
+      <div class="metric-row">
+        <span class="label">MESSAGE_COUNT</span>
+        <span class="val amber num">1,247</span>
+      </div>
+      <div class="metric-row">
+        <span class="label">TODAY_INBOX</span>
+        <span class="green num">+38</span>
+      </div>
+
+      <div class="section-label"><span>SECURITY_STATUS</span><span class="more">AUDIT ▸</span></div>
+      <table class="dtable">
+        <tr><th>LAYER</th><th class="r">ALGO</th><th class="r">STATE</th></tr>
+        <tr><td class="g1">TRANSPORT</td><td class="r amber">TLS 1.3</td><td class="r"><span class="tag green">OK</span></td></tr>
+        <tr><td class="g1">PAYLOAD</td><td class="r amber">AES-256-GCM</td><td class="r"><span class="tag green">OK</span></td></tr>
+        <tr><td class="g1">IDENTITY</td><td class="r amber">ZK-PROOF</td><td class="r"><span class="tag green">OK</span></td></tr>
+        <tr><td class="g1">STORAGE</td><td class="r amber">SHA-512</td><td class="r"><span class="tag green">OK</span></td></tr>
+        <tr><td class="g1">RETENTION</td><td class="r g1">0d</td><td class="r"><span class="tag amber">VOLATILE</span></td></tr>
+      </table>
+
+      <div class="section-label"><span>VAULT_LOG</span><span class="tag amber">ANON</span></div>
+      <div style="font-size:10.5px;line-height:1.55;">
+        <div class="g1">&gt; <span class="g3">14:32</span> msg#1247 encrypted <span class="green">OK</span></div>
+        <div class="g1">&gt; <span class="g3">14:30</span> msg#1246 encrypted <span class="green">OK</span></div>
+        <div class="g1">&gt; <span class="g3">14:28</span> key rotation <span class="amber">scheduled</span></div>
+        <div class="g1">&gt; <span class="g3">14:25</span> msg#1245 encrypted <span class="green">OK</span></div>
+        <div class="g3">&gt; identity unlinkable // zero-knowledge verified</div>
+      </div>
+
+      <div class="g3" style="font-size:10px;margin-top:6px;border-top:1px dashed var(--g4);padding-top:6px;">
+        &gt; 端到端加密匿名树洞 // 零知识身份验证
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ BOTTOM MULTI-PANEL ============ -->
+<div class="bottom-panels">
+  <!-- LIVE LOG -->
+  <div class="panel">
+    <div class="panel-hd">
+      <span class="title">EVENT_LOG</span>
+      <span class="id">STREAM // TAIL -F</span>
+    </div>
+    <div class="panel-bd log">
+      <div class="row"><span class="t">14:33:07</span><span class="lvl ok">OK</span><span class="msg">emotion_index sampled → 7.2</span></div>
+      <div class="row"><span class="t">14:33:04</span><span class="lvl">INF</span><span class="msg">cbt drill #07 progress +5%</span></div>
+      <div class="row"><span class="t">14:33:01</span><span class="lvl ok">OK</span><span class="msg">vault msg#1247 sealed (AES-256-GCM)</span></div>
+      <div class="row"><span class="t">14:32:55</span><span class="lvl warn">WRN</span><span class="msg">focus index dropped below threshold 7.0</span></div>
+      <div class="row"><span class="t">14:32:48</span><span class="lvl">INF</span><span class="msg">distortion tagged: over-generalize</span></div>
+      <div class="row"><span class="t">14:32:40</span><span class="lvl ok">OK</span><span class="msg">key rotation completed (X25519)</span></div>
+      <div class="row"><span class="t">14:32:31</span><span class="lvl">INF</span><span class="msg">hrv sample: 58ms (within band)</span></div>
+      <div class="row"><span class="t">14:32:22</span><span class="lvl ok">OK</span><span class="msg">daily ai analysis generated (3min)</span></div>
+      <div class="row"><span class="t">14:32:10</span><span class="lvl">INF</span><span class="msg">sleep quality imported: 82%</span></div>
+      <div class="row"><span class="t">14:31:58</span><span class="lvl ok">OK</span><span class="msg">zk-identity verified // unlinkable</span></div>
+    </div>
+  </div>
+
+  <!-- SYSTEM HEALTH -->
+  <div class="panel">
+    <div class="panel-hd">
+      <span class="title">SYSTEM_HEALTH</span>
+      <span class="id">DIAG</span>
+    </div>
+    <div class="panel-bd">
+      <table class="dtable">
+        <tr><th>SUBSYSTEM</th><th class="r">LOAD</th><th class="r">STATE</th></tr>
+        <tr><td class="g1">NEURO-V4 ENGINE</td><td class="r amber num">41%</td><td class="r"><span class="tag green">OK</span></td></tr>
+        <tr><td class="g1">NLP PIPELINE</td><td class="r amber num">63%</td><td class="r"><span class="tag green">OK</span></td></tr>
+        <tr><td class="g1">CBT SOLVER</td><td class="r amber num">28%</td><td class="r"><span class="tag green">OK</span></td></tr>
+        <tr><td class="g1">CRYPTO CORE</td><td class="r g1 num">12%</td><td class="r"><span class="tag green">OK</span></td></tr>
+        <tr><td class="g1">SYNC DAEMON</td><td class="r g1 num">07%</td><td class="r"><span class="tag green">OK</span></td></tr>
+      </table>
+      <div class="section-label"><span>MEMORY</span><span class="more">DETAIL ▸</span></div>
+      <div class="progress-label"><span class="g3">0</span><span class="amber">312MB / 1024MB</span><span class="g3">MAX</span></div>
+      <div class="progress"><i style="width:30%;background:var(--green);"></i></div>
+      <div class="section-label"><span>NETWORK</span><span class="tag green">STABLE</span></div>
+      <table class="dtable">
+        <tr><td class="g2">RTT</td><td class="r green num">12ms</td></tr>
+        <tr><td class="g2">JITTER</td><td class="r g1 num">1.4ms</td></tr>
+        <tr><td class="g2">LOSS</td><td class="r green num">0.00%</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- RISK & INSIGHT -->
+  <div class="panel">
+    <div class="panel-hd">
+      <span class="title">RISK_INSIGHT</span>
+      <span class="id">ADVISED</span>
+    </div>
+    <div class="panel-bd">
+      <div class="metric-row">
+        <span class="label">RISK_LEVEL</span>
+        <span class="val green">LOW</span>
+      </div>
+      <div class="metric-row">
+        <span class="label">CONFIDENCE</span>
+        <span class="amber num">94.2%</span>
+      </div>
+      <div class="section-label"><span>FLAG_MATRIX</span></div>
+      <table class="dtable">
+        <tr><th>FLAG</th><th class="r">SCORE</th><th class="r">TREND</th></tr>
+        <tr><td class="g1">SLEEP</td><td class="r green num">0.18</td><td class="r green">▼</td></tr>
+        <tr><td class="g1">SOCIAL</td><td class="r green num">0.22</td><td class="r green">▼</td></tr>
+        <tr><td class="g1">WORKLOAD</td><td class="r amber num">0.51</td><td class="r red">▲</td></tr>
+        <tr><td class="g1">MOOD_VAR</td><td class="r green num">0.31</td><td class="r green">▼</td></tr>
+      </table>
+      <div class="section-label"><span>AI_ADVISORY</span><span class="tag amber">CBT</span></div>
+      <div class="g1" style="font-size:10.5px;line-height:1.55;">
+        &gt; 维持当前 CBT 节奏，建议增加行为激活 #03。<br>
+        &gt; WORKLOAD 升幅明显，注意午后休息。<br>
+        &gt; 睡眠质量回升，延续现有作息。
+      </div>
+      <div class="g3" style="font-size:10px;margin-top:6px;">&gt; advisory only // not a medical device</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CTA ============ -->
+<div class="cta-zone">
+  <div class="cta-text">
+    <div class="k">// READY TO INITIALIZE</div>
+    <div class="v">开启 <b>7 天</b> 全模块试用 &nbsp;·&nbsp; 端到端加密 &nbsp;·&nbsp; 零知识身份 &nbsp;·&nbsp; 数据本地优先</div>
+    <div class="cta-meta">
+      <span class="green">●</span> NO CARD &nbsp;
+      <span class="green">●</span> NO PII &nbsp;
+      <span class="green">●</span> UNLINKABLE &nbsp;
+      <span class="g3">TRIAL_ID: TRIAL-7D-7741</span>
+    </div>
+  </div>
+  <div>
+    <a href="#" class="cta-btn">INITIALIZE_7_DAY_TRIAL</a>
+    <div class="cta-meta">&gt; press to deploy personal emotion terminal &nbsp;<span class="green">[READY]</span></div>
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<div class="footer">
+  <span>MINDECHO TERMINAL v3.1.0 &nbsp;//&nbsp; © 2026 MINDECHO LABS &nbsp;//&nbsp; NOT A MEDICAL DEVICE</span>
+  <span>BUILD 2026.07.07-RC2 &nbsp;|&nbsp; NODE cn-sha-03 &nbsp;|&nbsp; <span class="amber">EOF</span></span>
+</div>
+
+<script>
+  // live clock — keeps terminal feel alive
+  (function(){
+    var el=document.getElementById('clock');
+    function pad(n){return n<10?'0'+n:n;}
+    function tick(){
+      var d=new Date();
+      var s=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+
+        ' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds())+' CST';
+      el.innerHTML=s+'<span class="blink">_</span>';
+    }
+    tick();setInterval(tick,1000);
+  })();
+</script>
+
+</body>
+</html>

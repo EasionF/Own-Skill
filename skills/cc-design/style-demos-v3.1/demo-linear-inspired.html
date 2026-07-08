@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MindEcho — The mental wellness platform for high-performance teams</title>
+<style>
+  :root {
+    --bg-canvas: #08090A;
+    --bg-subtle: #0F1011;
+    --bg-elevated: #18191A;
+    --border-subtle: rgba(255,255,255,0.06);
+    --border-default: rgba(255,255,255,0.09);
+    --border-strong: rgba(255,255,255,0.14);
+    --text-primary: #F7F8F8;
+    --text-secondary: #8A8F98;
+    --text-tertiary: #62666D;
+    --accent: #5E6AD2;
+    --accent-hover: #7A82F0;
+    --accent-subtle: rgba(94,106,210,0.12);
+    --success: #26DC6E;
+    --warning: #F5A524;
+    --font-display: 'Inter Display', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --dur: 150ms;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg-canvas);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11', 'ss01';
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ---------- Nav ---------- */
+  nav {
+    height: 56px;
+    border-bottom: 1px solid var(--border-subtle);
+    position: sticky;
+    top: 0;
+    background: rgba(8,9,10,0.72);
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    z-index: 100;
+  }
+  .nav-inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-left { display: flex; align-items: center; gap: 40px; }
+  .logo {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .logo-mark {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    background: var(--accent);
+    position: relative;
+    flex-shrink: 0;
+  }
+  .logo-mark::after {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border-radius: 2px;
+    background: var(--bg-canvas);
+  }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a {
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    transition: color var(--dur) var(--ease);
+  }
+  .nav-links a:hover { color: var(--text-primary); }
+  .nav-right { display: flex; align-items: center; gap: 4px; }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease), transform var(--dur) var(--ease);
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    padding: 10px 16px;
+  }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border-default);
+    padding: 10px 16px;
+  }
+  .btn-secondary:hover {
+    border-color: var(--border-strong);
+    background: var(--bg-elevated);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    padding: 8px 12px;
+  }
+  .btn-ghost:hover { color: var(--text-primary); }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    padding: 96px 0 80px;
+    text-align: center;
+    position: relative;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--accent-subtle);
+    color: var(--accent-hover);
+    border: 1px solid rgba(94,106,210,0.22);
+    border-radius: 999px;
+    padding: 4px 12px 4px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 28px;
+    transition: border-color var(--dur) var(--ease);
+  }
+  .chip:hover { border-color: rgba(94,106,210,0.4); }
+  .chip-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent-hover);
+    box-shadow: 0 0 0 3px rgba(94,106,210,0.18);
+  }
+  .chip-arrow {
+    color: var(--text-tertiary);
+    font-size: 12px;
+    margin-left: 2px;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 64px;
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+    max-width: 880px;
+    margin: 0 auto 24px;
+  }
+  .hero .sub {
+    font-size: 19px;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 40px;
+    line-height: 1.5;
+  }
+  .hero-cta {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 18px;
+  }
+  .hero-note {
+    font-size: 13px;
+    color: var(--text-tertiary);
+  }
+  .hero-note .sep { margin: 0 6px; color: var(--border-strong); }
+
+  /* ---------- Trusted by ---------- */
+  .trusted {
+    padding: 56px 0 0;
+    margin-top: 64px;
+    border-top: 1px solid var(--border-subtle);
+  }
+  .trusted-label {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 32px;
+  }
+  .trusted-logos {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .trusted-logos span {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--text-tertiary);
+    letter-spacing: -0.01em;
+    transition: color var(--dur) var(--ease);
+  }
+  .trusted-logos span:hover { color: var(--text-secondary); }
+
+  /* ---------- Section ---------- */
+  .section { padding: 120px 0; }
+  .section-head { margin-bottom: 56px; }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--accent-hover);
+    font-weight: 500;
+    margin-bottom: 16px;
+    font-family: var(--font-mono);
+    letter-spacing: 0.02em;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 14px; height: 1px;
+    background: var(--accent);
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 40px;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    max-width: 620px;
+  }
+  .section-sub {
+    font-size: 17px;
+    color: var(--text-secondary);
+    max-width: 540px;
+  }
+
+  /* ---------- Bento grid ---------- */
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 24px;
+    transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease), background var(--dur) var(--ease);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .card:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-1px);
+  }
+  .card-lg { grid-column: span 2; }
+  .card-sm { grid-column: span 1; }
+  .card-wide { grid-column: span 3; }
+
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .card-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--accent-subtle);
+    border: 1px solid rgba(94,106,210,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--accent-hover);
+  }
+  /* geometric icons (CSS only) */
+  .ic-wave {
+    width: 14px; height: 10px;
+    position: relative;
+  }
+  .ic-wave::before, .ic-wave::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    height: 2px;
+    background: currentColor;
+    border-radius: 2px;
+  }
+  .ic-wave::before { top: 2px; transform: skewY(-8deg); }
+  .ic-wave::after { bottom: 2px; transform: skewY(8deg); }
+
+  .ic-refresh {
+    width: 14px; height: 14px;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    border-right-color: transparent;
+    position: relative;
+  }
+  .ic-refresh::after {
+    content: '';
+    position: absolute;
+    top: -1px; right: 1px;
+    width: 0; height: 0;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-top: 4px solid currentColor;
+    transform: rotate(45deg);
+  }
+
+  .ic-vault {
+    width: 13px; height: 13px;
+    border: 2px solid currentColor;
+    border-radius: 3px;
+    position: relative;
+  }
+  .ic-vault::after {
+    content: '';
+    position: absolute;
+    top: 1px; bottom: 1px; left: 50%;
+    width: 2px;
+    background: currentColor;
+    transform: translateX(-50%);
+  }
+
+  .ic-grid {
+    width: 13px; height: 13px;
+    background:
+      linear-gradient(currentColor, currentColor) 0 0/5px 5px no-repeat,
+      linear-gradient(currentColor, currentColor) 100% 0/5px 5px no-repeat,
+      linear-gradient(currentColor, currentColor) 0 100%/5px 5px no-repeat,
+      linear-gradient(currentColor, currentColor) 100% 100%/5px 5px no-repeat;
+  }
+
+  .card h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+  .card-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin-bottom: 4px;
+  }
+
+  /* ---------- Emotion chart (large card) ---------- */
+  .chart-wrap {
+    margin-top: 22px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .chart {
+    height: 132px;
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+    padding-bottom: 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .chart-bar {
+    flex: 1;
+    background: var(--border-default);
+    border-radius: 3px 3px 0 0;
+    min-height: 6px;
+    transition: background var(--dur) var(--ease);
+  }
+  .chart-bar.active { background: var(--accent); }
+  .chart-bar.muted { background: var(--border-subtle); }
+  .chart-axis {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.02em;
+  }
+  .chart-legend {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  .legend-dot {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .legend-dot::before {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 2px;
+    background: var(--accent);
+  }
+  .legend-dot.muted::before { background: var(--border-default); }
+  .legend-val {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- Progress (small card 1) ---------- */
+  .progress-block { margin-top: auto; padding-top: 22px; }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+  }
+  .progress-meta .l {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  .progress-meta .v {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-primary);
+  }
+  .progress {
+    height: 6px;
+    background: var(--bg-subtle);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 3px;
+  }
+  .progress-foot {
+    margin-top: 14px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .tag {
+    font-size: 11px;
+    color: var(--text-secondary);
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-family: var(--font-mono);
+    letter-spacing: 0.01em;
+  }
+
+  /* ---------- Vault (small card 2) ---------- */
+  .vault-meta { margin-top: auto; padding-top: 22px; }
+  .vault-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-top: 1px solid var(--border-subtle);
+    font-size: 13px;
+  }
+  .vault-row .k { color: var(--text-secondary); }
+  .vault-row .v {
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+  .vault-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--success);
+    font-family: var(--font-mono);
+  }
+  .vault-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--success);
+  }
+
+  /* ---------- Dashboard mock (wide card) ---------- */
+  .dash {
+    margin-top: 22px;
+    background: var(--bg-canvas);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 168px 1fr;
+    height: 340px;
+  }
+  .dash-side {
+    border-right: 1px solid var(--border-subtle);
+    padding: 14px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: var(--bg-subtle);
+  }
+  .dash-side-head {
+    font-size: 10px;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 6px 10px 10px;
+  }
+  .dash-side-item {
+    height: 30px;
+    border-radius: 6px;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+  .dash-side-item .dot {
+    width: 6px; height: 6px;
+    border-radius: 2px;
+    background: var(--text-tertiary);
+  }
+  .dash-side-item.active {
+    background: var(--accent-subtle);
+    color: var(--accent-hover);
+  }
+  .dash-side-item.active .dot { background: var(--accent-hover); }
+  .dash-main {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 0;
+  }
+  .dash-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .dash-topbar .t {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: -0.01em;
+  }
+  .dash-topbar .crumbs {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    font-size: 11px;
+    color: var(--text-tertiary);
+    font-family: var(--font-mono);
+  }
+  .dash-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .dash-stat {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .dash-stat-label {
+    font-size: 10px;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  .dash-stat-val {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 22px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .dash-stat-delta {
+    margin-top: 6px;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--success);
+    font-variant-numeric: tabular-nums;
+  }
+  .dash-stat-delta.down { color: var(--warning); }
+  .dash-chart {
+    flex: 1;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .dash-chart-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .dash-chart-head .l {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  .dash-chart-head .r {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    font-family: var(--font-mono);
+  }
+  .dash-chart-bars {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+  }
+  .dash-chart-bars .b {
+    flex: 1;
+    background: var(--accent-subtle);
+    border-radius: 2px 2px 0 0;
+    min-height: 4px;
+  }
+  .dash-chart-bars .b.tall { background: var(--accent); }
+
+  /* ---------- Stats band ---------- */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    padding: 72px 0;
+    border-top: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .stat-num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 56px;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    margin-bottom: 14px;
+  }
+  .stat-num .unit {
+    color: var(--accent-hover);
+  }
+  .stat-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    max-width: 260px;
+    line-height: 1.5;
+  }
+
+  /* ---------- Bottom CTA ---------- */
+  .cta-final {
+    text-align: center;
+    padding: 120px 0 96px;
+  }
+  .cta-final h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 48px;
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+    max-width: 720px;
+    margin: 0 auto 32px;
+  }
+  .cta-final-btns {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  /* ---------- Footer ---------- */
+  footer {
+    border-top: 1px solid var(--border-subtle);
+    padding: 28px 0;
+  }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: var(--text-tertiary);
+  }
+  .footer-inner .links { display: flex; gap: 24px; }
+  .footer-inner .links a { transition: color var(--dur) var(--ease); }
+  .footer-inner .links a:hover { color: var(--text-secondary); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px) {
+    .hero { padding: 64px 0 48px; }
+    .hero h1 { font-size: 40px; }
+    .hero .sub { font-size: 17px; }
+    .section { padding: 80px 0; }
+    .section-title { font-size: 30px; }
+    .stat-num { font-size: 40px; }
+    .cta-final { padding: 80px 0; }
+    .cta-final h2 { font-size: 32px; }
+    .bento { grid-template-columns: 1fr; }
+    .card-lg, .card-sm, .card-wide { grid-column: span 1; }
+    .stats { grid-template-columns: 1fr; gap: 40px; padding: 56px 0; }
+    .nav-links { display: none; }
+    .trusted-logos { justify-content: center; gap: 24px; }
+    .dash { grid-template-columns: 1fr; height: auto; }
+    .dash-side { flex-direction: row; overflow-x: auto; gap: 4px; }
+    .dash-side-head { display: none; }
+    .dash-side-item { flex-shrink: 0; }
+    .footer-inner { flex-direction: column; gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ============ NAV ============ -->
+  <nav>
+    <div class="container nav-inner">
+      <div class="nav-left">
+        <a href="#" class="logo"><span class="logo-mark"></span>MindEcho</a>
+        <div class="nav-links">
+          <a href="#">Product</a>
+          <a href="#">Solutions</a>
+          <a href="#">Customers</a>
+          <a href="#">Pricing</a>
+        </div>
+      </div>
+      <div class="nav-right">
+        <a href="#" class="btn btn-ghost">Sign in</a>
+        <a href="#" class="btn btn-primary">Get Started</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <div class="container">
+      <a href="#" class="chip">
+        <span class="chip-dot"></span>
+        New · MindEcho 2.0
+        <span class="chip-arrow">→</span>
+      </a>
+      <h1>The mental wellness platform for high-performance teams</h1>
+      <p class="sub">Track emotions, reshape cognition, and protect your team's mental edge. Built for engineering and product teams.</p>
+      <div class="hero-cta">
+        <a href="#" class="btn btn-primary">Start free trial</a>
+        <a href="#" class="btn btn-secondary">Talk to us</a>
+      </div>
+      <div class="hero-note">No credit card required<span class="sep">·</span>14-day trial</div>
+
+      <div class="trusted">
+        <div class="trusted-label">Trusted by high-performance teams</div>
+        <div class="trusted-logos">
+          <span>Northwind</span>
+          <span>Lumen</span>
+          <span>Vertex</span>
+          <span>Cobalt</span>
+          <span>Halcyon</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ FEATURES (BENTO) ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Platform</div>
+        <h2 class="section-title">Everything your team needs to stay sharp.</h2>
+        <p class="section-sub">A focused toolkit that turns scattered stress signals into clear, actionable insight — without the noise.</p>
+      </div>
+
+      <div class="bento">
+
+        <!-- Large: AI Emotion Tracking -->
+        <article class="card card-lg">
+          <div class="card-head">
+            <div class="card-icon"><span class="ic-wave"></span></div>
+            <h3>AI Emotion Tracking</h3>
+          </div>
+          <p class="card-desc">Continuous, low-friction check-ins parsed by on-device models. Surface burnout signals weeks before they hit velocity.</p>
+          <div class="chart-wrap">
+            <div class="chart">
+              <div class="chart-bar" style="height:32%"></div>
+              <div class="chart-bar" style="height:48%"></div>
+              <div class="chart-bar muted" style="height:28%"></div>
+              <div class="chart-bar" style="height:62%"></div>
+              <div class="chart-bar" style="height:44%"></div>
+              <div class="chart-bar" style="height:70%"></div>
+              <div class="chart-bar muted" style="height:36%"></div>
+              <div class="chart-bar" style="height:58%"></div>
+              <div class="chart-bar" style="height:74%"></div>
+              <div class="chart-bar" style="height:52%"></div>
+              <div class="chart-bar" style="height:80%"></div>
+              <div class="chart-bar muted" style="height:46%"></div>
+              <div class="chart-bar" style="height:86%"></div>
+              <div class="chart-bar active" style="height:100%"></div>
+            </div>
+            <div class="chart-axis">
+              <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+            </div>
+            <div class="chart-legend">
+              <span class="legend-dot">Tracked</span>
+              <span class="legend-dot muted">Baseline</span>
+              <span class="legend-val">+24% focus vs. last week</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Small 1: Cognitive Reshaping -->
+        <article class="card card-sm">
+          <div class="card-head">
+            <div class="card-icon"><span class="ic-refresh"></span></div>
+            <h3>Cognitive Reshaping</h3>
+          </div>
+          <p class="card-desc">Guided reframing exercises that rewire unhelpful thought loops in under five minutes a day.</p>
+          <div class="progress-block">
+            <div class="progress-meta">
+              <span class="l">Team adoption</span>
+              <span class="v">68%</span>
+            </div>
+            <div class="progress"><div class="progress-fill" style="width:68%"></div></div>
+            <div class="progress-foot">
+              <span class="tag">CBT-based</span>
+              <span class="tag">5 min/day</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Small 2: Anonymous Vault -->
+        <article class="card card-sm">
+          <div class="card-head">
+            <div class="card-icon"><span class="ic-vault"></span></div>
+            <h3>Anonymous Vault</h3>
+          </div>
+          <p class="card-desc">Entries are encrypted before they ever leave the device. Managers see patterns, never people.</p>
+          <div class="vault-meta">
+            <div class="vault-row"><span class="k">Encryption</span><span class="v">AES-256-GCM</span></div>
+            <div class="vault-row"><span class="k">Key custody</span><span class="v">Client-side</span></div>
+            <div class="vault-row"><span class="k">Retention</span><span class="v">30 days</span></div>
+            <div class="vault-badge">Zero-knowledge by design</div>
+          </div>
+        </article>
+
+        <!-- Wide: Real-time dashboard -->
+        <article class="card card-wide">
+          <div class="card-head">
+            <div class="card-icon"><span class="ic-grid"></span></div>
+            <h3>Real-time dashboard</h3>
+          </div>
+          <p class="card-desc">A live view of team cognitive load, recovery, and risk — without exposing any individual.</p>
+
+          <div class="dash">
+            <aside class="dash-side">
+              <div class="dash-side-head">Workspace</div>
+              <div class="dash-side-item active"><span class="dot"></span>Overview</div>
+              <div class="dash-side-item"><span class="dot"></span>Emotions</div>
+              <div class="dash-side-item"><span class="dot"></span>Cognition</div>
+              <div class="dash-side-item"><span class="dot"></span>Vault</div>
+              <div class="dash-side-item"><span class="dot"></span>Reports</div>
+              <div class="dash-side-item"><span class="dot"></span>Settings</div>
+            </aside>
+            <div class="dash-main">
+              <div class="dash-topbar">
+                <span class="t">Team overview</span>
+                <span class="crumbs">Eng · Last 7 days</span>
+              </div>
+              <div class="dash-stats">
+                <div class="dash-stat">
+                  <div class="dash-stat-label">Focus score</div>
+                  <div class="dash-stat-val">82.4</div>
+                  <div class="dash-stat-delta">▲ 6.1 vs. last week</div>
+                </div>
+                <div class="dash-stat">
+                  <div class="dash-stat-label">Load index</div>
+                  <div class="dash-stat-val">0.41</div>
+                  <div class="dash-stat-delta down">▲ 0.04 rising</div>
+                </div>
+                <div class="dash-stat">
+                  <div class="dash-stat-label">Recovery</div>
+                  <div class="dash-stat-val">2.4×</div>
+                  <div class="dash-stat-delta">▲ faster rebound</div>
+                </div>
+              </div>
+              <div class="dash-chart">
+                <div class="dash-chart-head">
+                  <span class="l">Cognitive load distribution</span>
+                  <span class="r">14 teams · live</span>
+                </div>
+                <div class="dash-chart-bars">
+                  <div class="b" style="height:22%"></div>
+                  <div class="b" style="height:38%"></div>
+                  <div class="b" style="height:30%"></div>
+                  <div class="b tall" style="height:64%"></div>
+                  <div class="b" style="height:48%"></div>
+                  <div class="b" style="height:56%"></div>
+                  <div class="b" style="height:34%"></div>
+                  <div class="b tall" style="height:78%"></div>
+                  <div class="b" style="height:52%"></div>
+                  <div class="b" style="height:44%"></div>
+                  <div class="b tall" style="height:88%"></div>
+                  <div class="b" style="height:60%"></div>
+                  <div class="b" style="height:40%"></div>
+                  <div class="b" style="height:50%"></div>
+                  <div class="b" style="height:66%"></div>
+                  <div class="b" style="height:36%"></div>
+                  <div class="b" style="height:58%"></div>
+                  <div class="b" style="height:46%"></div>
+                  <div class="b" style="height:72%"></div>
+                  <div class="b" style="height:42%"></div>
+                  <div class="b" style="height:54%"></div>
+                  <div class="b" style="height:30%"></div>
+                  <div class="b" style="height:62%"></div>
+                  <div class="b" style="height:48%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STATS BAND ============ -->
+  <section>
+    <div class="container">
+      <div class="stats">
+        <div>
+          <div class="stat-num">94<span class="unit">%</span></div>
+          <div class="stat-desc">report improved focus within the first three weeks of rollout.</div>
+        </div>
+        <div>
+          <div class="stat-num">12<span class="unit">-day</span></div>
+          <div class="stat-desc">average streak once check-ins become part of the daily standup.</div>
+        </div>
+        <div>
+          <div class="stat-num">2.4<span class="unit">×</span></div>
+          <div class="stat-desc">faster recovery from high-load sprints compared to baseline.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BOTTOM CTA ============ -->
+  <section class="cta-final">
+    <div class="container">
+      <h2>Ready to upgrade your team's mental edge?</h2>
+      <div class="cta-final-btns">
+        <a href="#" class="btn btn-primary">Get Started</a>
+        <a href="#" class="btn btn-secondary">Book Demo</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="container footer-inner">
+      <span>© 2026 MindEcho Labs, Inc.</span>
+      <div class="links">
+        <a href="#">Privacy</a>
+        <a href="#">Security</a>
+        <a href="#">Docs</a>
+        <a href="#">Status</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MindEcho — Mental wellness infrastructure for modern teams</title>
+<style>
+  :root {
+    --bg-canvas: #FFFFFF;
+    --bg-subtle: #F6F9FC;
+    --bg-tinted: #E3E8EE;
+    --border-subtle: #E3E8EE;
+    --border-default: #ADB5BD;
+    --text-primary: #0A2540;
+    --text-secondary: #425466;
+    --text-tertiary: #8898AA;
+    --accent: #635BFF;
+    --accent-hover: #7A73FF;
+    --accent-light: #A4ABFF;
+    --gradient-1: linear-gradient(150deg, #635BFF 0%, #4F89FF 100%);
+    --success: #00D924;
+    --warning: #FFC043;
+    --shadow-card: 0 4px 12px rgba(0,0,0,0.04);
+    --shadow-hover: 0 12px 32px rgba(0,0,0,0.08);
+    --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    color: var(--text-primary);
+    background: var(--bg-canvas);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .num { font-variant-numeric: tabular-nums; }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+
+  /* ---------- Nav ---------- */
+  nav {
+    height: 72px;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid var(--border-subtle);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .nav-inner {
+    max-width: 1280px; margin: 0 auto; padding: 0 32px;
+    height: 100%; display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo {
+    font-weight: 600; font-size: 19px; color: var(--text-primary);
+    letter-spacing: -0.01em; display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+  }
+  .logo-mark {
+    width: 26px; height: 26px; border-radius: 7px;
+    background: var(--gradient-1); position: relative;
+    box-shadow: 0 2px 6px rgba(99,91,255,0.3);
+  }
+  .logo-mark::after {
+    content: ''; position: absolute; inset: 7px;
+    border: 2px solid white; border-radius: 50%;
+    border-right-color: transparent; transform: rotate(-30deg);
+  }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    color: var(--text-secondary); text-decoration: none;
+    font-size: 15px; font-weight: 500; transition: color 200ms ease-out;
+  }
+  .nav-links a:hover { color: var(--text-primary); }
+  .nav-cta { display: flex; align-items: center; gap: 16px; }
+  .signin {
+    color: var(--text-primary); text-decoration: none;
+    font-size: 15px; font-weight: 500; transition: color 200ms ease-out;
+  }
+  .signin:hover { color: var(--accent); }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-sans); font-size: 15px; font-weight: 500;
+    text-decoration: none; border-radius: 4px; padding: 12px 20px;
+    border: 1px solid transparent; cursor: pointer;
+    transition: all 200ms ease-out; white-space: nowrap;
+  }
+  .btn-primary { background: var(--accent); color: white; }
+  .btn-primary:hover {
+    background: var(--accent-hover);
+    box-shadow: 0 8px 16px rgba(99,91,255,0.25);
+    transform: translateY(-1px);
+  }
+  .btn-secondary {
+    background: white; color: var(--text-primary); border-color: var(--border-default);
+  }
+  .btn-secondary:hover {
+    border-color: var(--text-primary);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  }
+  .btn-lg { padding: 16px 28px; font-size: 16px; }
+
+  /* ---------- Hero ---------- */
+  .hero { padding: 80px 0 96px; position: relative; overflow: hidden; }
+  .hero-bg {
+    position: absolute; top: -220px; right: -260px;
+    width: 820px; height: 820px;
+    background: var(--gradient-1); opacity: 0.07;
+    border-radius: 50%; filter: blur(90px);
+    z-index: 0; pointer-events: none;
+  }
+  .hero-grid {
+    display: grid; grid-template-columns: 60% 40%;
+    gap: 48px; align-items: center;
+    position: relative; z-index: 1;
+  }
+  .chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 5px 14px 5px 5px; background: white;
+    border: 1px solid var(--border-subtle); border-radius: 100px;
+    font-size: 13px; font-weight: 500; color: var(--text-secondary);
+    box-shadow: var(--shadow-card); margin-bottom: 28px;
+    transition: all 200ms ease-out; text-decoration: none;
+  }
+  .chip:hover { transform: translateY(-1px); box-shadow: var(--shadow-hover); }
+  .chip-tag {
+    background: var(--accent); color: white;
+    padding: 3px 9px; border-radius: 100px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
+  }
+  .chip-arrow { color: var(--text-tertiary); font-size: 13px; transition: transform 200ms ease-out; }
+  .chip:hover .chip-arrow { transform: translateX(2px); }
+
+  h1.hero-title {
+    font-weight: 600; font-size: 56px; line-height: 1.08;
+    letter-spacing: -0.025em; color: var(--text-primary); margin-bottom: 24px;
+  }
+  .hero-sub {
+    font-size: 19px; line-height: 1.55; color: var(--text-secondary);
+    margin-bottom: 40px; max-width: 560px;
+  }
+  .hero-cta { display: flex; gap: 16px; flex-wrap: wrap; }
+
+  /* ---------- Hero dashboard ---------- */
+  .dash-wrap { position: relative; }
+  .dash {
+    background: var(--bg-subtle); border-radius: 12px; padding: 18px;
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 24px 48px -14px rgba(10,37,64,0.16);
+    transition: transform 200ms ease-out, box-shadow 200ms ease-out;
+  }
+  .dash:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 32px 56px -14px rgba(10,37,64,0.20);
+  }
+  .dash-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .dash-title { font-size: 13px; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+  .live-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--success);
+    box-shadow: 0 0 0 3px rgba(0,217,36,0.15);
+  }
+  .dash-meta { font-size: 11px; color: var(--text-tertiary); font-variant-numeric: tabular-nums; }
+  .dash-body {
+    background: white; border-radius: 8px; padding: 18px;
+    border: 1px solid var(--border-subtle);
+  }
+  .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .stat-cell { padding: 12px; background: var(--bg-subtle); border-radius: 6px; }
+  .stat-label {
+    font-size: 10px; color: var(--text-tertiary); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .stat-val { font-size: 22px; font-weight: 600; color: var(--text-primary); margin-top: 4px; font-variant-numeric: tabular-nums; }
+  .stat-delta { font-size: 11px; color: var(--success); font-weight: 600; margin-top: 2px; font-variant-numeric: tabular-nums; }
+  .stat-delta.warn { color: var(--warning); }
+
+  .chart {
+    height: 110px; display: flex; align-items: flex-end; gap: 5px;
+    padding: 8px 0; border-top: 1px solid var(--border-subtle);
+  }
+  .bar {
+    flex: 1; background: linear-gradient(180deg, var(--accent-light) 0%, var(--accent) 100%);
+    border-radius: 3px 3px 0 0; min-height: 8px; opacity: 0.78;
+    transition: opacity 200ms ease-out;
+  }
+  .bar.peak { opacity: 1; }
+  .dash:hover .bar { opacity: 0.85; }
+  .dash:hover .bar.peak { opacity: 1; }
+
+  .legend {
+    display: flex; gap: 14px; margin-top: 12px;
+    font-size: 11px; color: var(--text-tertiary); font-weight: 500;
+  }
+  .legend-dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+
+  .float-card {
+    position: absolute; background: white;
+    border: 1px solid var(--border-subtle); border-radius: 8px;
+    padding: 10px 14px; box-shadow: 0 10px 24px rgba(10,37,64,0.10);
+    font-size: 12px; display: flex; align-items: center; gap: 10px;
+    transition: transform 200ms ease-out;
+  }
+  .dash-wrap:hover .float-card { transform: translateY(-2px); }
+  .float-card.top { top: -20px; left: -22px; }
+  .float-card.bot { bottom: -16px; right: -16px; }
+  .fc-icon {
+    width: 28px; height: 28px; border-radius: 7px;
+    background: var(--bg-subtle); display: flex; align-items: center; justify-content: center;
+    font-weight: 700; color: var(--accent); font-size: 13px;
+  }
+  .fc-val { font-weight: 600; color: var(--text-primary); font-size: 13px; line-height: 1.2; }
+  .fc-lbl { font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
+
+  /* ---------- Logo strip ---------- */
+  .logos { padding: 56px 0 24px; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); }
+  .logos-label {
+    font-size: 12px; color: var(--text-tertiary); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em; text-align: center; margin-bottom: 28px;
+  }
+  .logos-row {
+    display: flex; gap: 56px; align-items: center; justify-content: center;
+    flex-wrap: wrap;
+  }
+  .logo-text {
+    font-weight: 600; font-size: 20px; color: var(--text-tertiary);
+    letter-spacing: -0.02em; opacity: 0.85;
+  }
+  .logo-text.thin { font-weight: 500; }
+  .logo-text.italic { font-style: italic; font-weight: 600; }
+
+  /* ---------- Section ---------- */
+  section.block { padding: 96px 0; }
+  .section-eyebrow {
+    color: var(--accent); font-size: 13px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px;
+  }
+  .section-title {
+    font-size: 42px; font-weight: 600; color: var(--text-primary);
+    letter-spacing: -0.022em; line-height: 1.15; margin-bottom: 16px;
+    max-width: 660px;
+  }
+  .section-sub {
+    font-size: 18px; color: var(--text-secondary); max-width: 600px; line-height: 1.55;
+  }
+  .section-head { margin-bottom: 56px; }
+
+  /* ---------- Feature rows ---------- */
+  .feature {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 64px; align-items: center;
+    padding: 72px 0; border-top: 1px solid var(--border-subtle);
+  }
+  .feature:first-of-type { border-top: none; padding-top: 24px; }
+  .feature:nth-child(even) .feature-ui { order: 2; }
+  .feature:nth-child(even) .feature-copy { order: 1; }
+  .feature-tag {
+    display: inline-block; font-size: 12px; font-weight: 600; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px;
+  }
+  .feature-title {
+    font-size: 30px; font-weight: 600; color: var(--text-primary);
+    letter-spacing: -0.015em; line-height: 1.2; margin-bottom: 16px;
+  }
+  .feature-desc {
+    font-size: 16px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 24px;
+  }
+  .feature-list { list-style: none; margin-bottom: 24px; }
+  .feature-list li {
+    font-size: 15px; color: var(--text-secondary);
+    padding: 7px 0 7px 26px; position: relative;
+  }
+  .feature-list li::before {
+    content: ''; position: absolute; left: 0; top: 13px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: radial-gradient(circle at center, var(--accent) 0%, var(--accent) 45%, transparent 50%);
+  }
+  .feature-link {
+    color: var(--accent); font-size: 15px; font-weight: 600;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+    transition: gap 200ms ease-out;
+  }
+  .feature-link:hover { gap: 10px; }
+
+  /* ---------- UI shells ---------- */
+  .ui-shell {
+    background: var(--bg-subtle); border: 1px solid var(--border-subtle);
+    border-radius: 12px; overflow: hidden;
+    box-shadow: 0 16px 36px -10px rgba(10,37,64,0.12);
+    transition: transform 200ms ease-out, box-shadow 200ms ease-out;
+  }
+  .ui-shell:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 26px 44px -10px rgba(10,37,64,0.16);
+  }
+  .ui-bar {
+    height: 38px; background: white;
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex; align-items: center; padding: 0 14px; gap: 8px;
+  }
+  .ui-bar-dots { display: flex; gap: 6px; }
+  .ui-bar-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--bg-tinted); }
+  .ui-bar-url {
+    flex: 1; margin-left: 10px; font-size: 11px; color: var(--text-tertiary);
+    font-family: var(--font-mono); background: var(--bg-subtle);
+    padding: 4px 10px; border-radius: 4px;
+  }
+  .ui-body { padding: 22px; }
+
+  /* ---------- Code block ---------- */
+  .codeblock {
+    background: #FFFFFF; border: 1px solid var(--border-subtle);
+    border-radius: 8px; overflow: hidden;
+  }
+  .code-tabs {
+    display: flex; background: var(--bg-subtle);
+    border-bottom: 1px solid var(--border-subtle); padding: 0 8px;
+  }
+  .code-tab {
+    padding: 10px 14px; font-size: 12px; font-weight: 600;
+    color: var(--text-tertiary); border-bottom: 2px solid transparent;
+    cursor: default;
+  }
+  .code-tab.active { color: var(--text-primary); border-bottom-color: var(--accent); }
+  .code {
+    font-family: var(--font-mono); font-size: 13px; line-height: 1.75;
+    padding: 20px; overflow-x: auto; color: var(--text-secondary);
+  }
+  .code .k { color: #635BFF; font-weight: 600; }
+  .code .s { color: #00875A; }
+  .code .c { color: #8898AA; font-style: italic; }
+  .code .n { color: #0A2540; }
+  .code .p { color: #425466; }
+  .code .f { color: #B07A00; }
+  .code .url { color: #4F89FF; }
+
+  /* ---------- CBT dashboard ---------- */
+  .cbt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .cbt-card { background: white; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px; }
+  .cbt-card-title {
+    font-size: 10px; color: var(--text-tertiary); font-weight: 600;
+    margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .cbt-card-val { font-size: 24px; font-weight: 600; color: var(--text-primary); margin-bottom: 10px; font-variant-numeric: tabular-nums; }
+  .progress { height: 6px; background: var(--bg-tinted); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--gradient-1); border-radius: 100px; }
+  .progress-fill.warn { background: var(--warning); }
+
+  .cbt-list { background: white; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 6px 14px; }
+  .cbt-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 0; border-top: 1px solid var(--border-subtle); font-size: 13px;
+  }
+  .cbt-row:first-child { border-top: none; }
+  .cbt-row-lbl { color: var(--text-secondary); display: flex; align-items: center; gap: 8px; font-weight: 500; }
+  .cbt-row-dot { width: 8px; height: 8px; border-radius: 2px; }
+  .cbt-row-val { font-weight: 600; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+  .cbt-row-bar { width: 60px; height: 4px; background: var(--bg-tinted); border-radius: 100px; margin-right: 12px; overflow: hidden; }
+  .cbt-row-bar-fill { height: 100%; background: var(--accent); border-radius: 100px; }
+
+  /* ---------- Terminal ---------- */
+  .terminal {
+    background: #0A2540; border-radius: 8px; padding: 20px;
+    font-family: var(--font-mono); font-size: 13px; line-height: 1.75; color: #C5D0E0;
+  }
+  .term-line { display: flex; gap: 10px; flex-wrap: wrap; }
+  .term-prompt { color: #A4ABFF; flex-shrink: 0; font-weight: 600; }
+  .term-cmd { color: #FFFFFF; }
+  .term-out { color: #8898AA; }
+  .term-ok { color: #00D924; font-weight: 600; }
+  .term-key { color: #A4ABFF; }
+  .term-str { color: #FFC043; }
+  .term-dim { color: #6B7A90; }
+
+  /* ---------- Stats band ---------- */
+  .stats-band {
+    background: var(--bg-subtle); padding: 96px 0;
+    border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);
+  }
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 56px; }
+  .stat-big { text-align: left; }
+  .stat-big-val {
+    font-size: 64px; font-weight: 600; color: var(--text-primary);
+    letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums;
+  }
+  .stat-big-val .unit { font-size: 38px; color: var(--accent); margin-left: 2px; }
+  .stat-big-lbl {
+    font-size: 15px; color: var(--text-secondary); margin-top: 14px;
+    max-width: 280px; line-height: 1.5;
+  }
+  .stat-big-tick {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; color: var(--success); font-weight: 600; margin-top: 8px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- Code example section ---------- */
+  .code-section .ui-shell { background: white; }
+  .code-section .ui-body { padding: 0; }
+  .code-section .code { padding: 28px 32px; }
+  .code-section .code-tabs { background: var(--bg-subtle); }
+
+  /* ---------- Bottom CTA ---------- */
+  .cta-final {
+    padding: 120px 0; text-align: center;
+    background: var(--bg-subtle); border-top: 1px solid var(--border-subtle);
+    position: relative; overflow: hidden;
+  }
+  .cta-final::before {
+    content: ''; position: absolute; top: -160px; left: 50%;
+    transform: translateX(-50%); width: 620px; height: 620px;
+    background: var(--gradient-1); opacity: 0.06;
+    border-radius: 50%; filter: blur(70px);
+  }
+  .cta-final-inner { position: relative; z-index: 1; }
+  .cta-final h2 {
+    font-size: 48px; font-weight: 600; color: var(--text-primary);
+    letter-spacing: -0.025em; line-height: 1.15; margin-bottom: 36px;
+    max-width: 720px; margin-left: auto; margin-right: auto;
+  }
+  .cta-final .btns { display: inline-flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+
+  /* ---------- Footer ---------- */
+  footer { background: white; border-top: 1px solid var(--border-subtle); padding: 40px 0; }
+  .footer-inner {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .footer-copy { font-size: 13px; color: var(--text-tertiary); }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { font-size: 13px; color: var(--text-tertiary); text-decoration: none; transition: color 200ms ease-out; }
+  .footer-links a:hover { color: var(--text-primary); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 960px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 64px; }
+    h1.hero-title { font-size: 40px; }
+    .feature { grid-template-columns: 1fr; gap: 32px; padding: 48px 0; }
+    .feature:nth-child(even) .feature-ui { order: 2; }
+    .feature:nth-child(even) .feature-copy { order: 1; }
+    .stats-grid { grid-template-columns: 1fr; gap: 40px; }
+    .stat-big-val { font-size: 48px; }
+    .nav-links { display: none; }
+    .section-title { font-size: 30px; }
+    .cta-final h2 { font-size: 32px; }
+    .cbt-grid { grid-template-columns: 1fr; }
+    .float-card.top { left: 0; }
+    .float-card.bot { right: 0; }
+    .container { padding: 0 20px; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ============ NAV ============ -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="logo">
+        <span class="logo-mark"></span>
+        MindEcho
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">Products</a></li>
+        <li><a href="#">Solutions</a></li>
+        <li><a href="#code">Developers</a></li>
+        <li><a href="#">Pricing</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="#" class="signin">Sign in</a>
+        <a href="#" class="btn btn-secondary">Contact sales</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <div class="hero-bg"></div>
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <a href="#" class="chip">
+            <span class="chip-tag">New</span>
+            <span>MindEcho API v2 is live</span>
+            <span class="chip-arrow">&rarr;</span>
+          </a>
+          <h1 class="hero-title">Mental wellness infrastructure for modern teams</h1>
+          <p class="hero-sub">
+            Emotion intelligence, CBT orchestration, and encrypted vaults —
+            delivered as APIs and SDKs. Build wellbeing into your product
+            with the reliability of payments infrastructure.
+          </p>
+          <div class="hero-cta">
+            <a href="#" class="btn btn-primary btn-lg">Start now</a>
+            <a href="#" class="btn btn-secondary btn-lg">Read docs</a>
+          </div>
+        </div>
+
+        <div class="hero-ui">
+          <div class="dash-wrap">
+            <div class="dash">
+              <div class="dash-head">
+                <div class="dash-title">
+                  <span class="live-dot"></span>
+                  Mood Analytics
+                </div>
+                <div class="dash-meta">Last 14 days</div>
+              </div>
+              <div class="dash-body">
+                <div class="stat-row">
+                  <div class="stat-cell">
+                    <div class="stat-label">Wellbeing index</div>
+                    <div class="stat-val num">82.4</div>
+                    <div class="stat-delta num">+4.2% vs last cycle</div>
+                  </div>
+                  <div class="stat-cell">
+                    <div class="stat-label">Active sessions</div>
+                    <div class="stat-val num">1,284</div>
+                    <div class="stat-delta num">+12.1% vs last cycle</div>
+                  </div>
+                </div>
+                <div class="chart">
+                  <div class="bar" style="height: 38%"></div>
+                  <div class="bar" style="height: 52%"></div>
+                  <div class="bar" style="height: 44%"></div>
+                  <div class="bar" style="height: 61%"></div>
+                  <div class="bar" style="height: 55%"></div>
+                  <div class="bar" style="height: 70%"></div>
+                  <div class="bar" style="height: 64%"></div>
+                  <div class="bar" style="height: 78%"></div>
+                  <div class="bar" style="height: 71%"></div>
+                  <div class="bar peak" style="height: 92%"></div>
+                  <div class="bar" style="height: 80%"></div>
+                  <div class="bar" style="height: 84%"></div>
+                  <div class="bar" style="height: 76%"></div>
+                  <div class="bar" style="height: 88%"></div>
+                </div>
+                <div class="legend">
+                  <span><span class="legend-dot" style="background: var(--accent);"></span>Calm</span>
+                  <span><span class="legend-dot" style="background: var(--accent-light);"></span>Engaged</span>
+                  <span><span class="legend-dot" style="background: var(--bg-tinted);"></span>At-risk</span>
+                </div>
+              </div>
+            </div>
+            <div class="float-card top">
+              <div class="fc-icon">E</div>
+              <div>
+                <div class="fc-lbl">Emotion API</div>
+                <div class="fc-val">87ms p50</div>
+              </div>
+            </div>
+            <div class="float-card bot">
+              <div class="fc-icon" style="color: var(--success);">V</div>
+              <div>
+                <div class="fc-lbl">Vault sealed</div>
+                <div class="fc-val">AES-256-GCM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ LOGO STRIP ============ -->
+  <section class="logos">
+    <div class="container">
+      <div class="logos-label">Powered by industry leaders</div>
+      <div class="logos-row">
+        <span class="logo-text">Northwind</span>
+        <span class="logo-text italic">Lumen</span>
+        <span class="logo-text">Cortex&nbsp;Health</span>
+        <span class="logo-text thin">veridian</span>
+        <span class="logo-text">Anchor&middot;Care</span>
+        <span class="logo-text thin">Polaris</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURES ============ -->
+  <section class="block" id="features">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-eyebrow">Platform</div>
+        <h2 class="section-title">Three primitives. One wellness stack.</h2>
+        <p class="section-sub">
+          Each capability ships as a versioned API with typed SDKs, SLAs,
+          and audit logs — designed for the same engineers who ship payments.
+        </p>
+      </div>
+
+      <!-- Feature 1: Emotion API -->
+      <div class="feature">
+        <div class="feature-copy">
+          <div class="feature-tag">Emotion API</div>
+          <h3 class="feature-title">Turn raw text into structured emotion, in 80ms.</h3>
+          <p class="feature-desc">
+            Multilingual inference over journal entries, chat messages, or
+            support tickets. Returns calibrated scores across 12 dimensions
+            with confidence and latency guarantees.
+          </p>
+          <ul class="feature-list">
+            <li>12-dimension emotion vectors with confidence intervals</li>
+            <li>Low-latency inference — p50 under 90ms globally</li>
+            <li>PII redaction at the edge, before inference</li>
+          </ul>
+          <a href="#" class="feature-link">View API reference &rarr;</a>
+        </div>
+        <div class="feature-ui">
+          <div class="ui-shell">
+            <div class="ui-bar">
+              <div class="ui-bar-dots">
+                <span class="ui-bar-dot"></span>
+                <span class="ui-bar-dot"></span>
+                <span class="ui-bar-dot"></span>
+              </div>
+              <div class="ui-bar-url">POST api.mindecho.ai/v2/emotion</div>
+            </div>
+            <div class="ui-body">
+              <div class="codeblock">
+                <div class="code-tabs">
+                  <span class="code-tab active">Request</span>
+                  <span class="code-tab">Response</span>
+                </div>
+                <pre class="code"><span class="c">// Analyze a user journal entry</span>
+<span class="k">curl</span> https://api.mindecho.ai/v2/emotion \
+  -H <span class="s">"Authorization: Bearer sk_live_&#8901;&#8901;&#8901;"</span> \
+  -H <span class="s">"Content-Type: application/json"</span> \
+  -d <span class="s">'{</span>
+<span class="s">    "text": "I feel overwhelmed but hopeful",</span>
+<span class="s">    "lang": "auto",</span>
+<span class="s">    "redact": true</span>
+<span class="s">  }'</span>
+
+<span class="c">// 200 OK · 87ms</span>
+{
+  <span class="n">"emotion"</span>: <span class="s">"ambivalent"</span>,
+  <span class="n">"scores"</span>: {
+    <span class="n">"joy"</span>:     <span class="f">0.42</span>,
+    <span class="n">"anxiety"</span>: <span class="f">0.61</span>,
+    <span class="n">"calm"</span>:    <span class="f">0.28</span>
+  },
+  <span class="n">"confidence"</span>: <span class="f">0.94</span>,
+  <span class="n">"latency_ms"</span>: <span class="f">87</span>
+}</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 2: CBT Engine -->
+      <div class="feature">
+        <div class="feature-copy">
+          <div class="feature-tag">CBT Engine</div>
+          <h3 class="feature-title">Orchestrate cognitive-behavioral sessions at scale.</h3>
+          <p class="feature-desc">
+            A stateful engine for structured CBT pathways — modules, homework,
+            and progress tracking. Built with clinicians, auditable by
+            compliance teams.
+          </p>
+          <ul class="feature-list">
+            <li>40+ evidence-based CBT modules out of the box</li>
+            <li>Per-user state machine with full audit trail</li>
+            <li>HIPAA &amp; GDPR compliant by default</li>
+          </ul>
+          <a href="#" class="feature-link">Explore pathways &rarr;</a>
+        </div>
+        <div class="feature-ui">
+          <div class="ui-shell">
+            <div class="ui-bar">
+              <div class="ui-bar-dots">
+                <span class="ui-bar-dot"></span>
+                <span class="ui-bar-dot"></span>
+                <span class="ui-bar-dot"></span>
+              </div>
+              <div class="ui-bar-url">app.mindecho.ai/cohort/eng-4471</div>
+            </div>
+            <div class="ui-body">
+              <div class="cbt-grid">
+                <div class="cbt-card">
+                  <div class="cbt-card-title">Module completion</div>
+                  <div class="cbt-card-val num">68%</div>
+                  <div class="progress"><div class="progress-fill" style="width: 68%"></div></div>
+                </div>
+                <div class="cbt-card">
+                  <div class="cbt-card-title">Avg. PHQ-9 delta</div>
+                  <div class="cbt-card-val num">&minus;4.8</div>
+                  <div class="progress"><div class="progress-fill" style="width: 72%"></div></div>
+                </div>
+              </div>
+              <div class="cbt-list">
+                <div class="cbt-row">
+                  <div class="cbt-row-lbl"><span class="cbt-row-dot" style="background: var(--accent);"></span>Behavioral activation</div>
+                  <div style="display: flex; align-items: center;">
+                    <div class="cbt-row-bar"><div class="cbt-row-bar-fill" style="width: 82%;"></div></div>
+                    <span class="cbt-row-val">82%</span>
+                  </div>
+                </div>
+                <div class="cbt-row">
+                  <div class="cbt-row-lbl"><span class="cbt-row-dot" style="background: var(--accent-light);"></span>Cognitive restructuring</div>
+                  <div style="display: flex; align-items: center;">
+                    <div class="cbt-row-bar"><div class="cbt-row-bar-fill" style="width: 64%;"></div></div>
+                    <span class="cbt-row-val">64%</span>
+                  </div>
+                </div>
+                <div class="cbt-row">
+                  <div class="cbt-row-lbl"><span class="cbt-row-dot" style="background: var(--warning);"></span>Mindfulness modules</div>
+                  <div style="display: flex; align-items: center;">
+                    <div class="cbt-row-bar"><div class="cbt-row-bar-fill" style="width: 47%; background: var(--warning);"></div></div>
+                    <span class="cbt-row-val">47%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 3: Vault SDK -->
+      <div class="feature">
+        <div class="feature-copy">
+          <div class="feature-tag">Vault SDK</div>
+          <h3 class="feature-title">Encrypt session data with audit-grade vaults.</h3>
+          <p class="feature-desc">
+            Per-tenant encryption with hardware-backed key derivation. Seal
+            payloads client-side and never expose plaintext to MindEcho
+            infrastructure.
+          </p>
+          <ul class="feature-list">
+            <li>AES-256-GCM with Argon2id key derivation</li>
+            <li>Client-side sealing — zero-knowledge by design</li>
+            <li>Immutable audit log for every seal / unseal event</li>
+          </ul>
+          <a href="#" class="feature-link">Read security brief &rarr;</a>
+        </div>
+        <div class="feature-ui">
+          <div class="ui-shell">
+            <div class="ui-bar">
+              <div class="ui-bar-dots">
+                <span class="ui-bar-dot"></span>
+                <span class="ui-bar-dot"></span>
+                <span class="ui-bar-dot"></span>
+              </div>
+              <div class="ui-bar-url">~/mindecho &mdash; zsh</div>
+            </div>
+            <div class="ui-body">
+              <div class="terminal">
+                <div class="term-line"><span class="term-prompt">$</span><span class="term-cmd">mindecho vault encrypt \</span></div>
+                <div class="term-line"><span class="term-prompt">&nbsp;</span><span class="term-cmd">&nbsp;&nbsp;--algo aes-256-gcm \</span></div>
+                <div class="term-line"><span class="term-prompt">&nbsp;</span><span class="term-cmd">&nbsp;&nbsp;--tenant usr_8f3a \</span></div>
+                <div class="term-line"><span class="term-prompt">&nbsp;</span><span class="term-cmd">&nbsp;&nbsp;session.json</span></div>
+                <div class="term-line"><span class="term-out">Reading session payload... 2.4 KB</span></div>
+                <div class="term-line"><span class="term-out">Deriving key with Argon2id (m=64MB, t=3, p=4)...</span></div>
+                <div class="term-line"><span class="term-out">AES-256-GCM seal complete</span></div>
+                <div class="term-line"><span class="term-ok">✓ vault://usr_8f3a/enc/0xA1C9</span></div>
+                <div class="term-line"><span class="term-dim">&nbsp;&nbsp;ciphertext:</span> <span class="term-str">b'c8f1...e29a'</span> <span class="term-dim">(tag verified)</span></div>
+                <div class="term-line"><span class="term-dim">&nbsp;&nbsp;latency: 38ms · audit_id: aud_7Q2k</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STATS BAND ============ -->
+  <section class="stats-band">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-big">
+          <div class="stat-big-val num">4.2<span class="unit">B</span></div>
+          <div class="stat-big-lbl">Emotion signals processed in the last 12 months, across 38 languages.</div>
+          <div class="stat-big-tick num">↑ 2.1B YoY</div>
+        </div>
+        <div class="stat-big">
+          <div class="stat-big-val num">99.98<span class="unit">%</span></div>
+          <div class="stat-big-lbl">Uptime SLA on the Emotion API, measured over a rolling 90-day window.</div>
+          <div class="stat-big-tick num">↑ Above target</div>
+        </div>
+        <div class="stat-big">
+          <div class="stat-big-val num">87<span class="unit">ms</span></div>
+          <div class="stat-big-lbl">Median end-to-end API latency, including PII redaction at the edge.</div>
+          <div class="stat-big-tick num">↓ 12ms QoQ</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CODE EXAMPLE ============ -->
+  <section class="block code-section" id="code">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-eyebrow">Developers</div>
+        <h2 class="section-title">From signup to first call in under a minute.</h2>
+        <p class="section-sub">
+          A typed SDK in five languages, plus a drop-in REST endpoint. No
+          SDK required — just an API key and a curl one-liner.
+        </p>
+      </div>
+
+      <div class="ui-shell">
+        <div class="ui-bar">
+          <div class="ui-bar-dots">
+            <span class="ui-bar-dot"></span>
+            <span class="ui-bar-dot"></span>
+            <span class="ui-bar-dot"></span>
+          </div>
+          <div class="ui-bar-url">api.mindecho.ai/v2/sessions · create</div>
+        </div>
+        <div class="ui-body">
+          <div class="code-tabs">
+            <span class="code-tab active">curl</span>
+            <span class="code-tab">node</span>
+            <span class="code-tab">python</span>
+            <span class="code-tab">go</span>
+          </div>
+<pre class="code"><span class="c"># 1. Authenticate with your API key</span>
+<span class="k">curl</span> https://api.mindecho.ai/v2/sessions \
+  -u <span class="s">[YOUR_API_KEY]:</span> \
+  -H <span class="s">"Content-Type: application/json"</span> \
+  -d <span class="s">'{
+    "user_id": "usr_8f3a2c",
+    "pathway": "cbt.depression.lite",
+    "vault_id": "vlt_91F0",
+    "metadata": { "channel": "slack", "cohort": "eng-4471" }
+  }'</span>
+
+<span class="c"># Response · 201 Created · 112ms</span>
+{
+  <span class="n">"id"</span>: <span class="s">"ses_3Ma9kQpRt7VwXyZ"</span>,
+  <span class="n">"object"</span>: <span class="s">"session"</span>,
+  <span class="n">"user_id"</span>: <span class="s">"usr_8f3a2c"</span>,
+  <span class="n">"pathway"</span>: <span class="s">"cbt.depression.lite"</span>,
+  <span class="n">"status"</span>: <span class="s">"active"</span>,
+  <span class="n">"current_module"</span>: <span class="s">"m_behavioral_activation"</span>,
+  <span class="n">"created"</span>: <span class="f">1720324471</span>,
+  <span class="n">"audit_id"</span>: <span class="s">"aud_7Q2k0x"</span>,
+  <span class="n">"livemode"</span>: <span class="k">true</span>
+}</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BOTTOM CTA ============ -->
+  <section class="cta-final">
+    <div class="container cta-final-inner">
+      <h2>Build mental wellness into your product.</h2>
+      <div class="btns">
+        <a href="#" class="btn btn-primary btn-lg">Get API keys</a>
+        <a href="#" class="btn btn-secondary btn-lg">Talk to sales</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="container footer-inner">
+      <div class="footer-copy num">&copy; 2026 MindEcho Labs, Inc. &middot; HIPAA &amp; SOC 2 Type II</div>
+      <div class="footer-links">
+        <a href="#">Status</a>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Security</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

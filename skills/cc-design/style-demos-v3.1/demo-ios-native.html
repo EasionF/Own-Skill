@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iOS Native Authenticity — MindEcho</title>
+<style>
+  /* ============ 基础重置 ============ */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html, body {
+    background: #c7c7cc;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px;
+  }
+
+  /* ============ iPhone 设备框 ============ */
+  .device {
+    position: relative;
+    width: 375px;
+    height: 812px;
+    background: #000000;
+    border-radius: 47px;
+    padding: 11px;
+    box-shadow:
+      0 0 0 2px #1a1a1a,
+      0 30px 60px rgba(0,0,0,0.35),
+      0 12px 24px rgba(0,0,0,0.25);
+  }
+
+  .device-screen {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #F2F2F7;
+    border-radius: 36px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 刘海 / Dynamic Island */
+  .island {
+    position: absolute;
+    top: 11px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 34px;
+    background: #000000;
+    border-radius: 20px;
+    z-index: 100;
+  }
+
+  /* ============ 状态栏 ============ */
+  .status-bar {
+    height: 54px;
+    padding: 0 28px 0 32px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-bottom: 8px;
+    background: #F2F2F7;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 50;
+  }
+
+  .status-time {
+    font-size: 15px;
+    font-weight: 600;
+    color: #000000;
+    letter-spacing: -0.2px;
+  }
+
+  .status-icons {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* 信号图标（4 格） */
+  .icon-signal {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 12px;
+  }
+  .icon-signal span {
+    width: 3px;
+    background: #000000;
+    border-radius: 1px;
+  }
+  .icon-signal span:nth-child(1) { height: 4px; }
+  .icon-signal span:nth-child(2) { height: 6px; }
+  .icon-signal span:nth-child(3) { height: 9px; }
+  .icon-signal span:nth-child(4) { height: 12px; }
+
+  /* WiFi 图标 */
+  .icon-wifi {
+    width: 17px;
+    height: 12px;
+    position: relative;
+  }
+  .icon-wifi::before,
+  .icon-wifi::after,
+  .icon-wifi i {
+    content: '';
+    position: absolute;
+    left: 50%;
+    border: 1.5px solid #000000;
+    border-bottom: none;
+    border-radius: 50% 50% 0 0;
+    transform: translateX(-50%);
+    background: transparent;
+  }
+  .icon-wifi::before {
+    width: 16px;
+    height: 8px;
+    bottom: 0;
+  }
+  .icon-wifi::after {
+    width: 10px;
+    height: 5px;
+    bottom: 0;
+    border-color: #000000;
+  }
+  .icon-wifi i {
+    width: 3px;
+    height: 3px;
+    background: #000000;
+    border: none;
+    border-radius: 50%;
+    bottom: 0;
+  }
+
+  /* 电池图标 */
+  .icon-battery {
+    width: 27px;
+    height: 13px;
+    position: relative;
+    border: 1px solid #000000;
+    border-radius: 3.5px;
+    padding: 1.5px;
+    background: transparent;
+  }
+  .icon-battery::after {
+    content: '';
+    position: absolute;
+    right: -3px;
+    top: 4px;
+    width: 2px;
+    height: 5px;
+    background: #000000;
+    border-radius: 0 1.5px 1.5px 0;
+    opacity: 0.4;
+  }
+  .icon-battery i {
+    display: block;
+    width: 80%;
+    height: 100%;
+    background: #000000;
+    border-radius: 1.5px;
+  }
+
+  /* ============ 滚动内容区 ============ */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    background: #F2F2F7;
+    -webkit-overflow-scrolling: touch;
+  }
+  .scroll-area::-webkit-scrollbar { display: none; }
+
+  /* ============ Large Title 导航栏 ============ */
+  .nav-bar {
+    padding: 4px 20px 8px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    background: #F2F2F7;
+  }
+
+  .large-title {
+    font-size: 34px;
+    font-weight: 700;
+    color: #000000;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  }
+
+  .nav-action {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+  }
+
+  /* 设置图标（齿轮简化版） */
+  .icon-settings {
+    width: 22px;
+    height: 22px;
+    position: relative;
+  }
+  .icon-settings::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2px solid #007AFF;
+    border-radius: 50%;
+  }
+  .icon-settings::after {
+    content: '';
+    position: absolute;
+    inset: 7px;
+    border: 1.5px solid #007AFF;
+    border-radius: 50%;
+    background: transparent;
+  }
+
+  /* ============ Hero 卡片 ============ */
+  .hero {
+    margin: 12px 16px 24px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    padding: 22px 20px 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .hero h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #000000;
+    letter-spacing: -0.3px;
+    margin-bottom: 6px;
+    line-height: 1.25;
+  }
+
+  .hero p {
+    font-size: 14px;
+    color: #8E8E93;
+    line-height: 1.45;
+    margin-bottom: 18px;
+  }
+
+  .btn-primary {
+    display: block;
+    width: 100%;
+    height: 50px;
+    background: #007AFF;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: 600;
+    font-family: inherit;
+    letter-spacing: -0.2px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .btn-primary:active { opacity: 0.85; }
+
+  /* ============ 分组列表 ============ */
+  .group {
+    margin: 0 16px 35px;
+  }
+
+  .group-header {
+    font-size: 13px;
+    font-weight: 400;
+    color: #6D6D72;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+    padding: 0 4px 6px;
+  }
+
+  .group-list {
+    background: #FFFFFF;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .list-row {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 11px 16px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .list-row:active { background: #F2F2F7; }
+
+  /* hairline 分割线 */
+  .list-row:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 52px;
+    right: 0;
+    bottom: 0;
+    height: 0.5px;
+    background: #E5E5EA;
+    transform: scaleY(1);
+  }
+
+  .row-icon {
+    width: 29px;
+    height: 29px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-right: 16px;
+    position: relative;
+  }
+  .row-icon.blue   { background: #007AFF; }
+  .row-icon.purple { background: #AF52DE; }
+  .row-icon.teal   { background: #5AC8FA; }
+  .row-icon.green  { background: #34C759; }
+  .row-icon.orange { background: #FF9500; }
+
+  /* 各种小图标用 CSS 画 */
+  .ic-heart {
+    width: 14px; height: 13px;
+    background: #FFFFFF;
+    -webkit-mask: radial-gradient(circle at 30% 35%, #000 22%, transparent 23%) , radial-gradient(circle at 70% 35%, #000 22%, transparent 23%);
+    mask: radial-gradient(circle at 30% 35%, #000 22%, transparent 23%), radial-gradient(circle at 70% 35%, #000 22%, transparent 23%);
+    position: relative;
+  }
+  .ic-heart::after {
+    content: '';
+    position: absolute;
+    width: 14px; height: 12px;
+    background: #FFFFFF;
+    clip-path: polygon(0% 30%, 50% 100%, 100% 30%, 85% 0%, 50% 25%, 15% 0%);
+    left: 0; top: 0;
+  }
+
+  .ic-brain {
+    width: 14px; height: 14px;
+    border: 2px solid #FFFFFF;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    position: relative;
+  }
+  .ic-brain::before {
+    content: '';
+    position: absolute;
+    left: 50%; top: 10%;
+    width: 1px; height: 80%;
+    background: #FFFFFF;
+    transform: translateX(-50%);
+  }
+
+  .ic-lock {
+    width: 12px; height: 14px;
+    border: 2px solid #FFFFFF;
+    border-top: none;
+    border-radius: 2px;
+    position: relative;
+    margin-top: 5px;
+  }
+  .ic-lock::before {
+    content: '';
+    position: absolute;
+    left: 50%; top: -7px;
+    width: 8px; height: 8px;
+    border: 2px solid #FFFFFF;
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    transform: translateX(-50%);
+  }
+
+  .ic-arrow-up {
+    width: 0; height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 8px solid #FFFFFF;
+  }
+
+  .ic-flame {
+    width: 12px; height: 14px;
+    background: #FFFFFF;
+    clip-path: polygon(50% 0%, 80% 35%, 100% 70%, 75% 100%, 25% 100%, 0% 70%, 20% 35%);
+    position: relative;
+  }
+
+  .ic-clock {
+    width: 14px; height: 14px;
+    border: 2px solid #FFFFFF;
+    border-radius: 50%;
+    position: relative;
+  }
+  .ic-clock::before {
+    content: '';
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 1.5px; height: 4px;
+    background: #FFFFFF;
+    transform: translate(-50%, -100%);
+  }
+  .ic-clock::after {
+    content: '';
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 4px; height: 1.5px;
+    background: #FFFFFF;
+    transform: translate(0%, -50%);
+  }
+
+  .row-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .row-title {
+    font-size: 17px;
+    color: #000000;
+    letter-spacing: -0.2px;
+    line-height: 1.3;
+  }
+
+  .row-subtitle {
+    font-size: 13px;
+    color: #8E8E93;
+    margin-top: 2px;
+    line-height: 1.3;
+  }
+
+  .row-value {
+    font-size: 17px;
+    color: #8E8E93;
+    margin-right: 6px;
+    letter-spacing: -0.2px;
+  }
+
+  .row-value.bold {
+    color: #000000;
+    font-weight: 500;
+  }
+
+  /* chevron 箭头 > */
+  .chevron {
+    width: 8px;
+    height: 14px;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .chevron::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    border-top: 2px solid #C7C7CC;
+    border-right: 2px solid #C7C7CC;
+    transform: translateY(-50%) rotate(45deg);
+  }
+
+  /* ============ 底部 Tab Bar ============ */
+  .tab-bar {
+    height: 83px;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-top: 0.5px solid #E5E5EA;
+    display: flex;
+    padding-top: 8px;
+    flex-shrink: 0;
+  }
+
+  .tab-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+    cursor: pointer;
+    color: #8E8E93;
+  }
+  .tab-item.active { color: #007AFF; }
+
+  .tab-icon {
+    width: 28px;
+    height: 28px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* 首页 - 房子 */
+  .ti-home {
+    width: 24px; height: 22px;
+  }
+  .ti-home::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    width: 24px; height: 14px;
+    border: 2.5px solid currentColor;
+    border-bottom: none;
+    border-radius: 3px 3px 0 0;
+    transform: translateX(-50%) skew(-8deg, 0);
+    clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+    background: currentColor;
+    height: 14px;
+    border: none;
+    border-radius: 0;
+  }
+  .ti-home::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 14px; height: 10px;
+    border: 2px solid currentColor;
+    border-radius: 1px;
+    background: currentColor;
+  }
+
+  /* 记录 - 文档/时钟 */
+  .ti-log {
+    width: 22px; height: 22px;
+    border: 2.5px solid currentColor;
+    border-radius: 5px;
+    background: transparent;
+    position: relative;
+  }
+  .ti-log::before {
+    content: '';
+    position: absolute;
+    top: 5px; left: 4px; right: 4px;
+    height: 1.8px;
+    background: currentColor;
+    box-shadow: 0 4px 0 currentColor, 0 8px 0 currentColor;
+  }
+
+  /* 树洞 - 对话气泡 */
+  .ti-tree {
+    width: 24px; height: 22px;
+    border: 2.5px solid currentColor;
+    border-radius: 6px;
+    background: transparent;
+    position: relative;
+  }
+  .ti-tree::before {
+    content: '';
+    position: absolute;
+    bottom: -6px; left: 5px;
+    width: 6px; height: 6px;
+    background: transparent;
+    border-right: 2.5px solid currentColor;
+    border-bottom: 2.5px solid currentColor;
+    transform: rotate(45deg);
+  }
+
+  /* 我的 - 人物 */
+  .ti-me {
+    width: 24px; height: 24px;
+    position: relative;
+  }
+  .ti-me::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 10px; height: 10px;
+    border: 2.5px solid currentColor;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  .ti-me::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 20px; height: 10px;
+    border: 2.5px solid currentColor;
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+    background: transparent;
+  }
+
+  .tab-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1px;
+  }
+
+  /* ============ Home indicator ============ */
+  .home-indicator {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 134px;
+    height: 5px;
+    background: #000000;
+    border-radius: 3px;
+    z-index: 60;
+  }
+
+  /* ============ 演示信息（页面上方说明）============ */
+  .demo-meta {
+    position: fixed;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    color: #6D6D72;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(10px);
+    padding: 5px 12px;
+    border-radius: 12px;
+    letter-spacing: 0.3px;
+    z-index: 200;
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-meta">iOS Native Authenticity · cc-design v3.1 · MindEcho</div>
+
+<div class="device">
+  <div class="device-screen">
+    <div class="island"></div>
+
+    <!-- 状态栏 -->
+    <div class="status-bar">
+      <div class="status-time">9:41</div>
+      <div class="status-icons">
+        <div class="icon-signal">
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <div class="icon-wifi"><i></i></div>
+        <div class="icon-battery"><i></i></div>
+      </div>
+    </div>
+
+    <!-- 可滚动内容 -->
+    <div class="scroll-area">
+
+      <!-- Large Title 导航栏 -->
+      <div class="nav-bar">
+        <h1 class="large-title">MindEcho</h1>
+        <div class="nav-action">
+          <div class="icon-settings"></div>
+        </div>
+      </div>
+
+      <!-- Hero 卡片 -->
+      <section class="hero">
+        <h2>听见内心的回声</h2>
+        <p>AI 驱动的心理学伴侣，每日陪伴你觉察情绪、重塑认知、安心倾诉。</p>
+        <button class="btn-primary">开始 7 天免费体验</button>
+      </section>
+
+      <!-- 分组 1：功能 -->
+      <div class="group">
+        <div class="group-header">功能</div>
+        <div class="group-list">
+          <div class="list-row">
+            <div class="row-icon blue"><div class="ic-heart"></div></div>
+            <div class="row-text">
+              <div class="row-title">AI 情绪追踪</div>
+              <div class="row-subtitle">每日 3 分钟</div>
+            </div>
+            <div class="chevron"></div>
+          </div>
+          <div class="list-row">
+            <div class="row-icon purple"><div class="ic-brain"></div></div>
+            <div class="row-text">
+              <div class="row-title">认知重塑</div>
+              <div class="row-subtitle">基于 CBT</div>
+            </div>
+            <div class="chevron"></div>
+          </div>
+          <div class="list-row">
+            <div class="row-icon teal"><div class="ic-lock"></div></div>
+            <div class="row-text">
+              <div class="row-title">匿名树洞</div>
+              <div class="row-subtitle">端到端加密</div>
+            </div>
+            <div class="chevron"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 分组 2：数据 -->
+      <div class="group">
+        <div class="group-header">数据</div>
+        <div class="group-list">
+          <div class="list-row">
+            <div class="row-icon green"><div class="ic-arrow-up"></div></div>
+            <div class="row-text">
+              <div class="row-title">今日情绪指数</div>
+            </div>
+            <div class="row-value bold">7.2/10</div>
+            <div class="chevron"></div>
+          </div>
+          <div class="list-row">
+            <div class="row-icon orange"><div class="ic-flame"></div></div>
+            <div class="row-text">
+              <div class="row-title">连续打卡</div>
+            </div>
+            <div class="row-value bold">12 天</div>
+            <div class="chevron"></div>
+          </div>
+          <div class="list-row">
+            <div class="row-icon blue"><div class="ic-clock"></div></div>
+            <div class="row-text">
+              <div class="row-title">总练习时长</div>
+            </div>
+            <div class="row-value bold">2h 34m</div>
+            <div class="chevron"></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height: 12px;"></div>
+    </div>
+
+    <!-- 底部 Tab Bar -->
+    <div class="tab-bar">
+      <div class="tab-item active">
+        <div class="tab-icon"><div class="ti-home"></div></div>
+        <div class="tab-label">首页</div>
+      </div>
+      <div class="tab-item">
+        <div class="tab-icon"><div class="ti-log"></div></div>
+        <div class="tab-label">记录</div>
+      </div>
+      <div class="tab-item">
+        <div class="tab-icon"><div class="ti-tree"></div></div>
+        <div class="tab-label">树洞</div>
+      </div>
+      <div class="tab-item">
+        <div class="tab-icon"><div class="ti-me"></div></div>
+        <div class="tab-label">我的</div>
+      </div>
+    </div>
+
+    <div class="home-indicator"></div>
+  </div>
+</div>
+
+</body>
+</html>

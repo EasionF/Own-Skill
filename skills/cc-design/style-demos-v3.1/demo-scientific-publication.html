@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MindEcho: AI-Powered Emotion Tracking and Cognitive Reshaping in Digital Mental Wellness</title>
+<style>
+  :root {
+    --paper: #FFFFFF;
+    --warm: #FAFAF8;
+    --ink: #1A1A1A;
+    --data: #1A3A6E;
+    --muted: #555555;
+    --rule: #1A1A1A;
+    --hair: #BDBDBD;
+    --code-bg: #F4F4F1;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--warm);
+    color: var(--ink);
+    font-family: 'Source Serif Pro', 'Source Serif', 'Georgia', 'Times New Roman', serif;
+    font-size: 14px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .page {
+    max-width: 880px;
+    margin: 0 auto;
+    background: var(--paper);
+    padding: 56px 64px 64px 64px;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.04);
+  }
+
+  /* ---------- Masthead ---------- */
+  .masthead {
+    border-top: 3px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .masthead .journal { font-weight: 600; }
+  .masthead .meta { color: var(--muted); font-weight: 400; letter-spacing: 0.08em; }
+
+  /* ---------- Title block ---------- */
+  .title-block { margin: 28px 0 18px; }
+  h1.title {
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 24px;
+    line-height: 1.3;
+    font-weight: 700;
+    margin: 0 0 14px;
+    letter-spacing: -0.005em;
+    color: var(--ink);
+  }
+  .authors {
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    margin-bottom: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+  .authors sup { color: var(--data); font-weight: 600; }
+  .affiliations {
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.45;
+    margin-bottom: 6px;
+  }
+  .affiliations sup { color: var(--data); font-weight: 600; }
+  .correspondence {
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* ---------- Abstract ---------- */
+  .abstract {
+    background: var(--warm);
+    border-left: 2px solid var(--ink);
+    padding: 14px 18px;
+    margin: 18px 0 8px;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .abstract .label {
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-right: 6px;
+    color: var(--ink);
+  }
+  .keywords {
+    font-size: 12px;
+    color: var(--muted);
+    margin: 6px 0 24px;
+  }
+  .keywords b { color: var(--ink); font-weight: 600; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; margin-right: 4px;}
+
+  /* ---------- Two column body ---------- */
+  .body {
+    column-count: 2;
+    column-gap: 32px;
+    column-rule: 1px solid var(--hair);
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .body > section { break-inside: avoid-column; margin-bottom: 14px; }
+  .body p { margin: 0 0 8px; orphans: 2; widows: 2; }
+  .body p:first-of-type { text-indent: 0; }
+
+  h2.sec {
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 18px 0 8px;
+    color: var(--ink);
+    letter-spacing: -0.003em;
+    break-after: avoid;
+  }
+  h3.sub {
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 14px 0 6px;
+    color: var(--ink);
+    break-after: avoid;
+  }
+
+  /* citations */
+  sup.cite { color: var(--data); font-weight: 600; font-size: 0.7em; padding: 0 0.1em; font-family: 'Inter', sans-serif; }
+  sup.fn { color: var(--ink); font-weight: 600; font-size: 0.7em; font-family: 'Inter', sans-serif; }
+
+  /* figures */
+  figure { margin: 14px 0; break-inside: avoid; }
+  figure .frame {
+    border-top: 1px solid var(--hair);
+    border-bottom: 1px solid var(--hair);
+    padding: 14px 8px;
+    background: var(--paper);
+  }
+  figcaption {
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--ink);
+    text-align: left;
+    margin-top: 8px;
+    font-family: 'Source Serif Pro', serif;
+  }
+  figcaption b { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.04em; color: var(--ink); }
+
+  /* ---------- Flowchart (Figure 1) ---------- */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: var(--ink);
+  }
+  .flow .node {
+    border: 1px solid var(--ink);
+    padding: 6px 12px;
+    min-width: 220px;
+    text-align: center;
+    background: var(--paper);
+    letter-spacing: 0.02em;
+  }
+  .flow .node.data { border-color: var(--data); color: var(--data); }
+  .flow .arrow {
+    width: 1px;
+    height: 14px;
+    background: var(--ink);
+    position: relative;
+  }
+  .flow .arrow::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: -3px;
+    width: 0; height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid var(--ink);
+  }
+  .flow .node small { display:block; font-size: 9.5px; color: var(--muted); margin-top: 2px; letter-spacing: 0; }
+
+  /* ---------- Three-line table ---------- */
+  table.threeline {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    margin: 10px 0 4px;
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    break-inside: avoid;
+  }
+  table.threeline thead tr {
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+  }
+  table.threeline thead th {
+    text-align: left;
+    font-weight: 600;
+    color: var(--data);
+    padding: 5px 8px 5px 0;
+    font-size: 11px;
+    letter-spacing: 0.03em;
+  }
+  table.threeline thead th.num { text-align: right; }
+  table.threeline tbody td {
+    padding: 5px 8px 5px 0;
+    border: none;
+    color: var(--ink);
+  }
+  table.threeline tbody td.num { text-align: right; font-family: 'JetBrains Mono', monospace; }
+  table.threeline tbody tr:last-child { border-bottom: 2px solid var(--ink); }
+  table.threeline tbody tr.sig td { color: var(--muted); font-style: italic; }
+  .table-caption {
+    font-size: 12px;
+    line-height: 1.45;
+    margin: 4px 0 14px;
+    break-inside: avoid;
+  }
+  .table-caption b { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.04em; }
+  .table-note { font-size: 10.5px; color: var(--muted); margin-top: 4px; }
+
+  /* ---------- Code block ---------- */
+  pre.code {
+    background: var(--code-bg);
+    border: 1px solid var(--hair);
+    border-left: 2px solid var(--ink);
+    padding: 10px 12px;
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--ink);
+    overflow-x: auto;
+    margin: 10px 0;
+    break-inside: avoid;
+    white-space: pre;
+  }
+  pre.code .kw { color: var(--data); font-weight: 600; }
+  pre.code .cm { color: var(--muted); }
+  pre.code .st { color: #2D5F3F; }
+
+  /* ---------- Bar chart (Figure 2) ---------- */
+  .chart-wrap { width: 100%; }
+  .chart-wrap svg { display: block; width: 100%; height: auto; }
+  .chart-legend {
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 10.5px;
+    color: var(--ink);
+    margin-top: 6px;
+  }
+  .chart-legend .sw { display:inline-block; width: 10px; height: 10px; margin-right: 5px; vertical-align: middle; }
+
+  /* ---------- References / Footnotes (single column) ---------- */
+  .endmatter {
+    margin-top: 28px;
+    border-top: 1px solid var(--hair);
+    padding-top: 18px;
+  }
+  .endmatter h2 {
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 8px;
+    color: var(--ink);
+  }
+  ol.refs {
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: var(--ink);
+    padding-left: 18px;
+    margin: 0 0 22px;
+    font-variant-numeric: tabular-nums;
+  }
+  ol.refs li { margin-bottom: 4px; }
+  ol.refs li a { color: var(--data); text-decoration: none; }
+  ol.refs li i { color: var(--muted); }
+
+  ol.foot {
+    font-size: 10px;
+    line-height: 1.5;
+    color: var(--muted);
+    padding-left: 18px;
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+  }
+  ol.foot li { margin-bottom: 3px; }
+  ol.foot li sup { color: var(--ink); font-weight: 600; }
+
+  /* footer rule */
+  .colophon {
+    margin-top: 22px;
+    padding-top: 8px;
+    border-top: 1px solid var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    letter-spacing: 0.05em;
+  }
+
+  @media (max-width: 720px) {
+    .page { padding: 28px 20px; }
+    .body { column-count: 1; }
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Masthead -->
+    <div class="masthead">
+      <span class="journal">Journal of Applied AI Psychology</span>
+      <span class="meta">Vol. 12 · 2026 · pp. 0148&ndash;0163</span>
+    </div>
+
+    <!-- Title block -->
+    <div class="title-block">
+      <h1 class="title">MindEcho: AI-Powered Emotion Tracking and Cognitive Reshaping in Digital Mental Wellness</h1>
+      <div class="authors">
+        Lin Chen<sup>1</sup>, Arjun Mehta<sup>2</sup>, Sofia Rinaldi<sup>1,3</sup>, Hiroshi Tanaka<sup>2</sup>, Elena Vogt<sup>1,*</sup>
+      </div>
+      <div class="affiliations">
+        <sup>1</sup> Institute for Computational Mental Health, University of Zürich, CH-8050 Zürich, Switzerland<br>
+        <sup>2</sup> Department of Human-Centered AI, Kyoto Institute of Technology, Kyoto 606-8585, Japan<br>
+        <sup>3</sup> Affective Computing Lab, Politecnico di Milano, I-20133 Milano, Italy
+      </div>
+      <div class="correspondence">* Correspondence: e.vogt@ijap.ai &nbsp;|&nbsp; ORCID: 0000-0002-1487-9931</div>
+    </div>
+
+    <!-- Abstract -->
+    <div class="abstract">
+      <span class="label">Abstract</span>
+      The proliferation of consumer mental-health applications has outpaced the empirical evaluation of their core mechanisms. We present <b>MindEcho</b>, a mobile application that combines transformer-based emotion classification of unstructured journal entries with a closed-loop cognitive&ndash;behavioural therapy (CBT) micro-intervention engine, and an anonymous client-side encrypted vault for longitudinal self-report data. Across an 8-week randomised controlled study (N&nbsp;=&nbsp;214), participants using MindEcho exhibited a 28.4% reduction in negative-emotion index relative to a waitlist control (Cohen&#39;s&nbsp;<i>d</i>&nbsp;=&nbsp;0.62, 95% CI [0.34,&nbsp;0.89]), with full retention of cryptographic privacy guarantees. We detail the system architecture, the CBT reshaping pipeline, and the AES-256-GCM vault design, and discuss implications for evidence-based digital wellness tools.<sup class="cite">1&ndash;3</sup>
+    </div>
+
+    <div class="keywords"><b>Keywords</b> affective computing · CBT · differential privacy · mobile health · self-supervised learning</div>
+
+    <!-- Two-column body -->
+    <div class="body">
+
+      <section>
+        <h2 class="sec">1. Introduction</h2>
+        <p>Digital mental-health interventions have expanded rapidly in the past decade, yet meta-analytic evidence suggests that fewer than 20% of commercially available applications have been evaluated in any randomised trial.<sup class="cite">1,2</sup> Three structural barriers limit the evidentiary value of this ecosystem: (i) emotion inference is typically opaque and non-longitudinal; (ii) intervention content is delivered statically, decoupled from the user&#39;s current affective state; and (iii) the sensitivity of self-report data discourages both sharing and independent audit.<sup class="cite">3</sup></p>
+        <p>MindEcho addresses these barriers through an integrated pipeline in which the same affective signal that drives analytics also triggers short, evidence-based CBT micro-entries, while all raw inputs remain on the client device under user-held keys. This paper (a) specifies the architecture, (b) reports results of an 8-week RCT, and (c) releases the cryptographic vault specification for independent review.<sup class="fn">a</sup></p>
+      </section>
+
+      <section>
+        <h2 class="sec">2. Methods</h2>
+
+        <h3 class="sub">2.1 AI Emotion Tracking</h3>
+        <p>Free-form text and optional voice journal entries (mean 71.3&nbsp;tokens, SD&nbsp;=&nbsp;44.6) are processed on-device through a distilled 6-layer transformer (MindEcho-mini, 28M parameters) fine-tuned on a merged corpus of DAIC-WOZ, EmoBank, and an in-house licensed set of 84k anonymised entries. Inference produces a 7-class Plutchik label with a calibrated confidence score; entries below &tau;&nbsp;=&nbsp;0.55 are flagged for human-in-the-loop review rather than discarded.<sup class="cite">4</sup></p>
+
+        <figure>
+          <div class="frame">
+            <div class="flow">
+              <div class="node">User Input <small>text · voice (max 120s)</small></div>
+              <div class="arrow"></div>
+              <div class="node">On-Device NLP Preprocessing <small>tokenise · diarise · noise filter</small></div>
+              <div class="arrow"></div>
+              <div class="node data">MindEcho-mini Classifier <small>6-layer transformer · 7-class Plutchik</small></div>
+              <div class="arrow"></div>
+              <div class="node data">(Label, p) &rarr; Confidence Gate <small>&tau; = 0.55</small></div>
+              <div class="arrow"></div>
+              <div class="node">Encrypted Vault Entry <small>AES-256-GCM, user-held key</small></div>
+            </div>
+          </div>
+          <figcaption><b>Figure 1.</b> End-to-end emotion-tracking pipeline. All inference executes on the client device; only aggregated, differentially-private (&epsilon;&nbsp;=&nbsp;1.0) statistics leave the device for analytics. Confidence gating routes low-certainty predictions to optional clinician review without storing raw text.</figcaption>
+        </figure>
+
+        <h3 class="sub">2.2 Cognitive Reshaping (CBT-based)</h3>
+        <p>When a negative-valence entry is detected with confidence&nbsp;&ge;&nbsp;&tau;, the reshaping engine selects one of four CBT micro-interventions &mdash; cognitive restructuring, behavioural activation, grounding, or thought-record &mdash; ranked by a contextual bandit trained on within-user response history. Table&nbsp;1 summarises per-module adherence and effect size over the study window.</p>
+
+        <table class="threeline">
+          <thead>
+            <tr>
+              <th>CBT Module</th>
+              <th class="num">n<sub>delivered</sub></th>
+              <th class="num">Adherence (%)</th>
+              <th class="num">&Delta;Affect (pre&ndash;post)</th>
+              <th class="num">Cohen&#39;s <i>d</i></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Cognitive restructuring</td><td class="num">1,204</td><td class="num">78.3</td><td class="num">&minus;0.41</td><td class="num">0.71</td></tr>
+            <tr><td>Behavioural activation</td><td class="num">&nbsp;&nbsp;982</td><td class="num">71.6</td><td class="num">&minus;0.33</td><td class="num">0.58</td></tr>
+            <tr><td>Grounding (5-4-3-2-1)</td><td class="num">1,556</td><td class="num">84.1</td><td class="num">&minus;0.38</td><td class="num">0.66</td></tr>
+            <tr><td>Thought record</td><td class="num">&nbsp;&nbsp;741</td><td class="num">63.9</td><td class="num">&minus;0.29</td><td class="num">0.49</td></tr>
+            <tr class="sig"><td>Combined (any module)</td><td class="num">4,483</td><td class="num">74.5</td><td class="num">&minus;0.35</td><td class="num">0.62</td></tr>
+          </tbody>
+        </table>
+        <div class="table-caption">
+          <b>Table 1.</b> Per-module delivery, adherence, and within-subject affect change over the 8-week intervention. Negative &Delta;Affect denotes reduction in negative-emotion index (0&ndash;100 scale).
+          <div class="table-note">Note. Adherence = completed / delivered within 30&nbsp;min. Effect sizes computed via paired <i>t</i>-test with Holm correction.</div>
+        </div>
+
+        <h3 class="sub">2.3 Anonymous Vault</h3>
+        <p>All raw journal entries are encrypted client-side before they ever touch persistent storage; the server stores only opaque ciphertext and an opaque user handle. Keys are derived from a user passphrase via Argon2id (memory&nbsp;=&nbsp;64&nbsp;MiB, iterations&nbsp;=&nbsp;3, parallelism&nbsp;=&nbsp;4) and never leave the device. Listing&nbsp;1 shows the canonical encrypt-then-MAC path.<sup class="cite">5,6</sup></p>
+
+        <pre class="code"><span class="cm">// MindEcho vault — encrypt-then-MAC (AES-256-GCM)</span>
+<span class="kw">const</span> iv  = crypto.getRandomValues(<span class="kw">new</span> Uint8Array(12));
+<span class="kw">const</span> key = <span class="kw">await</span> crypto.subtle.deriveKey(
+  { name: <span class="st">'Argon2id'</span>, m: 64*1024*1024, t: 3, p: 4, salt },
+  baseKey,
+  { name: <span class="st">'AES-GCM'</span>, length: 256 },
+  <span class="kw">false</span>, [<span class="st">'encrypt'</span>, <span class="st">'decrypt'</span>]
+);
+<span class="kw">const</span> ct = <span class="kw">await</span> crypto.subtle.encrypt(
+  { name: <span class="st">'AES-GCM'</span>, iv },
+  key, utf8.encode(entry)
+);
+<span class="cm">// store: { iv, ct, tag } — server sees opaque bytes only</span>
+vault.put({ iv, ct });</pre>
+      </section>
+
+      <section>
+        <h2 class="sec">3. Results</h2>
+        <p>Of 248 screened participants, 214 were randomised (MindEcho&nbsp;n&nbsp;=&nbsp;107; waitlist&nbsp;n&nbsp;=&nbsp;107); 201 (94.0%) completed the 8-week protocol. The MindEcho arm showed a monotonic decline in weekly negative-emotion index, diverging from the control arm from week&nbsp;3 onward (Figure&nbsp;2). The between-arm difference at week&nbsp;8 was 18.6 points (95% CI [11.2,&nbsp;26.0], <i>p</i>&nbsp;&lt;&nbsp;0.001), corresponding to a 28.4% relative reduction.<sup class="cite">2,7</sup> No serious adverse events were reported; three participants withdrew citing notification frequency.</p>
+
+        <figure>
+          <div class="frame">
+            <div class="chart-wrap">
+              <svg viewBox="0 0 420 220" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Weekly negative-emotion index by arm">
+                <!-- axes -->
+                <line x1="40" y1="180" x2="410" y2="180" stroke="#1A1A1A" stroke-width="1"/>
+                <line x1="40" y1="20" x2="40" y2="180" stroke="#1A1A1A" stroke-width="1"/>
+                <!-- y ticks -->
+                <g font-family="JetBrains Mono, monospace" font-size="8" fill="#555555" text-anchor="end">
+                  <text x="36" y="183">0</text>
+                  <text x="36" y="143">25</text>
+                  <text x="36" y="103">50</text>
+                  <text x="36" y="63">75</text>
+                  <text x="36" y="23">100</text>
+                </g>
+                <line x1="40" y1="140" x2="410" y2="140" stroke="#BDBDBD" stroke-width="0.5" stroke-dasharray="2,2"/>
+                <line x1="40" y1="100" x2="410" y2="100" stroke="#BDBDBD" stroke-width="0.5" stroke-dasharray="2,2"/>
+                <line x1="40" y1="60" x2="410" y2="60" stroke="#BDBDBD" stroke-width="0.5" stroke-dasharray="2,2"/>
+                <line x1="40" y1="20" x2="410" y2="20" stroke="#BDBDBD" stroke-width="0.5" stroke-dasharray="2,2"/>
+                <!-- bars: 8 weeks, 2 series. x spacing -->
+                <!-- week group width 44, gap 8, start x=52 -->
+                <!-- Control (gray) values: 62,63,61,64,62,63,61,62  (y = 180 - v*1.6) -->
+                <!-- MindEcho (deep blue) values: 62,60,55,49,42,36,30,26 -->
+                <g>
+                  <!-- W1 -->
+                  <rect x="52"  y="80.8" width="14" height="99.2" fill="#9E9E9E"/>
+                  <rect x="68"  y="80.8" width="14" height="99.2" fill="#1A3A6E"/>
+                  <!-- W2 -->
+                  <rect x="96"  y="79.2" width="14" height="100.8" fill="#9E9E9E"/>
+                  <rect x="112" y="84.0" width="14" height="96.0" fill="#1A3A6E"/>
+                  <!-- W3 -->
+                  <rect x="140" y="82.4" width="14" height="97.6" fill="#9E9E9E"/>
+                  <rect x="156" y="92.0" width="14" height="88.0" fill="#1A3A6E"/>
+                  <!-- W4 -->
+                  <rect x="184" y="77.6" width="14" height="102.4" fill="#9E9E9E"/>
+                  <rect x="200" y="101.6" width="14" height="78.4" fill="#1A3A6E"/>
+                  <!-- W5 -->
+                  <rect x="228" y="80.8" width="14" height="99.2" fill="#9E9E9E"/>
+                  <rect x="244" y="112.8" width="14" height="67.2" fill="#1A3A6E"/>
+                  <!-- W6 -->
+                  <rect x="272" y="79.2" width="14" height="100.8" fill="#9E9E9E"/>
+                  <rect x="288" y="122.4" width="14" height="57.6" fill="#1A3A6E"/>
+                  <!-- W7 -->
+                  <rect x="316" y="82.4" width="14" height="97.6" fill="#9E9E9E"/>
+                  <rect x="332" y="132.0" width="14" height="48.0" fill="#1A3A6E"/>
+                  <!-- W8 -->
+                  <rect x="360" y="80.8" width="14" height="99.2" fill="#9E9E9E"/>
+                  <rect x="376" y="138.4" width="14" height="41.6" fill="#1A3A6E"/>
+                </g>
+                <!-- x labels -->
+                <g font-family="JetBrains Mono, monospace" font-size="8" fill="#1A1A1A" text-anchor="middle">
+                  <text x="67"  y="194">W1</text>
+                  <text x="111" y="194">W2</text>
+                  <text x="155" y="194">W3</text>
+                  <text x="199" y="194">W4</text>
+                  <text x="243" y="194">W5</text>
+                  <text x="287" y="194">W6</text>
+                  <text x="331" y="194">W7</text>
+                  <text x="375" y="194">W8</text>
+                </g>
+                <!-- axis titles -->
+                <text x="225" y="212" font-family="Inter, sans-serif" font-size="10" fill="#1A1A1A" text-anchor="middle">Study week</text>
+                <text x="14" y="100" font-family="Inter, sans-serif" font-size="10" fill="#1A1A1A" text-anchor="middle" transform="rotate(-90 14 100)">Negative-emotion index</text>
+              </svg>
+            </div>
+            <div class="chart-legend">
+              <span><span class="sw" style="background:#9E9E9E"></span>Waitlist control</span>
+              <span><span class="sw" style="background:#1A3A6E"></span>MindEcho</span>
+            </div>
+          </div>
+          <figcaption><b>Figure 2.</b> Weekly mean negative-emotion index (0&ndash;100, lower is better) over the 8-week study. Bars show group means; error bars omitted for visual clarity (see Table&nbsp;S2 for 95% CIs). Between-arm divergence becomes stable from week&nbsp;3, coinciding with CBT module activation threshold.</figcaption>
+        </figure>
+      </section>
+
+    </div>
+
+    <!-- Endmatter: References + Footnotes -->
+    <div class="endmatter">
+      <h2>References</h2>
+      <ol class="refs">
+        <li>Larsen ME, Nicholas J, Christensen H. Quantifying app store dynamics: longitudinal analysis of mental health apps. <i>NPJ Digit Med.</i> 2024;9:32. <a href="#">doi:10.1038/s41746-024-01032-x</a></li>
+        <li>Linardon J, Cuijpers P, Carlbring P, et&nbsp;al. The efficacy of app-supported psychological interventions: an updated meta-analysis. <i>Psychol Bull.</i> 2024;150(4):391&ndash;420.</li>
+        <li>Torous J, Andersson G, Bertagnoli A, et&nbsp;al. Towards a consensus around standards for smartphone interventions in mental health. <i>World Psychiatry.</i> 2025;24(1):97&ndash;98.</li>
+        <li>Demircan S, Rinaldi S, Tanaka H. MindEcho-mini: a distilled transformer for on-device affective computing. <i>Proc ACM AffectComp.</i> 2025;3:114&ndash;122.</li>
+        <li>Biryukov A, Dinu D, Khovratovich D. Argon2id: practical memory-hard hashing. <i>IACR ePrint.</i> 2023;2023/944.</li>
+        <li>NIST SP&nbsp;800-38D. Recommendation for block cipher modes of operation: Galois/Counter Mode (GCM) and GMAC. 2023.</li>
+        <li>Vogt E, Chen L, Mehta A. Pre-registered protocol for the MindEcho RCT. <i>OSF Registries.</i> 2025. <a href="#">osf.io/mindecho-rct</a></li>
+      </ol>
+
+      <h2>Footnotes</h2>
+      <ol class="foot">
+        <li><sup>a</sup> The vault specification, threat model, and reference implementation are released under Apache-2.0 at <span style="font-family:'JetBrains Mono',monospace">github.com/mindecho/vault</span>. Independent cryptographic audit by Trail of Bits completed Q1 2026 (report attached as Supplementary Material&nbsp;S1).</li>
+        <li><sup>b</sup> Plutchik&#39;s eight-wheel model was collapsed to seven classes by merging trust and anticipation, following the convention of Demircan et&nbsp;al.<sup class="cite">4</sup></li>
+        <li><sup>c</sup> The study was approved by the Cantonal Ethics Committee Zürich (BASEC-No.&nbsp;2025-00842) and pre-registered prior to enrolment.<sup class="cite">7</sup></li>
+      </ol>
+    </div>
+
+    <div class="colophon">
+      <span>Journal of Applied AI Psychology &middot; &copy; 2026 Authors</span>
+      <span>Article ID: IJAP-2026-0148 &middot; CC&nbsp;BY&nbsp;4.0</span>
+    </div>
+
+  </div>
+</body>
+</html>

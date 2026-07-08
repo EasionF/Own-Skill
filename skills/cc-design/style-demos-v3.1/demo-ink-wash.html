@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>心鳴 MindEcho · 水墨當代</title>
+<style>
+  /* ============================================================
+     水墨當代 Ink Wash Contemporary · cc-design v3.1
+     还原度目标 65%（降级明显，已标注）
+     - 配色：水墨灰阶 #0A0A0A → #888 → #F0F0F0 + 宣纸白 #F5F0E8
+             + 一抹花青 #2E4A6B / 赭石 #8B4513
+     - 字体：思源宋体 / Songti SC 极粗(900) 与极细(200) 对比
+     - 留白即意境、不对称、墨晕渐变
+     - 墨晕用 CSS radial-gradient + filter:blur() + SVG feTurbulence/
+       feDisplacementMap 近似，真实水墨需生图（已角落标注）
+     ============================================================ */
+
+  :root {
+    --ink-deep:  #0A0A0A;
+    --ink-mid:   #2a2a2a;
+    --ink-soft:  #555555;
+    --ink-grey:  #888888;
+    --ink-mist:  #c8c8c8;
+    --ink-haze:  #d8d8d8;
+    --paper:     #F5F0E8;
+    --paper-warm:#EDE6D8;
+    --huaqing:   #2E4A6B;  /* 花青 */
+    --zheshi:    #8B4513;  /* 赭石 */
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink-deep);
+    font-family: 'Songti SC', 'STSong', 'Noto Serif SC',
+                 'Source Han Serif SC', 'SimSun', serif;
+    font-weight: 300;
+    line-height: 1.9;
+    letter-spacing: 0.06em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+    /* 宣纸底色微染 */
+    background-image:
+      radial-gradient(ellipse at 12% 22%, rgba(139,69,19,0.025) 0%, transparent 45%),
+      radial-gradient(ellipse at 88% 78%, rgba(46,74,107,0.018) 0%, transparent 55%);
+  }
+
+  /* 宣纸纤维颗粒 —— 极淡，几乎不可见 */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 0.55 0 0 0 0 0.5 0 0 0 0 0.4 0 0 0 0.05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    opacity: 0.65;
+    mix-blend-mode: multiply;
+    z-index: 1;
+  }
+
+  /* 角落标注：CSS 近似声明 */
+  .notice {
+    position: fixed;
+    bottom: 14px;
+    right: 14px;
+    z-index: 100;
+    font-size: 10px;
+    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+    font-family: 'Songti SC', serif;
+    border: 1px solid var(--ink-mist);
+    padding: 5px 9px;
+    background: rgba(245,240,232,0.78);
+    backdrop-filter: blur(2px);
+    line-height: 1.5;
+    max-width: 220px;
+  }
+  .notice b {
+    font-weight: 900;
+    color: var(--zheshi);
+  }
+
+  /* 背景大字水印「墨」 */
+  .watermark {
+    position: fixed;
+    left: -3vw;
+    bottom: -8vh;
+    font-size: 38vw;
+    font-weight: 900;
+    color: rgba(10,10,10,0.025);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    letter-spacing: 0;
+  }
+
+  /* ============ 顶部 · 竖排标题 ============ */
+  .header {
+    position: relative;
+    padding: 64px 8vw 32px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 88px;
+    align-items: start;
+    z-index: 2;
+  }
+
+  .title-vertical {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    font-size: clamp(56px, 8vw, 112px);
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    color: var(--ink-deep);
+    line-height: 1.02;
+    text-shadow: 0 0 28px rgba(0,0,0,0.12);
+  }
+  .title-vertical .seal {
+    display: inline-block;
+    margin-top: 18px;
+    width: 0.62em;
+    height: 0.62em;
+    background: var(--zheshi);
+    color: var(--paper);
+    font-size: 0.22em;
+    font-weight: 900;
+    text-align: center;
+    line-height: 0.62em;
+    letter-spacing: 0;
+    writing-mode: horizontal-tb;
+    align-self: end;
+  }
+
+  .header-meta {
+    padding-top: 14px;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: var(--ink-soft);
+    letter-spacing: 0.42em;
+    font-weight: 300;
+    margin-bottom: 10px;
+  }
+  .subtitle-en {
+    font-size: 11px;
+    color: var(--ink-grey);
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 200;
+  }
+  .header-rule {
+    width: 44px;
+    height: 1px;
+    background: var(--ink-deep);
+    margin-top: 26px;
+  }
+  .header-tag {
+    margin-top: 14px;
+    font-size: 10px;
+    color: var(--ink-grey);
+    letter-spacing: 0.32em;
+  }
+
+  /* ============ Hero · 留白占七成 ============ */
+  .hero {
+    position: relative;
+    min-height: 94vh;
+    padding: 8vh 8vw 22vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    z-index: 2;
+    overflow: hidden;
+  }
+
+  /* 主墨晕 —— CSS radial-gradient + blur 近似 */
+  .hero-ink {
+    position: absolute;
+    top: 50%;
+    left: 62%;
+    transform: translate(-50%, -50%);
+    width: 72vw;
+    height: 72vw;
+    max-width: 820px;
+    max-height: 820px;
+    background: radial-gradient(
+      ellipse at 46% 52%,
+      rgba(10,10,10,0.34) 0%,
+      rgba(40,40,40,0.18) 24%,
+      rgba(80,80,80,0.10) 44%,
+      rgba(136,136,136,0.05) 64%,
+      transparent 80%
+    );
+    filter: blur(22px) url(#ink-displace);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* 次墨晕 · 一抹花青 */
+  .hero-ink-2 {
+    position: absolute;
+    top: 28%;
+    left: 76%;
+    width: 220px;
+    height: 280px;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(46,74,107,0.20) 0%,
+      rgba(46,74,107,0.08) 32%,
+      transparent 72%
+    );
+    filter: blur(9px) url(#ink-displace);
+    z-index: 1;
+  }
+
+  /* 远处一笔淡墨丝 */
+  .hero-ink-3 {
+    position: absolute;
+    bottom: 18%;
+    left: 14%;
+    width: 180px;
+    height: 14px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(10,10,10,0.18) 20%,
+      rgba(80,80,80,0.10) 60%,
+      transparent 100%
+    );
+    filter: blur(3px) url(#ink-displace);
+    z-index: 1;
+    transform: rotate(-4deg);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 3;
+    max-width: 56%;
+  }
+
+  .hero-quote {
+    font-size: clamp(48px, 7.2vw, 100px);
+    font-weight: 900;
+    line-height: 1.16;
+    color: var(--ink-deep);
+    letter-spacing: 0.08em;
+  }
+  .hero-quote .echo {
+    color: var(--ink-mid);
+    font-weight: 200;
+  }
+  .hero-quote .accent {
+    color: var(--huaqing);
+  }
+
+  .hero-en {
+    margin-top: 34px;
+    font-size: 12px;
+    letter-spacing: 0.38em;
+    color: var(--ink-grey);
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+  .hero-en::before {
+    content: '—— ';
+    color: var(--ink-mist);
+  }
+
+  /* ============ Features · 不对称 / 非卡片 ============ */
+  .features {
+    position: relative;
+    padding: 18vh 8vw 8vh;
+    z-index: 2;
+  }
+
+  .features-label {
+    writing-mode: vertical-rl;
+    position: absolute;
+    left: 2.5vw;
+    top: 22vh;
+    font-size: 11px;
+    color: var(--ink-grey);
+    letter-spacing: 0.5em;
+    font-weight: 300;
+  }
+
+  .feature {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8vw;
+    align-items: center;
+    margin-bottom: 24vh;
+    position: relative;
+  }
+  /* 第二项左右对调 —— 错落不对称 */
+  .feature.reverse .feature-mark {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .feature.reverse .feature-text {
+    grid-column: 1;
+    grid-row: 1;
+    text-align: right;
+  }
+  .feature.reverse .feature-desc,
+  .feature.reverse .feature-en {
+    margin-left: auto;
+  }
+
+  .feature-mark {
+    position: relative;
+    height: 340px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* —— Feature 1: 墨点 —— */
+  .mark-dot {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 44% 38%,
+      var(--ink-deep) 0%,
+      var(--ink-mid) 32%,
+      rgba(40,40,40,0.55) 56%,
+      rgba(80,80,80,0.18) 76%,
+      transparent 95%
+    );
+    filter: blur(1.6px) url(#ink-displace);
+    position: relative;
+  }
+  /* 卫星飞溅小点 */
+  .mark-dot::before,
+  .mark-dot::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--ink-mid) 0%, transparent 70%);
+    filter: blur(2px);
+  }
+  .mark-dot::before {
+    top: 68%;
+    left: 62%;
+    width: 22px;
+    height: 22px;
+  }
+  .mark-dot::after {
+    top: 22%;
+    left: 78%;
+    width: 10px;
+    height: 10px;
+    opacity: 0.6;
+  }
+
+  /* —— Feature 2: 一笔墨痕（SVG 抽象笔触，非具象） —— */
+  .mark-stroke {
+    width: 90%;
+    max-width: 360px;
+    height: auto;
+    filter: url(#ink-displace);
+  }
+
+  /* —— Feature 3: 留白框 —— */
+  .mark-frame {
+    width: 64%;
+    height: 230px;
+    border: 1px solid var(--ink-soft);
+    background: rgba(245,240,232,0.35);
+    position: relative;
+  }
+  .mark-frame::before {
+    content: '';
+    position: absolute;
+    inset: -9px;
+    border: 1px solid var(--ink-mist);
+    opacity: 0.45;
+  }
+  /* 框角一抹赭石 */
+  .mark-frame::after {
+    content: '';
+    position: absolute;
+    bottom: -22px;
+    right: -22px;
+    width: 70px;
+    height: 70px;
+    background: radial-gradient(circle, rgba(139,69,19,0.28) 0%, transparent 70%);
+    filter: blur(7px) url(#ink-displace);
+  }
+  /* 框内极淡墨痕，让"留白"有意 */
+  .frame-inner {
+    position: absolute;
+    top: 38%;
+    left: 18%;
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--ink-mist) 40%, transparent);
+    opacity: 0.6;
+  }
+
+  .feature-text {
+    padding: 0 2vw;
+  }
+  .feature-num {
+    font-size: 11px;
+    letter-spacing: 0.42em;
+    color: var(--ink-grey);
+    margin-bottom: 22px;
+    font-weight: 300;
+  }
+  .feature-num .num {
+    color: var(--zheshi);
+    font-weight: 900;
+  }
+  .feature-title {
+    font-size: clamp(28px, 3.6vw, 46px);
+    font-weight: 900;
+    color: var(--ink-deep);
+    margin-bottom: 26px;
+    letter-spacing: 0.1em;
+    line-height: 1.2;
+  }
+  .feature-desc {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 2.1;
+    font-weight: 300;
+    max-width: 380px;
+  }
+  .feature-en {
+    margin-top: 18px;
+    font-size: 10px;
+    letter-spacing: 0.32em;
+    color: var(--ink-haze);
+    text-transform: uppercase;
+  }
+
+  /* ============ Footer · 抽象墨晕 + CTA ============ */
+  .footer {
+    position: relative;
+    min-height: 72vh;
+    padding: 22vh 8vw 12vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    z-index: 2;
+    overflow: hidden;
+  }
+
+  .footer-ink {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        ellipse 80% 55% at 28% 82%,
+        rgba(10,10,10,0.38) 0%,
+        rgba(40,40,40,0.22) 22%,
+        rgba(80,80,80,0.10) 42%,
+        transparent 72%
+      ),
+      radial-gradient(
+        ellipse 58% 38% at 72% 60%,
+        rgba(46,74,107,0.16) 0%,
+        transparent 60%
+      ),
+      radial-gradient(
+        circle at 86% 92%,
+        rgba(139,69,19,0.22) 0%,
+        transparent 42%
+      );
+    filter: blur(32px) url(#ink-displace);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .footer-content {
+    position: relative;
+    z-index: 2;
+    max-width: 680px;
+  }
+
+  .cta-quote {
+    font-size: clamp(32px, 4.2vw, 58px);
+    font-weight: 200;
+    color: var(--paper);
+    letter-spacing: 0.15em;
+    line-height: 1.32;
+    margin-bottom: 44px;
+    text-shadow: 0 2px 22px rgba(0,0,0,0.42);
+  }
+  .cta-quote .bold {
+    font-weight: 900;
+  }
+  .cta-quote .accent {
+    color: #d8c8a8;
+  }
+
+  .cta {
+    display: inline-block;
+    padding: 16px 42px;
+    border: 1px solid var(--paper);
+    color: var(--paper);
+    text-decoration: none;
+    font-size: 14px;
+    letter-spacing: 0.42em;
+    font-weight: 300;
+    background: rgba(10,10,10,0.22);
+    backdrop-filter: blur(2px);
+    transition: background 0.6s ease, letter-spacing 0.6s ease;
+  }
+  .cta:hover {
+    background: rgba(10,10,10,0.52);
+    letter-spacing: 0.5em;
+  }
+
+  .footer-meta {
+    margin-top: 60px;
+    font-size: 10px;
+    color: rgba(245,240,232,0.5);
+    letter-spacing: 0.32em;
+  }
+  .footer-meta .dot {
+    color: var(--zheshi);
+    opacity: 0.8;
+  }
+
+  /* SVG defs 隐藏 */
+  .svg-defs { position: absolute; width: 0; height: 0; }
+
+  /* 响应式 */
+  @media (max-width: 768px) {
+    .header { grid-template-columns: 1fr; gap: 32px; padding: 48px 6vw 24px; }
+    .title-vertical { font-size: 64px; }
+    .hero { padding: 6vh 6vw 16vh; min-height: 80vh; }
+    .hero-content { max-width: 100%; }
+    .hero-ink { width: 110vw; height: 110vw; }
+    .features { padding: 12vh 6vw 4vh; }
+    .features-label { display: none; }
+    .feature { grid-template-columns: 1fr !important; gap: 30px; margin-bottom: 16vh; }
+    .feature.reverse .feature-mark,
+    .feature.reverse .feature-text {
+      grid-column: 1; grid-row: auto;
+      text-align: left;
+    }
+    .feature.reverse .feature-desc,
+    .feature.reverse .feature-en { margin-left: 0; }
+    .feature-mark { height: 240px; }
+    .footer { padding: 16vh 6vw 10vh; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== SVG filters · 墨晕边缘扰动 ===== -->
+<svg class="svg-defs" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="ink-displace">
+      <feTurbulence type="fractalNoise" baseFrequency="0.016"
+                    numOctaves="2" seed="7" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise"
+                         scale="22" xChannelSelector="R"
+                         yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+
+<!-- 角落标注：CSS 近似声明 -->
+<div class="notice">
+  <b>⚠ CSS 近似</b><br>
+  水墨晕染为 CSS radial-gradient + blur + SVG filter 模拟；<br>
+  真品质感需生图。
+</div>
+
+<!-- 背景水印 -->
+<div class="watermark">墨</div>
+
+<!-- ============ 顶部 · 竖排标题 ============ -->
+<header class="header">
+  <h1 class="title-vertical">
+    心鳴<span class="seal">印</span>
+  </h1>
+  <div class="header-meta">
+    <div class="subtitle">心 之 回 聲</div>
+    <div class="subtitle-en">MindEcho · AI Psychology Companion</div>
+    <div class="header-rule"></div>
+    <div class="header-tag">水 墨 當 代 · INK WASH CONTEMPORARY</div>
+  </div>
+</header>
+
+<!-- ============ Hero ============ -->
+<section class="hero">
+  <div class="hero-ink"></div>
+  <div class="hero-ink-2"></div>
+  <div class="hero-ink-3"></div>
+  <div class="hero-content">
+    <div class="hero-quote">
+      聽見<br>
+      <span class="echo">內心的</span><br>
+      <span class="accent">回聲</span>
+    </div>
+    <div class="hero-en">Hear the Echo Within</div>
+  </div>
+</section>
+
+<!-- ============ Features · 非卡片，墨痕 + 文字 ============ -->
+<section class="features">
+  <div class="features-label">三 筆 成 章</div>
+
+  <!-- Feature 1 · 情緒追蹤 · 墨点 -->
+  <div class="feature">
+    <div class="feature-mark">
+      <div class="mark-dot"></div>
+    </div>
+    <div class="feature-text">
+      <div class="feature-num">壹 · <span class="num">01</span></div>
+      <h3 class="feature-title">情緒追蹤</h3>
+      <p class="feature-desc">
+        一滴墨落紙，暈開成一片心境。
+        每日的情緒被輕輕點下，
+        暈染出你獨有的內在節律。
+      </p>
+      <div class="feature-en">Emotion Tracking</div>
+    </div>
+  </div>
+
+  <!-- Feature 2 · 認知重塑 · 一笔墨痕 -->
+  <div class="feature reverse">
+    <div class="feature-mark">
+      <svg class="mark-stroke" viewBox="0 0 400 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="strokeGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%"   stop-color="#0A0A0A" stop-opacity="0"/>
+            <stop offset="8%"   stop-color="#0A0A0A" stop-opacity="0.95"/>
+            <stop offset="38%"  stop-color="#0A0A0A" stop-opacity="1"/>
+            <stop offset="68%"  stop-color="#2a2a2a" stop-opacity="0.85"/>
+            <stop offset="90%"  stop-color="#555"    stop-opacity="0.35"/>
+            <stop offset="100%" stop-color="#888"    stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path d="M 6 48 Q 32 22 86 24 Q 156 19 232 28 Q 300 35 352 52 Q 380 60 396 54"
+              stroke="url(#strokeGrad)"
+              stroke-width="24"
+              stroke-linecap="round"
+              fill="none"
+              opacity="0.94"/>
+        <!-- 飞白小尾 -->
+        <path d="M 360 58 Q 372 62 384 58"
+              stroke="#555" stroke-width="3"
+              stroke-linecap="round" fill="none" opacity="0.4"/>
+      </svg>
+    </div>
+    <div class="feature-text">
+      <div class="feature-num">貳 · <span class="num">02</span></div>
+      <h3 class="feature-title">認知重塑</h3>
+      <p class="feature-desc">
+        一筆揮過，濃淡之間，
+        固化的念頭被重新書寫。
+        讓思維如墨，流動、滲透、再生。
+      </p>
+      <div class="feature-en">Cognitive Reframing</div>
+    </div>
+  </div>
+
+  <!-- Feature 3 · 匿名樹洞 · 留白框 -->
+  <div class="feature">
+    <div class="feature-mark">
+      <div class="mark-frame">
+        <div class="frame-inner"></div>
+      </div>
+    </div>
+    <div class="feature-text">
+      <div class="feature-num">叄 · <span class="num">03</span></div>
+      <h3 class="feature-title">匿名樹洞</h3>
+      <p class="feature-desc">
+        留白處，皆是言說。
+        在沒有名字的空間裡，
+        傾訴成為一種純粹的存在。
+      </p>
+      <div class="feature-en">Anonymous Whisper</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Footer · 抽象墨晕 + CTA ============ -->
+<footer class="footer">
+  <div class="footer-ink"></div>
+  <div class="footer-content">
+    <div class="cta-quote">
+      <span class="bold">落墨</span>之處，<br>
+      即是<span class="bold accent">心聲</span>。
+    </div>
+    <a href="#" class="cta">開 始 傾 聽</a>
+    <div class="footer-meta">
+      MINDECHO · 心鳴 <span class="dot">·</span> 2026
+      <span class="dot">·</span> Ink Wash Contemporary
+      <span class="dot">·</span> v3.1
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

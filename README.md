@@ -11,11 +11,19 @@ Own-Skill/
 ├── README.md
 ├── .gitignore
 └── skills/
-    └── expert-skill-forge/          # 通用：如何把专家隐性判断力锻造成高质量 skill
+    ├── expert-skill-forge/          # 通用：如何把专家隐性判断力锻造成高质量 skill
+    │   ├── SKILL.md
+    │   ├── references/
+    │   ├── assets/
+    │   └── accumulated/
+    └── cc-design/                   # 基于 huashu-design 扩展的 trae design skill
         ├── SKILL.md
         ├── references/
         ├── assets/
-        └── accumulated/
+        ├── demos/
+        ├── prototypes/
+        ├── scripts/
+        └── style-demos-v3.1/
 ```
 
 ## 设计原则
@@ -31,6 +39,7 @@ Own-Skill/
 | skill | 作用 |
 |---|---|
 | [expert-skill-forge](skills/expert-skill-forge/SKILL.md) | 把某领域人类专家的隐性判断力锻造成 AI 可稳定执行的高质量 skill 的方法论工具 |
+| [cc-design](skills/cc-design/SKILL.md) | 基于 huashu-design 扩展的 trae design skill，让 AI 像设计师一样工作 |
 
 ## 使用方式
 

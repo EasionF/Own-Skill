@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+    <rect width="1280" height="720" fill="#3C245C"/>
+    <rect x="0" y="0" width="18" height="720" fill="#6C3EA0"/>
+    <rect x="18" y="0" width="4" height="720" fill="#A07BC9"/>
+    <rect x="800" y="0" width="480" height="720" fill="#241938" fill-opacity="0.10"/>
+    <line x1="90" y1="122" x2="480" y2="122" stroke="#F7F2FB" stroke-opacity="0.35" stroke-width="1.2"/>
+    <text x="90" y="174" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#F7F2FB" letter-spacing="3">{{SECTION_NUM}}</text>
+    <text x="90" y="260" font-family="Arial, sans-serif" font-size="48" font-weight="700" fill="#FFFFFF">{{PAGE_TITLE}}</text>
+    <text x="90" y="322" font-family="Arial, sans-serif" font-size="20" fill="#F7F2FB" fill-opacity="0.88">{{KEY_MESSAGE}}</text>
+    <line x1="90" y1="378" x2="420" y2="378" stroke="#A07BC9" stroke-width="3"/>
+    <text x="90" y="442" font-family="Arial, sans-serif" font-size="16" fill="#F7F2FB">{{CONTENT_AREA}}</text>
+    <text x="90" y="660" font-family="Arial, sans-serif" font-size="13" fill="#F7F2FB" fill-opacity="0.8">{{SECTION_NAME}}</text>
+    <text x="1190" y="660" text-anchor="end" font-family="Arial, sans-serif" font-size="13" fill="#F7F2FB" fill-opacity="0.8">{{PAGE_NUM}}</text>
+</svg>

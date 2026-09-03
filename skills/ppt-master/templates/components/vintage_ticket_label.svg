@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#F7F1E7"/>
+  <path d="M280 260 H1000 V300 Q960 300 960 340 Q960 380 1000 380 V420 H280 V380 Q320 380 320 340 Q320 300 280 300 Z" fill="#D7C4AC" fill-opacity="0.7" stroke="#A8835C" stroke-width="2"/>
+  <text x="640" y="352" text-anchor="middle" font-family="Courier New, Arial, monospace" font-size="30" fill="#2F2B28">{{LABEL}}</text>
+</svg>

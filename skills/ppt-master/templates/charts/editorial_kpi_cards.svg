@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#FBFAF8"/>
+  <rect x="80" y="160" width="250" height="220" rx="18" fill="#FFFFFF" stroke="#E1D7CB"/>
+  <rect x="370" y="160" width="250" height="220" rx="18" fill="#FFFFFF" stroke="#E1D7CB"/>
+  <rect x="660" y="160" width="250" height="220" rx="18" fill="#FFFFFF" stroke="#E1D7CB"/>
+  <rect x="950" y="160" width="250" height="220" rx="18" fill="#FFFFFF" stroke="#E1D7CB"/>
+  <g font-family="Georgia, Times New Roman, serif" font-size="64" fill="#1F1A17">
+    <text x="205" y="250" text-anchor="middle">{{KPI_1}}</text>
+    <text x="495" y="250" text-anchor="middle">{{KPI_2}}</text>
+    <text x="785" y="250" text-anchor="middle">{{KPI_3}}</text>
+    <text x="1075" y="250" text-anchor="middle">{{KPI_4}}</text>
+  </g>
+  <g font-family="Arial, Microsoft YaHei, sans-serif" font-size="20" fill="#8E8578">
+    <text x="205" y="304" text-anchor="middle">{{LABEL_1}}</text>
+    <text x="495" y="304" text-anchor="middle">{{LABEL_2}}</text>
+    <text x="785" y="304" text-anchor="middle">{{LABEL_3}}</text>
+    <text x="1075" y="304" text-anchor="middle">{{LABEL_4}}</text>
+  </g>
+  <g stroke="#D9A92E" stroke-width="4">
+    <line x1="140" y1="338" x2="270" y2="338"/>
+    <line x1="430" y1="338" x2="560" y2="338"/>
+    <line x1="720" y1="338" x2="850" y2="338"/>
+    <line x1="1010" y1="338" x2="1140" y2="338"/>
+  </g>
+</svg>

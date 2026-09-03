@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#D9A92E"/>
+  <rect x="448" y="144" width="384" height="432" fill="#E8D7BD" rx="180"/>
+  <text x="640" y="338" text-anchor="middle" font-family="Georgia, Times New Roman, serif" font-size="86" font-style="italic" fill="#1F1A17">{{THANK_YOU}}</text>
+  <text x="640" y="418" text-anchor="middle" font-family="Georgia, Times New Roman, serif" font-size="28" fill="#1F1A17">{{CLOSING_MESSAGE}}</text>
+  <text x="640" y="640" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="20" fill="#1F1A17">{{CONTACT_INFO}}</text>
+</svg>

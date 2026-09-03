@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+<rect width="1280" height="720" fill="#FFFFFF"/>
+<defs><radialGradient id="blur" cx="50%" cy="20%" r="80%"><stop offset="0%" stop-color="#F8C49F" stop-opacity="0.65"/><stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient></defs>
+<rect width="1280" height="720" fill="url(#blur)"/>
+<text x="82" y="190" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="82" font-weight="700" fill="#2C2018">{{TITLE}}</text>
+<text x="84" y="248" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="28" fill="#EF7D3C">{{SUBTITLE}}</text>
+<rect x="82" y="306" width="430" height="152" rx="24" fill="#FFF0E5" stroke="#F8C49F"/>
+<text x="122" y="376" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="22" fill="#2C2018">{{AUTHOR}}</text>
+<text x="122" y="420" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="20" fill="#755747">{{DATE}}</text>
+</svg>

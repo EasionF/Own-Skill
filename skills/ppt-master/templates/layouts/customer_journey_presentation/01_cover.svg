@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+<rect width="1280" height="720" fill="#FFFDF9"/>
+<path d="M92 520 C240 420, 420 620, 580 520 S900 420, 1140 520" fill="none" stroke="#E87853" stroke-width="12" stroke-linecap="round" opacity="0.7"/>
+<circle cx="250" cy="540" r="16" fill="#E87853"/><circle cx="560" cy="520" r="16" fill="#E87853"/><circle cx="850" cy="470" r="16" fill="#E87853"/>
+<text x="80" y="178" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="84" font-weight="700" fill="#2B231F">{{TITLE}}</text>
+<text x="82" y="236" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="30" fill="#E87853">{{SUBTITLE}}</text>
+<rect x="82" y="286" width="440" height="138" rx="18" fill="#FFF1EA" stroke="#F3B7A1"/>
+<text x="116" y="352" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="22" fill="#2B231F">{{AUTHOR}}</text>
+<text x="116" y="394" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="20" fill="#2B231F">{{DATE}}</text>
+</svg>

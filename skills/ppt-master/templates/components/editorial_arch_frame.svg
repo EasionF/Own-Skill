@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#FBFAF8"/>
+  <path d="M390 150 Q390 70 470 70 L810 70 Q890 70 890 150 L890 620 L390 620 Z" fill="#E8D7BD" stroke="#CBB190" stroke-width="2"/>
+  <text x="640" y="652" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="20" fill="#8E8578">{{IMAGE_CAPTION}}</text>
+</svg>

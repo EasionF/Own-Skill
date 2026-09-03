@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+<rect width="1280" height="720" fill="#FFFFFF"/>
+<rect x="764" y="84" width="400" height="246" fill="#EEF2F7"/>
+<rect x="764" y="356" width="400" height="246" fill="#F8F2E8"/>
+<text x="84" y="188" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="82" font-weight="700" fill="#213042">{{TITLE}}</text>
+<text x="86" y="244" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="28" fill="#3D5A80">{{SUBTITLE}}</text>
+<line x1="84" y1="286" x2="620" y2="286" stroke="#B8C6D8" stroke-width="3"/>
+<text x="84" y="600" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="22" fill="#213042">{{AUTHOR}}</text>
+</svg>

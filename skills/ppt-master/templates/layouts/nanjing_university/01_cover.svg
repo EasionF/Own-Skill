@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+    <rect width="1280" height="720" fill="#FBF8FE"/>
+    <rect x="0" y="0" width="14" height="720" fill="#6C3EA0"/>
+    <rect x="14" y="0" width="4" height="720" fill="#A07BC9"/>
+    <rect x="760" y="0" width="520" height="720" fill="#F7F2FB"/>
+    <rect x="820" y="120" width="360" height="360" fill="none" stroke="#DCCFEA" stroke-width="1"/>
+    <rect x="860" y="160" width="260" height="260" fill="none" stroke="#E9E2F1" stroke-width="1"/>
+    <rect x="900" y="200" width="180" height="180" fill="#6C3EA0" fill-opacity="0.05"/>
+
+    <text x="60" y="52" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#A07BC9" letter-spacing="2">{{AUTHOR}}</text>
+    <text x="60" y="174" font-family="Arial, sans-serif" font-size="54" font-weight="700" fill="#3C245C">{{TITLE}}</text>
+    <text x="60" y="246" font-family="Arial, sans-serif" font-size="54" font-weight="700" fill="#3C245C">{{SUBTITLE}}</text>
+    <text x="60" y="318" font-family="Arial, sans-serif" font-size="21" fill="#6F687E">{{KEY_MESSAGE}}</text>
+
+    <line x1="60" y1="372" x2="440" y2="372" stroke="#DCCFEA" stroke-width="2"/>
+    <line x1="60" y1="378" x2="190" y2="378" stroke="#6C3EA0" stroke-width="2"/>
+
+    <rect x="60" y="468" width="420" height="128" fill="#FFFFFF" stroke="#DCCFEA" stroke-width="1.2" rx="8"/>
+    <rect x="60" y="468" width="6" height="128" fill="#6C3EA0" rx="3"/>
+    <text x="86" y="506" font-family="Arial, sans-serif" font-size="13" fill="#9A92A7">PROJECT CODE</text>
+    <text x="86" y="536" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#241938">{{PROJECT_CODE}}</text>
+    <line x1="290" y1="486" x2="290" y2="580" stroke="#E9E2F1" stroke-width="1"/>
+    <text x="316" y="506" font-family="Arial, sans-serif" font-size="13" fill="#9A92A7">DATE</text>
+    <text x="316" y="536" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#241938">{{DATE}}</text>
+
+    <text x="820" y="170" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#A07BC9" letter-spacing="3">NANJING UNIVERSITY</text>
+    <text x="820" y="214" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#241938">Purple / White Academic Identity</text>
+    <text x="820" y="258" font-family="Arial, sans-serif" font-size="16" fill="#6F687E">{{TAGLINE}}</text>
+    <line x1="820" y1="304" x2="1120" y2="304" stroke="#DCCFEA" stroke-width="1.2"/>
+    <text x="820" y="340" font-family="Arial, sans-serif" font-size="14" fill="#6F687E">学术秩序 / 人才厚度 / 城市气质 / 全球连接</text>
+    <text x="820" y="372" font-family="Arial, sans-serif" font-size="14" fill="#6F687E">No images. No illustration. Pure structure.</text>
+    <text x="820" y="404" font-family="Arial, sans-serif" font-size="14" fill="#6F687E">Use this template for a disciplined university brand narrative.</text>
+</svg>

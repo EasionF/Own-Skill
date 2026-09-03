@@ -1,0 +1,13 @@
+{
+  "name": "ppt-master-smoke",
+  "version": "1.0.0",
+  "description": "执行 help 入口，校验 skill 主入口可被发现并返回标准输出结构。",
+  "inputs": {
+    "argv": [
+      "help"
+    ]
+  },
+  "expected": {
+    "status": "success"
+  }
+}

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#FBFAF8"/>
+  <rect x="820" y="96" width="320" height="500" fill="#DDD2C2" stroke="#CBB190"/>
+  <text x="980" y="628" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="18" fill="#8E8578">{{IMAGE_CAPTION}}</text>
+</svg>

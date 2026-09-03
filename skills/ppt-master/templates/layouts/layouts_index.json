@@ -1,0 +1,584 @@
+{
+  "meta": {
+    "total": 31,
+    "defaultViewBox": "0 0 1280 720",
+    "formats": [
+      "ppt169"
+    ],
+    "standardFiles": [
+      "design_spec.md",
+      "01_cover.svg",
+      "02_toc.svg",
+      "02_chapter.svg",
+      "03_content.svg",
+      "04_ending.svg"
+    ],
+    "standardPageTypes": [
+      "cover",
+      "toc",
+      "chapter",
+      "content",
+      "ending"
+    ],
+    "updated": "2026-03-27"
+  },
+  "categories": {
+    "brand": {
+      "label": "Brand Style Templates",
+      "layouts": [
+        "google_style",
+        "mckinsey",
+        "anthropic",
+        "中汽研_常规",
+        "中汽研_商务",
+        "中汽研_现代",
+        "中国电建_常规",
+        "中国电建_现代",
+        "招商银行"
+      ]
+    },
+    "general": {
+      "label": "General Style Templates",
+      "layouts": [
+        "exhibit",
+        "科技蓝商务",
+        "smart_red",
+        "beige_black_minimalist_project_deck",
+        "beige_blue_modern_year_end_report",
+        "orange_blur_annual_budget_planning"
+      ]
+    },
+    "scenario": {
+      "label": "Scenario-Specific Templates",
+      "layouts": [
+        "academic_defense",
+        "psychology_attachment",
+        "medical_university",
+        "重庆大学",
+        "explore_italy",
+        "white_green_modern_research_proposal",
+        "customer_journey_presentation",
+        "swot_analysis_presentation"
+      ]
+    },
+    "government": {
+      "label": "Government/Enterprise Templates",
+      "layouts": [
+        "government_red",
+        "government_blue",
+        "ai_ops"
+      ]
+    },
+    "special": {
+      "label": "Special Style Templates",
+      "layouts": [
+        "pixel_retro",
+        "gold_elegant_branding",
+        "future_technology_trends",
+        "vintage_aesthetic",
+        "purple_neon_green_modern_cryptocurrency"
+      ]
+    }
+  },
+  "quickLookup": {
+    "strategy": [
+      "exhibit",
+      "mckinsey",
+      "beige_black_minimalist_project_deck",
+      "customer_journey_presentation",
+      "swot_analysis_presentation"
+    ],
+    "board": [
+      "exhibit",
+      "mckinsey",
+      "招商银行",
+      "beige_black_minimalist_project_deck",
+      "swot_analysis_presentation",
+      "beige_blue_modern_year_end_report"
+    ],
+    "general_business": [
+      "科技蓝商务",
+      "smart_red",
+      "exhibit",
+      "beige_black_minimalist_project_deck",
+      "customer_journey_presentation",
+      "swot_analysis_presentation",
+      "beige_blue_modern_year_end_report",
+      "orange_blur_annual_budget_planning"
+    ],
+    "technology": [
+      "anthropic",
+      "google_style",
+      "smart_red",
+      "ai_ops",
+      "future_technology_trends",
+      "purple_neon_green_modern_cryptocurrency"
+    ],
+    "government": [
+      "government_red",
+      "government_blue",
+      "ai_ops"
+    ],
+    "academic": [
+      "academic_defense",
+      "重庆大学",
+      "white_green_modern_research_proposal"
+    ],
+    "medical": [
+      "medical_university",
+      "white_green_modern_research_proposal"
+    ],
+    "psychology": [
+      "psychology_attachment"
+    ],
+    "finance": [
+      "招商银行",
+      "exhibit",
+      "mckinsey",
+      "purple_neon_green_modern_cryptocurrency",
+      "beige_blue_modern_year_end_report",
+      "orange_blur_annual_budget_planning"
+    ],
+    "certification": [
+      "中汽研_常规",
+      "中汽研_商务",
+      "中汽研_现代"
+    ],
+    "energy": [
+      "中国电建_常规",
+      "中国电建_现代"
+    ],
+    "creative": [
+      "pixel_retro",
+      "smart_red",
+      "gold_elegant_branding",
+      "future_technology_trends",
+      "vintage_aesthetic",
+      "purple_neon_green_modern_cryptocurrency"
+    ],
+    "travel": [
+      "explore_italy"
+    ]
+  },
+  "layouts": {
+    "academic_defense": {
+      "label": "Academic Defense Template",
+      "summary": "A standard template for academic defenses, research presentations, and project proposals",
+      "tone": "Professional, rigorous, research-oriented, clear hierarchy",
+      "themeMode": "Light theme (white background + dark blue title bar)",
+      "keywords": [
+        "Academic",
+        "Defense",
+        "Research",
+        "Standard"
+      ]
+    },
+    "ai_ops": {
+      "label": "Enterprise Digital Intelligence Template",
+      "summary": "For high-density scenarios such as telecom AI operations architecture, IT system overview, and digital transformation plans",
+      "tone": "Information-dense, structured, modular layout, telecom/government-enterprise style",
+      "themeMode": "Light theme (white background + red/blue accents + warm gray panels)",
+      "assets": [
+        "reference_style.svg"
+      ],
+      "keywords": [
+        "Telecom",
+        "AI operations",
+        "Digital intelligence",
+        "High density",
+        "Architecture view"
+      ]
+    },
+    "anthropic": {
+      "label": "Anthropic Style Template",
+      "summary": "A tech-oriented template for AI/LLM knowledge sharing and product launches",
+      "tone": "Tech-forward, professional, modern, conclusion-first",
+      "themeMode": "Hybrid theme (dark cover/chapter + light content pages)",
+      "keywords": [
+        "AI",
+        "LLM",
+        "Developer",
+        "Technology"
+      ]
+    },
+    "exhibit": {
+      "label": "Exhibit Style Template",
+      "summary": "Conclusion-first layout with Exhibit takeaway bars for data-driven strategic reports and executive presentations",
+      "tone": "Premium, refined, authoritative, data-driven, conclusion-first",
+      "themeMode": "Dark theme (dark background + gradient accent + gold highlights)",
+      "keywords": [
+        "Exhibit",
+        "Board",
+        "Executive",
+        "Strategy",
+        "Conclusion-first"
+      ]
+    },
+    "google_style": {
+      "label": "Google Style Template",
+      "summary": "A Google-branded template for annual reports and technical sharing",
+      "tone": "Professional, modern, clean and restrained, data-driven, ample whitespace",
+      "themeMode": "Light theme (white/light gray background + Google brand color accents)",
+      "keywords": [
+        "Google",
+        "Brand style",
+        "Technical sharing",
+        "Annual report"
+      ]
+    },
+    "government_blue": {
+      "label": "Government Blue Template",
+      "summary": "A blue government-themed template for smart governance and digital transformation reports",
+      "tone": "Grand, tech-forward, modernized, professional government style",
+      "themeMode": "Light theme (white background + blue gradient decorations)",
+      "keywords": [
+        "Government affairs",
+        "Government blue",
+        "Smart city",
+        "Digitalization"
+      ]
+    },
+    "government_red": {
+      "label": "Government Red Template",
+      "summary": "A red government-themed template for government reports and party-building scenarios",
+      "tone": "Authoritative, solemn, professional, modernized government style",
+      "themeMode": "Light theme (white background + government red/blue accents)",
+      "keywords": [
+        "Government affairs",
+        "Party building",
+        "Government red",
+        "Authoritative"
+      ]
+    },
+    "mckinsey": {
+      "label": "McKinsey Style Template",
+      "summary": "A McKinsey-style template for strategic consulting and investment analysis",
+      "tone": "Data-driven, structured thinking, professional whitespace, minimalist premium",
+      "themeMode": "Light theme (white background + McKinsey Blue accent)",
+      "keywords": [
+        "McKinsey",
+        "Consulting",
+        "Structured",
+        "Executive presentation"
+      ]
+    },
+    "medical_university": {
+      "label": "Hospital/Medical University Template",
+      "summary": "A professional template for medical reports, case discussions, and research presentations",
+      "tone": "Professional, rigorous, life-affirming, tech-forward, trustworthy",
+      "themeMode": "Light theme (white background + medical blue title bar + life green accents)",
+      "keywords": [
+        "Medical",
+        "Hospital",
+        "Case study",
+        "Research"
+      ]
+    },
+    "pixel_retro": {
+      "label": "Pixel Retro Template",
+      "summary": "A pixel-art template for tech sharing and gaming-themed content",
+      "tone": "Retro gaming, neon cyber, geek tech, 8-bit style",
+      "themeMode": "Dark theme (deep space black background + neon accents)",
+      "keywords": [
+        "Pixel art",
+        "Retro gaming",
+        "Cyberpunk",
+        "Technology"
+      ]
+    },
+    "psychology_attachment": {
+      "label": "Psychology Healing Template",
+      "summary": "A warm and professional template for psychotherapy training and counseling lectures",
+      "tone": "Professional, warm, healing, trustworthy",
+      "themeMode": "Light theme (cloud white background + blue-green gradient accent + colorful semantic colors)",
+      "keywords": [
+        "Psychology",
+        "Healing",
+        "Counseling",
+        "Warm"
+      ]
+    },
+    "smart_red": {
+      "label": "Smart Red-Orange Business Template",
+      "summary": "A vibrant business template for tech company introductions and education solutions",
+      "tone": "Modern, vibrant, professional, geometric",
+      "themeMode": "Hybrid theme (dark/colorful cover + light content pages)",
+      "keywords": [
+        "Red-orange business",
+        "Tech enterprise",
+        "Education",
+        "Vibrant"
+      ]
+    },
+    "中国电建_常规": {
+      "label": "PowerChina Standard Template",
+      "summary": "A solid brand template for engineering construction and state-owned enterprise reports",
+      "tone": "Professional, steady, international, state-owned enterprise style",
+      "themeMode": "Light theme (white background + PowerChina blue accent)",
+      "assets": [
+        "中国水务logo.png",
+        "华东院logo.png",
+        "水电三局logo.png",
+        "电建logo.png"
+      ],
+      "keywords": [
+        "PowerChina",
+        "State-owned enterprise",
+        "Engineering",
+        "Energy"
+      ]
+    },
+    "中国电建_现代": {
+      "label": "PowerChina Modern Template",
+      "summary": "A modern engineering template for major projects and international business presentations",
+      "tone": "Grand narrative, modern precision, digital technology, international vision",
+      "themeMode": "Deep blue tech gradient + precision grid texture",
+      "assets": [
+        "中国水务logo.png",
+        "华东院logo.png",
+        "水电三局logo.png",
+        "电建logo.png"
+      ],
+      "keywords": [
+        "PowerChina",
+        "International engineering",
+        "Modern engineering",
+        "Technology"
+      ]
+    },
+    "中汽研_商务": {
+      "label": "CATARC Business Template",
+      "summary": "A CATARC brand template for certification showcase and high-end business presentations",
+      "tone": "Modern tech, authoritative professional, composed and grand",
+      "themeMode": "Deep blue tech gradient + clean white content pages",
+      "assets": [
+        "右上角 logo.png",
+        "大型 logo.png"
+      ],
+      "keywords": [
+        "CATARC",
+        "Certification",
+        "Business",
+        "Technology"
+      ]
+    },
+    "中汽研_常规": {
+      "label": "CATARC Standard Template",
+      "summary": "A standard CATARC template for certification and testing scenarios",
+      "tone": "Professional, authoritative, trustworthy, consulting style",
+      "themeMode": "Light theme (white background + dark blue accent)",
+      "assets": [
+        "右上角 logo.png",
+        "大型 logo.png"
+      ],
+      "keywords": [
+        "CATARC",
+        "Certification",
+        "Testing",
+        "Authoritative"
+      ]
+    },
+    "中汽研_现代": {
+      "label": "CATARC Modern Template",
+      "summary": "A futuristic tech template for cutting-edge technology showcase and premium launches",
+      "tone": "Futuristic, tech-forward, deep, refined",
+      "themeMode": "Immersive dark cover/transition pages + clean light gray content pages",
+      "assets": [
+        "右上角 logo.png",
+        "大型 logo.png"
+      ],
+      "keywords": [
+        "CATARC",
+        "Future tech",
+        "Cutting-edge technology",
+        "Launch event"
+      ]
+    },
+    "招商银行": {
+      "label": "China Merchants Bank Template",
+      "summary": "A brand template for premium financial institution reports and annual presentations",
+      "tone": "Minimalist luxury, refined, multi-layered, modern finance",
+      "themeMode": "Light theme (textured background + CMB red/gold fine decorations)",
+      "assets": [
+        "招商银行公司金融.png"
+      ],
+      "keywords": [
+        "China Merchants Bank",
+        "Finance",
+        "Premium report",
+        "Annual report"
+      ]
+    },
+    "科技蓝商务": {
+      "label": "Tech Blue Business Template",
+      "summary": "A tech-business template for corporate reports and solution proposals",
+      "tone": "Tech-forward, business, professional, clean",
+      "themeMode": "Hybrid theme (dark blue/tech blue cover + light content pages)",
+      "keywords": [
+        "Tech blue",
+        "Business",
+        "Solution proposal",
+        "Corporate report"
+      ]
+    },
+    "重庆大学": {
+      "label": "Chongqing University Template",
+      "summary": "A university-exclusive template for academic defenses and research presentations",
+      "tone": "Academically composed, mountain-city essence, modern minimalist",
+      "themeMode": "Academic blue primary + mountain-city layered imagery",
+      "assets": [
+        "重庆大学logo.png",
+        "重庆大学logo2.png"
+      ],
+      "keywords": [
+        "Chongqing University",
+        "Academic",
+        "Defense",
+        "University"
+      ]
+    },
+    "gold_elegant_branding": {
+      "label": "Gold Elegant Branding Template",
+      "summary": "Editorial luxury branding template with mustard-gold accents, serif typography, and fashion-style image framing",
+      "tone": "Elegant, editorial, luxurious, fashion-forward, minimalist",
+      "themeMode": "Light theme (warm gold background on cover, white content pages, black serif typography)",
+      "keywords": [
+        "Luxury",
+        "Branding",
+        "Editorial",
+        "Fashion",
+        "Gold"
+      ]
+    },
+    "explore_italy": {
+      "label": "Explore Italy Editorial Travel Template",
+      "summary": "Minimal editorial travel template with tall photography slots and serif headlines",
+      "tone": "Elegant, cultural, travel-editorial, airy, sophisticated",
+      "themeMode": "Light theme (soft white background, dark olive typography, terracotta accents)",
+      "keywords": [
+        "Travel",
+        "Italy",
+        "Editorial",
+        "Culture",
+        "Lifestyle"
+      ]
+    },
+    "future_technology_trends": {
+      "label": "Future Technology Trends Template",
+      "summary": "Immersive futuristic template with dark tech backgrounds, neon cyan accents, and high-contrast typography",
+      "tone": "Futuristic, immersive, neon-tech, cinematic, bold",
+      "themeMode": "Dark theme (deep navy background, cyan glow accents, high-contrast white type)",
+      "keywords": [
+        "Future",
+        "Technology",
+        "AI",
+        "Cyber",
+        "Neon"
+      ]
+    },
+    "vintage_aesthetic": {
+      "label": "Vintage Aesthetic Template",
+      "summary": "Sepia-toned vintage editorial template with script typography and nostalgic photography framing",
+      "tone": "Vintage, nostalgic, editorial, poetic, warm",
+      "themeMode": "Light sepia theme (cream background, charcoal typography, soft brown accents)",
+      "keywords": [
+        "Vintage",
+        "Aesthetic",
+        "Editorial",
+        "Sepia",
+        "Nostalgic"
+      ]
+    },
+    "white_green_modern_research_proposal": {
+      "label": "White and Green Modern Research Proposal Template",
+      "summary": "Academic and research proposal template with restrained green accents and clean evidence panels.",
+      "tone": "Professional, research-oriented, modern, disciplined, clean",
+      "themeMode": "Light theme (white background, deep green accents, soft research panels)",
+      "keywords": [
+        "Research",
+        "Proposal",
+        "Academic",
+        "White",
+        "Green"
+      ]
+    },
+    "beige_black_minimalist_project_deck": {
+      "label": "Beige and Black Minimalist Project Deck Template",
+      "summary": "Minimal project-deck template with editorial beige surfaces and strict black typography.",
+      "tone": "Minimal, executive, editorial, restrained, premium",
+      "themeMode": "Light theme (warm beige surfaces, black type, thin dividers)",
+      "keywords": [
+        "Minimal",
+        "Project",
+        "Deck",
+        "Beige",
+        "Executive"
+      ]
+    },
+    "customer_journey_presentation": {
+      "label": "Customer Journey Presentation Template",
+      "summary": "Customer journey template with touchpoint path cues and conversion-focused storytelling surfaces.",
+      "tone": "Customer-centric, process-driven, approachable, clean, service-design",
+      "themeMode": "Light theme (soft cream background, coral-orange journey cues, clean white cards)",
+      "keywords": [
+        "Customer Journey",
+        "Touchpoint",
+        "Process",
+        "CX",
+        "Service Design"
+      ]
+    },
+    "swot_analysis_presentation": {
+      "label": "SWOT Analysis Presentation Template",
+      "summary": "Structured SWOT analysis template with quadrant logic and strategy-review framing.",
+      "tone": "Analytical, strategic, board-ready, structured, sharp",
+      "themeMode": "Light theme (white background, disciplined slate type, muted strategy colors)",
+      "keywords": [
+        "SWOT",
+        "Strategy",
+        "Board",
+        "Analysis",
+        "Quadrant"
+      ]
+    },
+    "purple_neon_green_modern_cryptocurrency": {
+      "label": "Purple and Neon Green Modern Cryptocurrency Template",
+      "summary": "Dark crypto template with purple surfaces, neon highlights, and market-tech visual language.",
+      "tone": "High-contrast, speculative, digital-finance, cyber, bold",
+      "themeMode": "Dark theme (deep purple background, neon green highlights, bright data surfaces)",
+      "keywords": [
+        "Crypto",
+        "Blockchain",
+        "Neon",
+        "Purple",
+        "Web3"
+      ]
+    },
+    "beige_blue_modern_year_end_report": {
+      "label": "Beige and Blue Modern Year-End Report Template",
+      "summary": "Year-end reporting template balancing calm beige surfaces with blue corporate accents.",
+      "tone": "Corporate, annual-review, calm, polished, managerial",
+      "themeMode": "Light theme (beige base, blue reporting cues, clear hierarchy)",
+      "keywords": [
+        "Year End",
+        "Report",
+        "Corporate",
+        "Blue",
+        "Review"
+      ]
+    },
+    "orange_blur_annual_budget_planning": {
+      "label": "Orange Blur Annual Budget Planning Template",
+      "summary": "Budget planning template with energetic orange focus zones and clear planning surfaces.",
+      "tone": "Planning-focused, energetic, practical, modern, warm",
+      "themeMode": "Light theme (white base, orange blur accents, finance-planning cards)",
+      "keywords": [
+        "Budget",
+        "Planning",
+        "Annual",
+        "Orange",
+        "Finance"
+      ]
+    }
+  }
+}

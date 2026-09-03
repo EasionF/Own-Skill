@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#FBFAF8"/>
+  <line x1="160" y1="360" x2="1120" y2="360" stroke="#BEB7AB" stroke-width="3"/>
+  <g fill="#D9A92E">
+    <circle cx="240" cy="360" r="16"/><circle cx="480" cy="360" r="16"/><circle cx="720" cy="360" r="16"/><circle cx="960" cy="360" r="16"/>
+  </g>
+  <g font-family="Georgia, Times New Roman, serif" font-size="40" fill="#1F1A17">
+    <text x="240" y="304" text-anchor="middle">01</text>
+    <text x="480" y="304" text-anchor="middle">02</text>
+    <text x="720" y="304" text-anchor="middle">03</text>
+    <text x="960" y="304" text-anchor="middle">04</text>
+  </g>
+  <g font-family="Arial, Microsoft YaHei, sans-serif" font-size="20" fill="#8E8578">
+    <text x="240" y="420" text-anchor="middle">{{STEP_1}}</text>
+    <text x="480" y="420" text-anchor="middle">{{STEP_2}}</text>
+    <text x="720" y="420" text-anchor="middle">{{STEP_3}}</text>
+    <text x="960" y="420" text-anchor="middle">{{STEP_4}}</text>
+  </g>
+</svg>

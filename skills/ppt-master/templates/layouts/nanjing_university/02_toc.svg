@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+    <rect width="1280" height="720" fill="#FBF8FE"/>
+    <rect x="0" y="0" width="1280" height="6" fill="#6C3EA0"/>
+    <text x="60" y="112" font-family="Arial, sans-serif" font-size="31" font-weight="700" fill="#241938">{{TOC_TITLE}}</text>
+    <text x="60" y="154" font-family="Arial, sans-serif" font-size="16" fill="#6F687E">Contents / Chapters / Narrative flow</text>
+    <line x1="60" y1="182" x2="1220" y2="182" stroke="#E9E2F1" stroke-width="1.2"/>
+    <rect x="60" y="220" width="520" height="120" fill="#FFFFFF" stroke="#DCCFEA" stroke-width="1.1" rx="14"/>
+    <rect x="60" y="220" width="8" height="120" fill="#6C3EA0" rx="4"/>
+    <text x="88" y="262" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#241938">{{TOC_ITEM_1}}</text>
+    <text x="88" y="296" font-family="Arial, sans-serif" font-size="14" fill="#6F687E">{{TOC_ITEM_2}}</text>
+    <rect x="60" y="360" width="520" height="120" fill="#FFFFFF" stroke="#DCCFEA" stroke-width="1.1" rx="14"/>
+    <rect x="60" y="360" width="8" height="120" fill="#1FAF7A" rx="4"/>
+    <text x="88" y="402" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#241938">{{TOC_ITEM_3}}</text>
+    <text x="88" y="436" font-family="Arial, sans-serif" font-size="14" fill="#6F687E">{{TOC_ITEM_4}}</text>
+    <rect x="60" y="500" width="520" height="120" fill="#FFFFFF" stroke="#DCCFEA" stroke-width="1.1" rx="14"/>
+    <rect x="60" y="500" width="8" height="120" fill="#B98A52" rx="4"/>
+    <text x="88" y="542" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#241938">{{TOC_ITEM_5}}</text>
+    <text x="88" y="576" font-family="Arial, sans-serif" font-size="14" fill="#6F687E">{{TOC_ITEM_6}}</text>
+    <rect x="680" y="220" width="540" height="400" fill="#F7F2FB" stroke="#DCCFEA" stroke-width="1.1" rx="18"/>
+    <text x="716" y="280" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#3C245C">{{CONTENT_AREA}}</text>
+    <text x="716" y="324" font-family="Arial, sans-serif" font-size="14" fill="#6F687E">Use this page to map the narrative logic before content generation.</text>
+</svg>

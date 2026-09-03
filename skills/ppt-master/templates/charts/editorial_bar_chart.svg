@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#FBFAF8"/>
+  <text x="90" y="110" font-family="Georgia, Times New Roman, serif" font-size="48" fill="#1F1A17">{{CHART_TITLE}}</text>
+  <line x1="90" y1="130" x2="1190" y2="130" stroke="#D9A92E" stroke-width="4"/>
+  <line x1="140" y1="560" x2="1120" y2="560" stroke="#BEB7AB" stroke-width="2"/>
+  <line x1="140" y1="190" x2="140" y2="560" stroke="#BEB7AB" stroke-width="2"/>
+  <rect x="220" y="300" width="90" height="260" rx="10" fill="#D9A92E"/>
+  <rect x="430" y="240" width="90" height="320" rx="10" fill="#C8AA84"/>
+  <rect x="640" y="340" width="90" height="220" rx="10" fill="#D9A92E"/>
+  <rect x="850" y="280" width="90" height="280" rx="10" fill="#C8AA84"/>
+  <text x="265" y="286" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="22" fill="#1F1A17">{{V1}}</text>
+  <text x="475" y="226" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="22" fill="#1F1A17">{{V2}}</text>
+  <text x="685" y="326" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="22" fill="#1F1A17">{{V3}}</text>
+  <text x="895" y="266" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="22" fill="#1F1A17">{{V4}}</text>
+  <text x="265" y="604" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="20" fill="#8E8578">{{L1}}</text>
+  <text x="475" y="604" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="20" fill="#8E8578">{{L2}}</text>
+  <text x="685" y="604" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="20" fill="#8E8578">{{L3}}</text>
+  <text x="895" y="604" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="20" fill="#8E8578">{{L4}}</text>
+</svg>

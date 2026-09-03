@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#F7F1E7"/>
+  <rect x="360" y="110" width="360" height="460" fill="#FFFDF9" stroke="#D4C5AF" stroke-width="2"/>
+  <rect x="388" y="138" width="304" height="310" fill="#D7C4AC" fill-opacity="0.8"/>
+  <text x="540" y="510" text-anchor="middle" font-family="Georgia, Times New Roman, serif" font-size="34" font-style="italic" fill="#2F2B28">{{CAPTION}}</text>
+</svg>

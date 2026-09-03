@@ -1,0 +1,17 @@
+{
+  "name": "brand-pptx-outline-skill-smoke",
+  "version": "1.0.0",
+  "description": "使用 dry_run 生成一份本地大纲，校验入口和输出结构可用。",
+  "inputs": {
+    "topic": "品牌升级发布会",
+    "count": 3,
+    "audience": "管理层",
+    "purpose": "品牌解读",
+    "tone": "克制",
+    "focus": "品牌主张",
+    "dry_run": true
+  },
+  "expected": {
+    "status": "success"
+  }
+}

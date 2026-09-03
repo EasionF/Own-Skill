@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#FBFAF8"/>
+  <rect x="420" y="220" width="440" height="210" rx="26" fill="#FFFFFF" stroke="#D4C6B3" stroke-width="2"/>
+  <line x1="460" y1="274" x2="820" y2="274" stroke="#D9A92E" stroke-width="3"/>
+  <text x="640" y="330" text-anchor="middle" font-family="Georgia, Times New Roman, serif" font-size="72" fill="#1F1A17">{{VALUE}}</text>
+  <text x="640" y="380" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="22" fill="#8E8578">{{LABEL}}</text>
+</svg>

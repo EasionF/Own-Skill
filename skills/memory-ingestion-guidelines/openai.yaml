@@ -1,0 +1,7 @@
+interface:
+  display_name: "Memory 写入规范"
+  short_description: "沉淀已验证经验和事实。"
+  default_prompt: "Use $memory-ingestion-guidelines to write verified reusable knowledge into memory."
+
+policy:
+  allow_implicit_invocation: true

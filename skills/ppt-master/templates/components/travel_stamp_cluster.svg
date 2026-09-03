@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#F7F5F1"/>
+  <rect x="360" y="170" width="210" height="210" rx="20" fill="none" stroke="#B97967" stroke-width="4" stroke-dasharray="12 10"/>
+  <circle cx="465" cy="275" r="66" fill="none" stroke="#263224" stroke-width="4"/>
+  <text x="465" y="288" text-anchor="middle" font-family="Georgia, Times New Roman, serif" font-size="28" fill="#263224">{{CITY}}</text>
+  <rect x="660" y="250" width="260" height="120" rx="14" fill="#DDD2C2"/>
+  <text x="790" y="320" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="22" fill="#263224">{{TAG}}</text>
+</svg>

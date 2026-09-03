@@ -1,0 +1,7 @@
+interface:
+  display_name: "费曼学习解释"
+  short_description: "用费曼学习法解释复杂概念、文章、技术方案和研究内容。"
+  default_prompt: "Use $learning-explanation-guidelines to explain this topic with the Feynman learning method."
+
+policy:
+  allow_implicit_invocation: true

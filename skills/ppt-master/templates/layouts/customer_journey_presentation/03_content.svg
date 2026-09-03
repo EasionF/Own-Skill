@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+<rect width="1280" height="720" fill="#FFFDF9"/>
+<line x1="56" y1="56" x2="1224" y2="56" stroke="#E87853" stroke-width="4"/>
+<path d="M120 638 C260 584, 398 690, 534 634 S818 584, 1060 634" fill="none" stroke="#F3B7A1" stroke-width="8" stroke-linecap="round" opacity="0.55"/>
+<circle cx="286" cy="646" r="10" fill="#E87853" opacity="0.75"/><circle cx="560" cy="634" r="10" fill="#E87853" opacity="0.75"/><circle cx="854" cy="610" r="10" fill="#E87853" opacity="0.75"/>
+<text x="72" y="126" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="20" font-weight="700" fill="#E87853">{{PAGE_LABEL}}</text>
+<text x="72" y="184" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="52" font-weight="700" fill="#2B231F">{{PAGE_TITLE}}</text>
+<rect x="72" y="230" width="1136" height="350" rx="24" fill="#FFFFFF" stroke="#F3B7A1" stroke-width="1.5"/>
+<text x="110" y="286" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="18" fill="#6B625A">{{CONTENT_AREA}}</text>
+<line x1="56" y1="672" x2="1224" y2="672" stroke="#E87853" stroke-width="1.5" opacity="0.45"/>
+<text x="56" y="696" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="14" fill="#2B231F">{{SOURCE}}</text>
+<text x="1224" y="696" text-anchor="end" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="18" fill="#2B231F">{{PAGE_NUM}}</text>
+</svg>

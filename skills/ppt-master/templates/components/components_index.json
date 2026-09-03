@@ -1,0 +1,419 @@
+{
+  "meta": {
+    "total": 20,
+    "defaultViewBox": "0 0 1280 720",
+    "formats": [
+      "ppt169"
+    ],
+    "filePattern": "{key}.svg",
+    "updated": "2026-03-27"
+  },
+  "categories": {
+    "image_frames": {
+      "label": "Image Frames",
+      "components": [
+        "editorial_arch_frame",
+        "editorial_side_image_panel",
+        "travel_postcard_frame",
+        "vintage_polaroid_frame"
+      ]
+    },
+    "callouts": {
+      "label": "Callouts",
+      "components": [
+        "editorial_quote_callout",
+        "editorial_caption_rule"
+      ]
+    },
+    "metrics": {
+      "label": "Metric Components",
+      "components": [
+        "editorial_kpi_strip",
+        "editorial_stat_badge"
+      ]
+    },
+    "travel_marks": {
+      "label": "Travel Marks",
+      "components": [
+        "travel_stamp_cluster"
+      ]
+    },
+    "tech_panels": {
+      "label": "Tech Panels",
+      "components": [
+        "tech_glow_panel",
+        "tech_signal_cards"
+      ]
+    },
+    "vintage_labels": {
+      "label": "Vintage Labels",
+      "components": [
+        "vintage_ticket_label"
+      ]
+    },
+    "research_panels": {
+      "label": "Research Panels",
+      "components": [
+        "research_data_panel"
+      ]
+    },
+    "minimal_marks": {
+      "label": "Minimal Marks",
+      "components": [
+        "minimal_divider_callout"
+      ]
+    },
+    "journey_flows": {
+      "label": "Journey Flows",
+      "components": [
+        "journey_touchpoint_strip",
+        "journey_stage_cards"
+      ]
+    },
+    "strategy_frames": {
+      "label": "Strategy Frames",
+      "components": [
+        "swot_quadrant_tabs"
+      ]
+    },
+    "crypto_panels": {
+      "label": "Crypto Panels",
+      "components": [
+        "crypto_signal_panel"
+      ]
+    },
+    "report_bands": {
+      "label": "Report Bands",
+      "components": [
+        "year_end_summary_band"
+      ]
+    },
+    "budget_panels": {
+      "label": "Budget Panels",
+      "components": [
+        "budget_allocation_strip"
+      ]
+    }
+  },
+  "quickLookup": {
+    "luxury": [
+      "editorial_arch_frame",
+      "editorial_quote_callout",
+      "editorial_kpi_strip",
+      "editorial_stat_badge",
+      "editorial_caption_rule"
+    ],
+    "travel": [
+      "editorial_side_image_panel",
+      "editorial_quote_callout",
+      "travel_postcard_frame",
+      "travel_stamp_cluster"
+    ],
+    "brand": [
+      "editorial_arch_frame",
+      "editorial_kpi_strip"
+    ],
+    "technology": [
+      "tech_glow_panel",
+      "tech_signal_cards"
+    ],
+    "vintage": [
+      "vintage_polaroid_frame",
+      "vintage_ticket_label"
+    ],
+    "research": [
+      "research_data_panel"
+    ],
+    "minimal": [
+      "minimal_divider_callout"
+    ],
+    "journey": [
+      "journey_touchpoint_strip",
+      "journey_stage_cards"
+    ],
+    "strategy": [
+      "swot_quadrant_tabs"
+    ],
+    "crypto": [
+      "crypto_signal_panel"
+    ],
+    "report": [
+      "year_end_summary_band"
+    ],
+    "budget": [
+      "budget_allocation_strip"
+    ]
+  },
+  "components": {
+    "editorial_arch_frame": {
+      "label": "Editorial Arch Image Frame",
+      "summary": "Arched image window for luxury/editorial covers and hero sections",
+      "bestFor": [
+        "Luxury covers",
+        "Fashion/editorial hero sections",
+        "Brand mood imagery"
+      ],
+      "keywords": [
+        "arch",
+        "image frame",
+        "editorial",
+        "luxury"
+      ]
+    },
+    "editorial_quote_callout": {
+      "label": "Editorial Quote Callout",
+      "summary": "Minimal quote component with serif emphasis and subtle accent rule",
+      "bestFor": [
+        "Brand statements",
+        "Travel quotes",
+        "Narrative callouts"
+      ],
+      "keywords": [
+        "quote",
+        "callout",
+        "editorial",
+        "serif"
+      ]
+    },
+    "editorial_kpi_strip": {
+      "label": "Editorial KPI Strip",
+      "summary": "Four-column KPI strip with luxury serif numbers and restrained rules",
+      "bestFor": [
+        "Brand metrics",
+        "Overview pages",
+        "Premium dashboards"
+      ],
+      "keywords": [
+        "kpi",
+        "metrics",
+        "strip",
+        "editorial"
+      ]
+    },
+    "editorial_side_image_panel": {
+      "label": "Editorial Side Image Panel",
+      "summary": "Tall side image panel with caption slot for content pages",
+      "bestFor": [
+        "Travel pages",
+        "Luxury product storytelling",
+        "Narrative split layouts"
+      ],
+      "keywords": [
+        "side image",
+        "editorial",
+        "split layout",
+        "caption"
+      ]
+    },
+    "editorial_stat_badge": {
+      "label": "Editorial Stat Badge",
+      "summary": "Premium statistic badge with serif emphasis",
+      "bestFor": [
+        "Luxury metrics",
+        "Brand highlights"
+      ],
+      "keywords": [
+        "stat",
+        "badge",
+        "luxury",
+        "editorial"
+      ]
+    },
+    "editorial_caption_rule": {
+      "label": "Editorial Caption Rule",
+      "summary": "Headline-plus-caption rule component for refined callouts",
+      "bestFor": [
+        "Section leads",
+        "Editorial pull-outs"
+      ],
+      "keywords": [
+        "caption",
+        "rule",
+        "editorial",
+        "headline"
+      ]
+    },
+    "travel_postcard_frame": {
+      "label": "Travel Postcard Frame",
+      "summary": "Postcard-style split image and note frame",
+      "bestFor": [
+        "Travel storytelling",
+        "Destination pages"
+      ],
+      "keywords": [
+        "postcard",
+        "travel",
+        "image frame"
+      ]
+    },
+    "travel_stamp_cluster": {
+      "label": "Travel Stamp Cluster",
+      "summary": "Passport-stamp style marker cluster",
+      "bestFor": [
+        "Travel labels",
+        "Route waypoints"
+      ],
+      "keywords": [
+        "stamp",
+        "travel",
+        "label"
+      ]
+    },
+    "tech_glow_panel": {
+      "label": "Tech Glow Panel",
+      "summary": "Neon edge information panel for futuristic decks",
+      "bestFor": [
+        "Tech summaries",
+        "Signal callouts"
+      ],
+      "keywords": [
+        "tech",
+        "glow",
+        "panel"
+      ]
+    },
+    "tech_signal_cards": {
+      "label": "Tech Signal Cards",
+      "summary": "Three-card signal strip for trend and module overviews",
+      "bestFor": [
+        "Trend modules",
+        "Feature clusters"
+      ],
+      "keywords": [
+        "tech",
+        "cards",
+        "signals"
+      ]
+    },
+    "vintage_polaroid_frame": {
+      "label": "Vintage Polaroid Frame",
+      "summary": "Polaroid-style image holder for nostalgic storytelling",
+      "bestFor": [
+        "Heritage imagery",
+        "Retro covers"
+      ],
+      "keywords": [
+        "vintage",
+        "polaroid",
+        "frame"
+      ]
+    },
+    "vintage_ticket_label": {
+      "label": "Vintage Ticket Label",
+      "summary": "Ticket-style label chip for section markers",
+      "bestFor": [
+        "Section dividers",
+        "Retro labels"
+      ],
+      "keywords": [
+        "ticket",
+        "vintage",
+        "label"
+      ]
+    },
+    "research_data_panel": {
+      "label": "Research Data Panel",
+      "summary": "Research evidence panel with calm green academic styling",
+      "bestFor": [
+        "Research findings",
+        "Proposal evidence"
+      ],
+      "keywords": [
+        "research",
+        "evidence",
+        "panel"
+      ]
+    },
+    "minimal_divider_callout": {
+      "label": "Minimal Divider Callout",
+      "summary": "Thin-rule minimalist callout for project decks",
+      "bestFor": [
+        "Executive notes",
+        "Project conclusions"
+      ],
+      "keywords": [
+        "minimal",
+        "divider",
+        "callout"
+      ]
+    },
+    "journey_touchpoint_strip": {
+      "label": "Journey Touchpoint Strip",
+      "summary": "Curved touchpoint strip for customer-journey storytelling",
+      "bestFor": [
+        "Customer journey",
+        "Touchpoint sequences"
+      ],
+      "keywords": [
+        "journey",
+        "touchpoint",
+        "path"
+      ]
+    },
+    "journey_stage_cards": {
+      "label": "Journey Stage Cards",
+      "summary": "Four-step journey cards for journey stage decomposition",
+      "bestFor": [
+        "Journey stages",
+        "Touchpoint clusters"
+      ],
+      "keywords": [
+        "journey",
+        "stages",
+        "cards"
+      ]
+    },
+    "swot_quadrant_tabs": {
+      "label": "SWOT Quadrant Tabs",
+      "summary": "Muted quadrant surfaces for SWOT and strategic reviews",
+      "bestFor": [
+        "SWOT pages",
+        "Quadrant strategy pages"
+      ],
+      "keywords": [
+        "swot",
+        "quadrant",
+        "strategy"
+      ]
+    },
+    "crypto_signal_panel": {
+      "label": "Crypto Signal Panel",
+      "summary": "Dark crypto signal panel with neon edge and high-contrast headline",
+      "bestFor": [
+        "Crypto trends",
+        "Web3 signals"
+      ],
+      "keywords": [
+        "crypto",
+        "signal",
+        "panel"
+      ]
+    },
+    "year_end_summary_band": {
+      "label": "Year-End Summary Band",
+      "summary": "Corporate year-end summary band for annual review pages",
+      "bestFor": [
+        "Annual summary",
+        "Management review"
+      ],
+      "keywords": [
+        "year-end",
+        "summary",
+        "band"
+      ]
+    },
+    "budget_allocation_strip": {
+      "label": "Budget Allocation Strip",
+      "summary": "Four-bucket budget strip for planning pages",
+      "bestFor": [
+        "Budget allocation",
+        "Planning breakdown"
+      ],
+      "keywords": [
+        "budget",
+        "allocation",
+        "strip"
+      ]
+    }
+  }
+}

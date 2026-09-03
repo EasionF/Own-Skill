@@ -1,0 +1,4 @@
+interface:
+  display_name: "Daily Report Evidence"
+  short_description: "Collect and reconcile work evidence for a daily report."
+  default_prompt: "Use this skill to gather work evidence and draft a daily report."

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#081019"/>
+  <text x="90" y="106" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="48" font-weight="700" fill="#F7FBFF">{{CHART_TITLE}}</text>
+  <line x1="170" y1="380" x2="1110" y2="380" stroke="#28E4E9" stroke-opacity="0.3" stroke-width="3"/>
+  <polygon points="250,340 285,320 320,340 320,380 285,400 250,380" fill="#0E2740" stroke="#28E4E9"/>
+  <polygon points="490,340 525,320 560,340 560,380 525,400 490,380" fill="#0E2740" stroke="#28E4E9"/>
+  <polygon points="730,340 765,320 800,340 800,380 765,400 730,380" fill="#0E2740" stroke="#28E4E9"/>
+  <polygon points="970,340 1005,320 1040,340 1040,380 1005,400 970,380" fill="#0E2740" stroke="#28E4E9"/>
+  <text x="285" y="450" text-anchor="middle" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="20" fill="#B8DFF5">{{S1}}</text>
+  <text x="525" y="450" text-anchor="middle" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="20" fill="#B8DFF5">{{S2}}</text>
+  <text x="765" y="450" text-anchor="middle" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="20" fill="#B8DFF5">{{S3}}</text>
+  <text x="1005" y="450" text-anchor="middle" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="20" fill="#B8DFF5">{{S4}}</text>
+</svg>

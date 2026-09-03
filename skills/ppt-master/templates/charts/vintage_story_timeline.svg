@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#F7F1E7"/>
+  <text x="90" y="112" font-family="Georgia, Times New Roman, serif" font-size="54" font-style="italic" fill="#2F2B28">{{CHART_TITLE}}</text>
+  <line x1="180" y1="390" x2="1080" y2="390" stroke="#A8835C" stroke-width="2"/>
+  <circle cx="260" cy="390" r="16" fill="#A75B2A"/><circle cx="500" cy="390" r="16" fill="#A75B2A"/><circle cx="740" cy="390" r="16" fill="#A75B2A"/><circle cx="980" cy="390" r="16" fill="#A75B2A"/>
+  <text x="260" y="322" text-anchor="middle" font-family="Courier New, Arial, monospace" font-size="18" fill="#2F2B28">{{S1}}</text>
+  <text x="500" y="322" text-anchor="middle" font-family="Courier New, Arial, monospace" font-size="18" fill="#2F2B28">{{S2}}</text>
+  <text x="740" y="322" text-anchor="middle" font-family="Courier New, Arial, monospace" font-size="18" fill="#2F2B28">{{S3}}</text>
+  <text x="980" y="322" text-anchor="middle" font-family="Courier New, Arial, monospace" font-size="18" fill="#2F2B28">{{S4}}</text>
+</svg>

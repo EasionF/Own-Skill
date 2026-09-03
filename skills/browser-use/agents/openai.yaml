@@ -1,0 +1,4 @@
+interface:
+  display_name: "Browser Use"
+  short_description: "Read and classify same-day browser history for work reporting."
+  default_prompt: "Use this skill to inspect browser history and extract work-related browsing evidence."

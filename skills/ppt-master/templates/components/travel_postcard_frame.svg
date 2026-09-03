@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#F7F5F1"/>
+  <rect x="260" y="110" width="760" height="500" fill="#FFFDF8" stroke="#CBBEAF" stroke-width="2" rx="16"/>
+  <rect x="318" y="166" width="340" height="330" fill="#DDD2C2"/>
+  <line x1="706" y1="176" x2="956" y2="176" stroke="#C67D69" stroke-width="2"/>
+  <line x1="706" y1="226" x2="956" y2="226" stroke="#C67D69" stroke-width="2"/>
+  <line x1="706" y1="276" x2="956" y2="276" stroke="#C67D69" stroke-width="2"/>
+  <text x="706" y="560" font-family="Georgia, Times New Roman, serif" font-size="26" font-style="italic" fill="#263224">{{CAPTION}}</text>
+</svg>

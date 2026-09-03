@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#D9A92E"/>
+  <path d="M470 150 Q470 80 540 80 L740 80 Q810 80 810 150 L810 540 L470 540 Z" fill="#E8D7BD"/>
+  <rect x="500" y="120" width="280" height="420" fill="#CBB190"/>
+  <text x="640" y="455" text-anchor="middle" font-family="Georgia, Times New Roman, serif" font-size="120" font-style="italic" fill="#1F1A17">{{TITLE}}</text>
+  <text x="640" y="575" text-anchor="middle" font-family="Georgia, Times New Roman, serif" font-size="28" font-weight="700" fill="#1F1A17">{{SUBTITLE}}</text>
+  <circle cx="122" cy="360" r="54" fill="none" stroke="#1F1A17" stroke-width="4"/>
+  <circle cx="1158" cy="360" r="54" fill="none" stroke="#1F1A17" stroke-width="4"/>
+  <circle cx="122" cy="360" r="10" fill="#1F1A17"/>
+  <circle cx="1158" cy="360" r="10" fill="#1F1A17"/>
+  <line x1="122" y1="360" x2="236" y2="360" stroke="#1F1A17" stroke-width="4"/>
+  <line x1="1044" y1="360" x2="1158" y2="360" stroke="#1F1A17" stroke-width="4"/>
+  <polygon points="236,360 218,352 218,368" fill="#1F1A17"/>
+  <polygon points="1044,360 1062,352 1062,368" fill="#1F1A17"/>
+  <text x="90" y="70" font-family="Georgia, Times New Roman, serif" font-size="18" font-style="italic" fill="#1F1A17">{{AUTHOR}}</text>
+  <text x="1180" y="680" text-anchor="end" font-family="Arial, Microsoft YaHei, sans-serif" font-size="18" fill="#1F1A17">{{DATE}}</text>
+</svg>

@@ -1,0 +1,4 @@
+interface:
+  display_name: "PUA / Pledge Mode"
+  short_description: "Evidence-first execution mode for hard tasks."
+  default_prompt: "Use $pua to drive this task to a verified result or a verified boundary."

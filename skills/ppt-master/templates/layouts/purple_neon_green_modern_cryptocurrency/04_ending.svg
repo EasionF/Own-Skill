@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+<rect width="1280" height="720" fill="#120F20"/>
+<circle cx="1080" cy="120" r="180" fill="#9B5DE5" opacity="0.16"/>
+<circle cx="180" cy="620" r="220" fill="#B9FF66" opacity="0.10"/>
+<line x1="56" y1="78" x2="1224" y2="78" stroke="#B9FF66" stroke-width="6"/>
+<rect x="300" y="184" width="680" height="320" rx="28" fill="#1D1731" opacity="0.95" stroke="#B9FF66" stroke-opacity="0.35"/>
+<text x="640" y="314" text-anchor="middle" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="88" font-weight="700" fill="#F8F9FF">{{THANK_YOU}}</text>
+<text x="640" y="388" text-anchor="middle" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="26" fill="#B9FF66">{{ENDING_SUBTITLE}}</text>
+<text x="640" y="456" text-anchor="middle" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="22" fill="#F8F9FF">{{CONTACT_INFO}}</text>
+</svg>

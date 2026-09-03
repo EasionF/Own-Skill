@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#FBFAF8"/>
+  <g fill="#1F1A17" font-family="Georgia, Times New Roman, serif">
+    <text x="150" y="260" font-size="72">{{KPI_1_VALUE}}</text>
+    <text x="430" y="260" font-size="72">{{KPI_2_VALUE}}</text>
+    <text x="710" y="260" font-size="72">{{KPI_3_VALUE}}</text>
+    <text x="990" y="260" font-size="72">{{KPI_4_VALUE}}</text>
+  </g>
+  <g fill="#8E8578" font-family="Arial, Microsoft YaHei, sans-serif" font-size="22">
+    <text x="150" y="318">{{KPI_1_LABEL}}</text>
+    <text x="430" y="318">{{KPI_2_LABEL}}</text>
+    <text x="710" y="318">{{KPI_3_LABEL}}</text>
+    <text x="990" y="318">{{KPI_4_LABEL}}</text>
+  </g>
+  <g stroke="#D9A92E" stroke-width="3">
+    <line x1="120" y1="350" x2="300" y2="350"/>
+    <line x1="400" y1="350" x2="580" y2="350"/>
+    <line x1="680" y1="350" x2="860" y2="350"/>
+    <line x1="960" y1="350" x2="1140" y2="350"/>
+  </g>
+</svg>

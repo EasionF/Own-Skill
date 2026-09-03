@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#081019"/>
+  <rect x="240" y="140" width="800" height="440" rx="28" fill="#0E2740" stroke="#28E4E9" stroke-opacity="0.55"/>
+  <line x1="280" y1="210" x2="1000" y2="210" stroke="#28E4E9" stroke-opacity="0.4"/>
+  <text x="300" y="196" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="18" font-weight="700" fill="#28E4E9">{{LABEL}}</text>
+  <text x="300" y="306" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="54" font-weight="700" fill="#F7FBFF">{{TITLE}}</text>
+  <text x="300" y="360" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="22" fill="#B8DFF5">{{BODY}}</text>
+</svg>

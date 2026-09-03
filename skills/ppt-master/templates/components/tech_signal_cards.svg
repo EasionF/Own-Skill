@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#081019"/>
+  <rect x="140" y="190" width="280" height="240" rx="24" fill="#0E2740" stroke="#28E4E9" stroke-opacity="0.35"/>
+  <rect x="500" y="190" width="280" height="240" rx="24" fill="#0E2740" stroke="#28E4E9" stroke-opacity="0.35"/>
+  <rect x="860" y="190" width="280" height="240" rx="24" fill="#0E2740" stroke="#28E4E9" stroke-opacity="0.35"/>
+  <text x="180" y="264" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="20" fill="#28E4E9">{{K1}}</text>
+  <text x="540" y="264" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="20" fill="#28E4E9">{{K2}}</text>
+  <text x="900" y="264" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="20" fill="#28E4E9">{{K3}}</text>
+</svg>

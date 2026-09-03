@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+<rect width="1280" height="720" fill="#FFFDF9"/>
+<line x1="56" y1="56" x2="1224" y2="56" stroke="#E87853" stroke-width="4"/>
+<text x="72" y="136" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="56" font-weight="700" fill="#2B231F">TABLE OF CONTENTS</text>
+<rect x="70" y="184" width="1140" height="430" rx="26" fill="#FFF1EA" opacity="0.9"/>
+<text x="108" y="274" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="28" fill="#2B231F">01  {{TOC_ITEM_1}}</text>
+<text x="108" y="356" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="28" fill="#2B231F">02  {{TOC_ITEM_2}}</text>
+<text x="108" y="438" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="28" fill="#2B231F">03  {{TOC_ITEM_3}}</text>
+<text x="610" y="274" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="28" fill="#2B231F">04  {{TOC_ITEM_4}}</text>
+<text x="610" y="356" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="28" fill="#2B231F">05  {{TOC_ITEM_5}}</text>
+<line x1="56" y1="672" x2="1224" y2="672" stroke="#E87853" stroke-width="1.5" opacity="0.45"/><text x="56" y="696" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="14" fill="#2B231F">{{SOURCE}}</text><text x="1224" y="696" text-anchor="end" font-family="Arial, Helvetica, Microsoft YaHei, sans-serif" font-size="18" fill="#2B231F">{{PAGE_NUM}}</text>
+</svg>

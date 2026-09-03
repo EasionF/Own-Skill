@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#FBFAF8"/>
+  <text x="90" y="110" font-family="Georgia, Times New Roman, serif" font-size="48" fill="#1F1A17">{{CHART_TITLE}}</text>
+  <line x1="90" y1="130" x2="1190" y2="130" stroke="#D9A92E" stroke-width="4"/>
+  <rect x="250" y="220" width="740" height="22" rx="11" fill="#EEE4D6"/>
+  <rect x="250" y="220" width="500" height="22" rx="11" fill="#D9A92E"/>
+  <rect x="250" y="320" width="740" height="22" rx="11" fill="#EEE4D6"/>
+  <rect x="250" y="320" width="570" height="22" rx="11" fill="#C8AA84"/>
+  <rect x="250" y="420" width="740" height="22" rx="11" fill="#EEE4D6"/>
+  <rect x="250" y="420" width="430" height="22" rx="11" fill="#D9A92E"/>
+  <text x="220" y="238" text-anchor="end" font-family="Arial, Microsoft YaHei, sans-serif" font-size="20" fill="#1F1A17">{{L1}}</text>
+  <text x="220" y="338" text-anchor="end" font-family="Arial, Microsoft YaHei, sans-serif" font-size="20" fill="#1F1A17">{{L2}}</text>
+  <text x="220" y="438" text-anchor="end" font-family="Arial, Microsoft YaHei, sans-serif" font-size="20" fill="#1F1A17">{{L3}}</text>
+</svg>

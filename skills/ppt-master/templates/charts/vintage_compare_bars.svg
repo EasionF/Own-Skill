@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#F7F1E7"/>
+  <text x="90" y="112" font-family="Georgia, Times New Roman, serif" font-size="54" font-style="italic" fill="#2F2B28">{{CHART_TITLE}}</text>
+  <line x1="150" y1="560" x2="1100" y2="560" stroke="#A8835C" stroke-width="2"/>
+  <rect x="220" y="320" width="90" height="240" fill="#D7C4AC" stroke="#A8835C"/>
+  <rect x="430" y="270" width="90" height="290" fill="#C4A580" stroke="#A8835C"/>
+  <rect x="640" y="360" width="90" height="200" fill="#D7C4AC" stroke="#A8835C"/>
+  <rect x="850" y="300" width="90" height="260" fill="#C4A580" stroke="#A8835C"/>
+  <text x="265" y="604" text-anchor="middle" font-family="Courier New, Arial, monospace" font-size="18" fill="#2F2B28">{{L1}}</text>
+  <text x="475" y="604" text-anchor="middle" font-family="Courier New, Arial, monospace" font-size="18" fill="#2F2B28">{{L2}}</text>
+  <text x="685" y="604" text-anchor="middle" font-family="Courier New, Arial, monospace" font-size="18" fill="#2F2B28">{{L3}}</text>
+  <text x="895" y="604" text-anchor="middle" font-family="Courier New, Arial, monospace" font-size="18" fill="#2F2B28">{{L4}}</text>
+</svg>

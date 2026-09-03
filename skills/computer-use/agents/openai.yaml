@@ -1,4 +1,0 @@
-interface:
-  display_name: "Computer Use"
-  short_description: "Operate desktop pages and forms to complete UI tasks."
-  default_prompt: "Use this skill to drive desktop UI steps such as filling daily report forms."

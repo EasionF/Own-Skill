@@ -1,7 +1,0 @@
-interface:
-  display_name: "Memory 治理规范"
-  short_description: "整理候选记忆和索引。"
-  default_prompt: "Use $memory-governance-guidelines to run memory governance after reusable memory has been written."
-
-policy:
-  allow_implicit_invocation: true
